@@ -7,7 +7,6 @@ import HojaDeCuentaBL.cParametroBL;
 import HojaDeCuentaBL.cParametroBLL;
 import HojaDeCuentaBL.cUsuarioBL;
 import HojaDeCuentaC.Validar;
-
 import ejecutar.Coneccion;
 import java.sql.SQLException;
 import java.util.ArrayList;
