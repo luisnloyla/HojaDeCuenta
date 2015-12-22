@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Dec 21 19:56:28 PET 2015:
+ Iniciando instancia a816c00e-0151-c72f-f896-000005aa60b0 de Derby, versión The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): 
+en el directorio de base de datos /home/luis/NetBeansProjects/Congregacion02/build/classes/conexion/bd123 con el cargador de clases sun.misc.Launcher$AppClassLoader@7440e464
+Cargado desde file:/home/luis/jdk1.8.0_60/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_60-b27
+user.dir=/home/luis/NetBeansProjects/Congregacion02
+os.name=Linux
+os.arch=amd64
+os.version=3.16.0-38-generic
+derby.system.home=null
+Cargador de clases de base de datos iniciado - derby.database.classpath=''
