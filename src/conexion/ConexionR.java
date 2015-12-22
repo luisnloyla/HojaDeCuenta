@@ -18,7 +18,7 @@ public class ConexionR {
     public ConexionR() {
     }
    
-    /***************************************************************************
+    /***********************************HOLA LUIS TE HABLO DESDE GIT HUB AUNQUE NO LO CREES****************************************
      * 
      */
      /*SINGLETON*/
