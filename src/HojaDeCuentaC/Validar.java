@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author lois_
  */
-public class Validar {
+public final class Validar {
     private boolean Antecesor;//*
     private MensualBE mensualBE;//*
     

@@ -21,14 +21,14 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 
 
 public final class frmMensual extends javax.swing.JFrame {
-
+    
     public boolean bNuevo = false;
     String[] Mes = {"MES", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
     int IdMes = 1;//1
     String annioActual;
     private int estableser;
     int habilitarCajastexto = 1;
-
+    
     int insertar = 1;
     int actualizar = 2;
     int numeroDeEntradas = 0;
@@ -46,11 +46,13 @@ public final class frmMensual extends javax.swing.JFrame {
         SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark.SubstanceBinaryWatermark");
 //        SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark. SubstanceBubblesWatermark");
         setResizable(false);
+        
         initComponents();
         /////////////////////////////////////////////////////
         this.setLocationRelativeTo(this);
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/currency.png"));
         setIconImage(icon);
+        setSize(470,620);
         setVisible(true);
 
 //        cboBusqueda.SelectedIndex = 1;
@@ -115,6 +117,9 @@ public final class frmMensual extends javax.swing.JFrame {
         jsnAnio = new javax.swing.JSpinner();
         btnImprimir = new javax.swing.JButton();
         EGRESO = new javax.swing.JTabbedPane();
+        jpEgreso = new javax.swing.JPanel();
+        jpIngreso = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -171,9 +176,6 @@ public final class frmMensual extends javax.swing.JFrame {
         txtTotalLargoPlazo = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         jtLargoPlazo = new javax.swing.JTable();
-        jpIngreso = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jpEgreso = new javax.swing.JPanel();
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Recibido:"));
 
@@ -319,36 +321,39 @@ public final class frmMensual extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(8, 8, 8)
                 .addComponent(btnAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblMes, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPosterior, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblMes, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(btnPosterior, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(jsnAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(btnEstablecer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFiniquitar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnAnterior)
-                        .addComponent(jsnAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnEstablecer)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAnterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(lblMes))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnFiniquitar)
-                        .addComponent(btnImprimir))
-                    .addComponent(lblMes, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnPosterior, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnImprimir)
+                        .addComponent(btnEstablecer)
+                        .addComponent(jsnAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPosterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         EGRESO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -358,7 +363,47 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jpEgresoLayout = new javax.swing.GroupLayout(jpEgreso);
+        jpEgreso.setLayout(jpEgresoLayout);
+        jpEgresoLayout.setHorizontalGroup(
+            jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 471, Short.MAX_VALUE)
+        );
+        jpEgresoLayout.setVerticalGroup(
+            jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 477, Short.MAX_VALUE)
+        );
+
+        EGRESO.addTab("INGRESO", jpEgreso);
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpIngresoLayout = new javax.swing.GroupLayout(jpIngreso);
+        jpIngreso.setLayout(jpIngresoLayout);
+        jpIngresoLayout.setHorizontalGroup(
+            jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpIngresoLayout.createSequentialGroup()
+                .addContainerGap(211, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(201, 201, 201))
+        );
+        jpIngresoLayout.setVerticalGroup(
+            jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpIngresoLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(jButton1)
+                .addContainerGap(387, Short.MAX_VALUE))
+        );
+
+        EGRESO.addTab("EGRESO", jpIngreso);
+
         jPanel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel12.setLayout(null);
 
         jScrollPane5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 6));
 
@@ -754,7 +799,7 @@ public final class frmMensual extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblId_Mes, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -782,6 +827,9 @@ public final class frmMensual extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jPanel3);
 
         jScrollPane5.setViewportView(jScrollPane1);
+
+        jPanel12.add(jScrollPane5);
+        jScrollPane5.setBounds(0, 10, 450, 384);
 
         jpCrud.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 6));
 
@@ -820,6 +868,7 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         });
 
+        btnSalir.setBackground(java.awt.Color.orange);
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -832,54 +881,36 @@ public final class frmMensual extends javax.swing.JFrame {
         jpCrudLayout.setHorizontalGroup(
             jpCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpCrudLayout.createSequentialGroup()
-                .addGap(1, 1, 1)
+                .addContainerGap()
                 .addComponent(btnNuevo)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGrabar)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnModificar)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDeshacer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalir)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jpCrudLayout.setVerticalGroup(
             jpCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpCrudLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(jpCrudLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addGroup(jpCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNuevo)
-                    .addComponent(btnGrabar)
-                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModificar)
                     .addComponent(btnEliminar)
                     .addComponent(btnDeshacer)
-                    .addComponent(btnSalir))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jpCrud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5))
+                    .addComponent(btnSalir)
+                    .addComponent(btnGrabar)
+                    .addComponent(btnNuevo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jpCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+
+        jPanel12.add(jpCrud);
+        jpCrud.setBounds(0, 410, 450, 60);
 
         EGRESO.addTab("Conciliacion Hoja De Cuenta", jPanel12);
 
@@ -918,23 +949,25 @@ public final class frmMensual extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel19)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTotalActuales, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                        .addComponent(txtTotalActuales, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(txtTotalActuales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jPanel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -972,23 +1005,26 @@ public final class frmMensual extends javax.swing.JFrame {
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTotalLargoPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel20)
+                .addGap(18, 18, 18)
+                .addComponent(txtTotalLargoPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTotalLargoPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -1004,77 +1040,32 @@ public final class frmMensual extends javax.swing.JFrame {
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
+                .addGap(26, 26, 26)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane2.setViewportView(jPanel11);
 
         EGRESO.addTab("Obligacion A Fin De Mes:", jScrollPane2);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jpIngresoLayout = new javax.swing.GroupLayout(jpIngreso);
-        jpIngreso.setLayout(jpIngresoLayout);
-        jpIngresoLayout.setHorizontalGroup(
-            jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpIngresoLayout.createSequentialGroup()
-                .addContainerGap(238, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(201, 201, 201))
-        );
-        jpIngresoLayout.setVerticalGroup(
-            jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpIngresoLayout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jButton1)
-                .addContainerGap(399, Short.MAX_VALUE))
-        );
-
-        EGRESO.addTab("INGRESO", jpIngreso);
-
-        javax.swing.GroupLayout jpEgresoLayout = new javax.swing.GroupLayout(jpEgreso);
-        jpEgreso.setLayout(jpEgresoLayout);
-        jpEgresoLayout.setHorizontalGroup(
-            jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 473, Short.MAX_VALUE)
-        );
-        jpEgresoLayout.setVerticalGroup(
-            jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
-        );
-
-        EGRESO.addTab("EGRESO", jpEgreso);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(EGRESO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(EGRESO)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(EGRESO))
+                .addGap(15, 15, 15)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(EGRESO, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -1215,10 +1206,11 @@ public final class frmMensual extends javax.swing.JFrame {
 //        if (this.lista!=null) {
 //            obtenerFila(IdMes);
 //        }
+        JOptionPane.showMessageDialog(rootPane, ""+numeroDeEntradas);
         indiceEntradaActual++;
         if (indiceEntradaActual >= numeroDeEntradas) {
             indiceEntradaActual = 0;
-            IdMes = obtenerFila02();
+            IdMes = obtenerFilaNext();
             AsignarMes();
         }
     }//GEN-LAST:event_btnPosteriorActionPerformed
@@ -1233,7 +1225,7 @@ public final class frmMensual extends javax.swing.JFrame {
         indiceEntradaActual--;
         if (indiceEntradaActual < 0) {
             indiceEntradaActual = numeroDeEntradas - 1;
-            IdMes = obtenerFila02();
+            IdMes = obtenerFilaNext();
             AsignarMes();
         }
     }//GEN-LAST:event_btnAnteriorActionPerformed
@@ -1249,11 +1241,12 @@ public final class frmMensual extends javax.swing.JFrame {
             if (v.getAntecesor()) {
                 habilitarCajastexto = 0;//la existencia hace que se genere automaticamente
                 if(v.getMensualBE().getGuardado()==1){
-                    jdcFecha.setDate(v.sumarRestarDiasFecha(v.getMensualBE().getFecha(), 1));
                     cargarCamposNuevo(v.getMensualBE());
                     SetearCamposModoEdicion();
-                }
-                JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar De la fecha "+v.getMensualBE().getFecha());
+                    jdcFecha.setDate(v.sumarRestarDiasFecha(v.getMensualBE().getFecha(), 1));
+//                    JOptionPane.showMessageDialog(rootPane, ",,,,,"+jdcFecha.getDate());
+                }else
+                JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar del mes "+Mes[(v.getMensualBE().getFecha().getMonth()+1)]+" del año "+(v.getMensualBE().getFecha().getYear()+1900));
 //                VuelveACargarLista();
                 obtenerFila02();
             }else
@@ -1276,12 +1269,15 @@ public final class frmMensual extends javax.swing.JFrame {
 //                date.setYear(jdcFecha.getCalendar().get(Calendar.YEAR));
 
                 Validar v = new Validar(actualizar, new Validar().fecha(jdcFecha));
-                JOptionPane.showMessageDialog(rootPane, "VALIDO "+new Validar().fecha(jdcFecha));
-                JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar De la fecha "+v.getMensualBE().getFecha());
-                if (v.getAntecesor()) {
-                    habilitarCajastexto = 0;//la existencia hace que se genere automaticamente
+//                JOptionPane.showMessageDialog(rootPane, "VALIDO "+new Validar().fecha(jdcFecha));
+//                JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar De la fecha "+v.getMensualBE().getFecha());
+                if (mensualBE.getGuardado()!=1) {
+                   if (v.getAntecesor()) {
+                        habilitarCajastexto = 0;//la existencia hace que se genere automaticamente
+                    }
+                    SetearCamposModoEdicion(); 
                 }
-                SetearCamposModoEdicion();
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
@@ -1655,25 +1651,33 @@ public final class frmMensual extends javax.swing.JFrame {
         if (getEstableser() == 0) {
 //            this.estableser = 1;
             setEstableser(1);
-            btnEstablecer.setText("D");
+            btnEstablecer.setText("E");
             btnFiniquitar.setEnabled(false);
             btnImprimir.setEnabled(false);
             anteriorPosterior(true);
 //            btnPosterior.setEnabled(true);
 //            btnAnterior.setEnabled(true);
 //            jsnAnio.setEnabled(true);
+               jScrollPane5.setSize(450,400);
+            jpCrud.setLocation(1, 420);
             jpCrud.setVisible(true);
+            
         } else {
 //            this.estableser = 0;
             setEstableser(0);
-            btnEstablecer.setText("E");
+            btnEstablecer.setText("D");
             btnFiniquitar.setEnabled(true);
             btnImprimir.setEnabled(true);
             anteriorPosterior(false);
 //            btnPosterior.setEnabled(false);
 //            btnAnterior.setEnabled(false);
 //            jsnAnio.setEnabled(false);
+            
+            
+            jScrollPane5.setSize(450,460);
+            jpCrud.setLocation(1, 420);
             jpCrud.setVisible(false);
+            
         }
     }
     public void anteriorPosterior(boolean b){
@@ -1688,7 +1692,7 @@ public final class frmMensual extends javax.swing.JFrame {
         cMensualBLL mensualBLL = new cMensualBLL();
         this.lista = mensualBLL.Leer(new Coneccion(), mensualBE);
         if (this.lista != null) {
-            numeroDeEntradas = this.lista.size();
+            numeroDeEntradas = this.lista.size()+1;
         }
     }
 
@@ -1710,11 +1714,19 @@ public final class frmMensual extends javax.swing.JFrame {
 
     public int obtenerFila02() {
         if (numeroDeEntradas != 0) {            
+            cargarCamposNuevo(lista.get(indiceEntradaActual));
+            return lista.get(indiceEntradaActual).getFecha().getMonth() + 1;
+        }
+        return 0;
+    }
+    public int obtenerFilaNext() {
+        if (numeroDeEntradas != 0) {            
             cargarCampos(lista.get(indiceEntradaActual));
             return lista.get(indiceEntradaActual).getFecha().getMonth() + 1;
         }
         return 0;
     }
+    
     public int obtenerFilaEstablecida() {
         if (numeroDeEntradas != 0) {
             /*para buscar al quien esta establecido*/
@@ -1734,6 +1746,7 @@ public final class frmMensual extends javax.swing.JFrame {
                 indiceEntradaActual = 0;
                 cargarCampos(lista.get(indiceEntradaActual));
                 setEstableser(lista.get(indiceEntradaActual).getEstableser());
+                estableser();
                 return lista.get(indiceEntradaActual).getFecha().getMonth() + 1;
             }
         }
