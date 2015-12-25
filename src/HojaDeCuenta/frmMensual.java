@@ -36,6 +36,8 @@ public final class frmMensual extends javax.swing.JFrame {
     MensualBE mensualBE = null;
     int indiceEntradaActual = 0;
     
+    int SelectindiceEntradaActual = 0;
+    
     public frmMensual() throws SQLException {
         super("HOJA DE CUENTA");
         /////////////////////////////////////////////////////
@@ -120,6 +122,7 @@ public final class frmMensual extends javax.swing.JFrame {
         jpEgreso = new javax.swing.JPanel();
         jpIngreso = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        btnNumeroEntradas = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -324,12 +327,10 @@ public final class frmMensual extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addComponent(btnAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblMes, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addComponent(btnPosterior, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addComponent(lblMes, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPosterior, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jsnAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addComponent(btnEstablecer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -352,8 +353,8 @@ public final class frmMensual extends javax.swing.JFrame {
                         .addComponent(btnFiniquitar)
                         .addComponent(btnImprimir)
                         .addComponent(btnEstablecer)
-                        .addComponent(jsnAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnPosterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jsnAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPosterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         EGRESO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -383,13 +384,22 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         });
 
+        btnNumeroEntradas.setText("NUMERO DE ENTRADAS");
+        btnNumeroEntradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNumeroEntradasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpIngresoLayout = new javax.swing.GroupLayout(jpIngreso);
         jpIngreso.setLayout(jpIngresoLayout);
         jpIngresoLayout.setHorizontalGroup(
             jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpIngresoLayout.createSequentialGroup()
-                .addContainerGap(211, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addContainerGap(122, Short.MAX_VALUE)
+                .addGroup(jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnNumeroEntradas)
+                    .addComponent(jButton1))
                 .addGap(201, 201, 201))
         );
         jpIngresoLayout.setVerticalGroup(
@@ -397,7 +407,9 @@ public final class frmMensual extends javax.swing.JFrame {
             .addGroup(jpIngresoLayout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addComponent(jButton1)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnNumeroEntradas)
+                .addContainerGap(344, Short.MAX_VALUE))
         );
 
         EGRESO.addTab("EGRESO", jpIngreso);
@@ -625,7 +637,7 @@ public final class frmMensual extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(txtSalidaCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(txtSaldoRestanteCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1148,6 +1160,9 @@ public final class frmMensual extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSaldoAnteriorRActionPerformed
 
     private void btnEstablecerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstablecerActionPerformed
+        if (Integer.parseInt(lblId_Mes.getText())== 0) {
+            return;
+        }
         try {
 //            JOptionPane.showMessageDialog(this, this.mensualBE.getEstableser());
                   
@@ -1167,26 +1182,38 @@ public final class frmMensual extends javax.swing.JFrame {
 //                JOptionPane.showMessageDialog(this, "Exito al Finiquitar");
             }
 //            JOptionPane.showMessageDialog(this, getEstableser());
-            estableser();            
+            estableser();
         } catch (SQLException ex) {
             Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_btnEstablecerActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         SetearCamposModoGrabado();
         try {
             if (Integer.parseInt(lblId_Mes.getText()) != 0) {
+                if(lista.get(SelectindiceEntradaActual).getGuardado()==1){
+                    Date fechaMayor = null;
+                    MensualBE objMensualBE = new MensualBE(4,  Integer.parseInt(lblId_Mes.getText()), new Date(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "0");
+                    cMensualBLL objCMensualBLL = new cMensualBLL();
+                    List<MensualBE> objList = objCMensualBLL.Leer(new Coneccion(), objMensualBE);
+                    for (MensualBE objList1 : objList) {
+                        fechaMayor = objList1.getFecha();
+                    }
+                    if (fechaMayor.compareTo(lista.get(SelectindiceEntradaActual).getFecha())>0) {
+                        JOptionPane.showMessageDialog(this, "No se puede eliminar por que tiene dependencias");
+                        return;
+                    }
+                }
                 Coneccion c = new Coneccion();
-                MensualBE mensualBE = new MensualBE(2, 0, new Date(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "0");
+                MensualBE mensualBEl = new MensualBE(1/*2*/,  Integer.parseInt(lblId_Mes.getText()), new Date(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "0");
                 cMensualBL mensualBL = new cMensualBL();
-                if (mensualBL.Actualizar(c, mensualBE) < 0) {
+                if (mensualBL.Eliminar(c, mensualBEl) < 0) {//if (mensualBL.Actualizar(c, mensualBEl) < 0) {
                     JOptionPane.showMessageDialog(this, "No se elimino");
                 }
             }
             VuelveACargarLista();
-            if (lista == null) {
+            if (numeroDeEntradas==0) {
                 LimpiarCampos();
                 lblId_Mes.setText("0");
                 btnModificar.setEnabled(false);
@@ -1206,13 +1233,17 @@ public final class frmMensual extends javax.swing.JFrame {
 //        if (this.lista!=null) {
 //            obtenerFila(IdMes);
 //        }
-        JOptionPane.showMessageDialog(rootPane, ""+numeroDeEntradas);
+//        JOptionPane.showMessageDialog(rootPane, ""+numeroDeEntradas);
+        if (numeroDeEntradas == 0) {
+            lblMes.setText(Mes[0]);
+            return;
+        }
         indiceEntradaActual++;
         if (indiceEntradaActual >= numeroDeEntradas) {
-            indiceEntradaActual = 0;
-            IdMes = obtenerFilaNext();
-            AsignarMes();
+            indiceEntradaActual = 0;            
         }
+        IdMes = obtenerFilaNext();
+        AsignarMes();        
     }//GEN-LAST:event_btnPosteriorActionPerformed
 
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
@@ -1222,12 +1253,16 @@ public final class frmMensual extends javax.swing.JFrame {
 //            obtenerFila(IdMes);
 //        }
         //*****************************************************************
+        if (numeroDeEntradas == 0) {            
+            lblMes.setText(Mes[0]);        
+            return;
+        }        
         indiceEntradaActual--;
         if (indiceEntradaActual < 0) {
-            indiceEntradaActual = numeroDeEntradas - 1;
-            IdMes = obtenerFilaNext();
-            AsignarMes();
+            indiceEntradaActual = numeroDeEntradas - 1;            
         }
+        IdMes = obtenerFilaNext();
+        AsignarMes();        
     }//GEN-LAST:event_btnAnteriorActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -1245,13 +1280,13 @@ public final class frmMensual extends javax.swing.JFrame {
                     SetearCamposModoEdicion();
                     jdcFecha.setDate(v.sumarRestarDiasFecha(v.getMensualBE().getFecha(), 1));
 //                    JOptionPane.showMessageDialog(rootPane, ",,,,,"+jdcFecha.getDate());
-                }else
+                }else{
                 JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar del mes "+Mes[(v.getMensualBE().getFecha().getMonth()+1)]+" del año "+(v.getMensualBE().getFecha().getYear()+1900));
+                }
 //                VuelveACargarLista();
                 obtenerFila02();
             }else
             SetearCamposModoEdicion();
-
         } catch (SQLException ex) {
             Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1271,7 +1306,7 @@ public final class frmMensual extends javax.swing.JFrame {
                 Validar v = new Validar(actualizar, new Validar().fecha(jdcFecha));
 //                JOptionPane.showMessageDialog(rootPane, "VALIDO "+new Validar().fecha(jdcFecha));
 //                JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar De la fecha "+v.getMensualBE().getFecha());
-                if (mensualBE.getGuardado()!=1) {
+                if (mensualBE.getGuardado()==0) {
                    if (v.getAntecesor()) {
                         habilitarCajastexto = 0;//la existencia hace que se genere automaticamente
                     }
@@ -1297,6 +1332,11 @@ public final class frmMensual extends javax.swing.JFrame {
 //        End If
 //
 //        txtCodigo.Focus()
+        if (numeroDeEntradas == 0) {
+            LimpiarCampos();
+        }else{
+            cargarCampos(lista.get(SelectindiceEntradaActual));
+        }
         bNuevo = false;
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
@@ -1316,6 +1356,13 @@ public final class frmMensual extends javax.swing.JFrame {
 //                date = jdcFecha.getDate();
 //                date.setYear(jdcFecha.getCalendar().get(Calendar.YEAR));
                 //************************************************************************
+                MensualBE objMensualBE = new MensualBE(3, 0, new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+                cMensualBLL objCMensualBLL = new cMensualBLL();
+                List<MensualBE> objList = objCMensualBLL.Leer(new Coneccion(), objMensualBE);
+                for (MensualBE objList1 : objList) {
+                    JOptionPane.showMessageDialog(this, "Ya existe una Hoja De Cuenta con esa fecha");
+                    return;
+                }
                 mensualBE = new MensualBE(1, 0, new Validar().fecha(jdcFecha)//date
                         , Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
                         , 0//Float.parseFloat(txtTotalLargoPlazo.getText())
@@ -1323,11 +1370,12 @@ public final class frmMensual extends javax.swing.JFrame {
                 ires = mensualBL.Insertar(c, mensualBE);
                 if (ires < 0) {
                     JOptionPane.showMessageDialog(this, "Error al actualizar");
-                    obtenerFila(Integer.parseInt(lblId_Mes.getText()));
+//                    obtenerFila(Integer.parseInt(lblId_Mes.getText()));
+                    cargarCampos(lista.get(SelectindiceEntradaActual));
                 } else {
                     JOptionPane.showMessageDialog(this, "transaccion Exitosa");
                     VuelveACargarLista();
-                    obtenerFila(ires);
+                    obtenerFilaId(ires);
                 }
             } else {
                 mensualBE = new MensualBE(3, Integer.parseInt(lblId_Mes.getText()), new Validar().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
@@ -1340,7 +1388,8 @@ public final class frmMensual extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "transaccion Exitosa");
                 }
                 VuelveACargarLista();
-                obtenerFila(Integer.parseInt(lblId_Mes.getText()));
+                cargarCampos(lista.get(SelectindiceEntradaActual));
+//                obtenerFila(Integer.parseInt(lblId_Mes.getText()));//LA RAZON ES SIMPLE SE CAPTURA CON PRECICION MIENTRAS QUE CON ESTO NO ...
             }
             bNuevo = false;
 
@@ -1380,7 +1429,7 @@ public final class frmMensual extends javax.swing.JFrame {
 
     private void jsnAnioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jsnAnioStateChanged
         try {
-            VuelveACargarLista();
+            VuelveACargarListaAnio();
         } catch (SQLException ex) {
             Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1522,6 +1571,10 @@ public final class frmMensual extends javax.swing.JFrame {
         consulta.show();
         consulta.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnNumeroEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNumeroEntradasActionPerformed
+        btnNumeroEntradas.setText(""+numeroDeEntradas);
+    }//GEN-LAST:event_btnNumeroEntradasActionPerformed
     public void keyTyped(java.awt.event.KeyEvent evt, String s) {
         char c = evt.getKeyChar();
         if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)
@@ -1666,7 +1719,7 @@ public final class frmMensual extends javax.swing.JFrame {
 //            this.estableser = 0;
             setEstableser(0);
             btnEstablecer.setText("D");
-            btnFiniquitar.setEnabled(true);
+            btnFiniquitar.setEnabled(true); 
             btnImprimir.setEnabled(true);
             anteriorPosterior(false);
 //            btnPosterior.setEnabled(false);
@@ -1687,21 +1740,37 @@ public final class frmMensual extends javax.swing.JFrame {
     }
     public void VuelveACargarLista() throws SQLException {
         this.numeroDeEntradas = 0;
+        this.indiceEntradaActual= 0;
         this.lista = null;
         MensualBE mensualBE = new MensualBE(5, (int) jsnAnio.getValue(), new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
         cMensualBLL mensualBLL = new cMensualBLL();
         this.lista = mensualBLL.Leer(new Coneccion(), mensualBE);
-        if (this.lista != null) {
-            numeroDeEntradas = this.lista.size()+1;
+//        if (this.lista != null) {
+            numeroDeEntradas = this.lista.size();
+//        }
+    }
+    public void VuelveACargarListaAnio() throws SQLException {
+        this.numeroDeEntradas = 0;
+        this.indiceEntradaActual= 0;
+        this.lista = null;
+        MensualBE mensualBE = new MensualBE(5, (int) jsnAnio.getValue(), new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+        cMensualBLL mensualBLL = new cMensualBLL();
+        this.lista = mensualBLL.Leer(new Coneccion(), mensualBE);
+        numeroDeEntradas = this.lista.size();
+        if (numeroDeEntradas!=0) {
+            cargarCampos(this.lista.get(0));
+        }else{
+            LimpiarCampos();
+            lblMes.setText(Mes[0]);
         }
     }
-
     public void obtenerFila(int Id_Mensual) {
         int cont = 1;
         if (numeroDeEntradas != 0) {
             for (MensualBE listaBE : this.lista) {
                 if (Id_Mensual != 0 && Id_Mensual == listaBE.getId_Mensual()) {
                     cargarCampos(listaBE);
+                    return;
                 } else {
                     if (cont == 1) {
                         cargarCampos(listaBE);
@@ -1711,16 +1780,29 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         }
     }
+    public void obtenerFilaId(int Id_Mensual) {
+        if (numeroDeEntradas != 0) {
+            indiceEntradaActual = 0;
+            for (MensualBE listaBE : this.lista) {                
+                if (Id_Mensual != 0 && Id_Mensual == listaBE.getId_Mensual()) {
+                    cargarCampos(listaBE);
+                    
+                    return;
+                }
+                indiceEntradaActual++;
+            }
+        }
+    }
 
     public int obtenerFila02() {
-        if (numeroDeEntradas != 0) {            
+        if (numeroDeEntradas != 0) {
             cargarCamposNuevo(lista.get(indiceEntradaActual));
             return lista.get(indiceEntradaActual).getFecha().getMonth() + 1;
         }
         return 0;
     }
     public int obtenerFilaNext() {
-        if (numeroDeEntradas != 0) {            
+        if (numeroDeEntradas != 0) {
             cargarCampos(lista.get(indiceEntradaActual));
             return lista.get(indiceEntradaActual).getFecha().getMonth() + 1;
         }
@@ -1754,6 +1836,7 @@ public final class frmMensual extends javax.swing.JFrame {
     }
 
     public void cargarCampos(MensualBE mensualBE) {
+        SelectindiceEntradaActual = indiceEntradaActual;
         this.mensualBE = mensualBE;
         lblId_Mes.setText("" + mensualBE.getId_Mensual());
         jdcFecha.setDate(mensualBE.getFecha());
@@ -1774,6 +1857,9 @@ public final class frmMensual extends javax.swing.JFrame {
         txtSaldoRestanteO.setText("" + mensualBE.getSaldorestanteo());
 
         txtTotFondMes.setText("" + mensualBE.getTotfondmes());
+        //extras
+        IdMes = new Validar().numeroMes(mensualBE.getFecha());
+        AsignarMes();
     }
 
     public void cargarCamposNuevo(MensualBE mensualBE) {
@@ -1782,19 +1868,20 @@ public final class frmMensual extends javax.swing.JFrame {
         txtSaldoAnteriorR.setText("" + mensualBE.getSaldorestanter());
 //        txtEntradaR.setText(""+mensualBE.getEntradar());
 //        txtSalidaR.setText(""+mensualBE.getSalidar());
-//        txtSaldoRestanteR.setText(""+mensualBE.getSaldorestanter());
+        txtSaldoRestanteR.setText(""+mensualBE.getSaldorestanter());
 
         txtSaldoAnteriorCC.setText("" + mensualBE.getSaldorestantecc());
 //        txtEntradaCC.setText(""+mensualBE.getEntradacc());
 //        txtSalidaCC.setText(""+mensualBE.getSalidacc());
-//        txtSaldoRestanteCC.setText(""+mensualBE.getSaldorestantecc());
+        txtSaldoRestanteCC.setText(""+mensualBE.getSaldorestantecc());
 
         txtSaldoAnteriorO.setText("" + mensualBE.getSaldorestanteo());
 //        txtEntradaO.setText(""+mensualBE.getEntradao());
 //        txtSalidaO.setText(""+mensualBE.getSalidao());
-//        txtSaldoRestanteO.setText(""+mensualBE.getSaldorestanteo());
+        txtSaldoRestanteO.setText(""+mensualBE.getSaldorestanteo());
 
-//        txtTotFondMes.setText(""+mensualBE.getTotfondmes());
+        txtTotFondMes.setText(""+mensualBE.getTotfondmes());        
+        lblMes.setText(Mes[0]);
     }
     public void sumaTotal(){
         float a=0;
@@ -1862,6 +1949,7 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnNumeroEntradas;
     private javax.swing.JButton btnPosterior;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton jButton1;

@@ -97,7 +97,7 @@ public class p_Mensual_upd {
                 this.ReturnVal=0;
             }
             if (this.Accion == 2){//ELIMINACION DE REGISTROEN FLAGACTIVO = 0
-                pstOperacion=con.prepareStatement("UPDATE MENSUAL SET FLAGACTIVO = 0 WHERE ID_MENSUAL = ?");
+                pstOperacion=con.prepareStatement("UPDATE MENSUAL SET FLAGACTIVO = '0' WHERE ID_MENSUAL = ?");
                 pstOperacion.setInt(1, this.Id_Mensual);
                 pstOperacion.executeUpdate();
                 this.ReturnVal=0;

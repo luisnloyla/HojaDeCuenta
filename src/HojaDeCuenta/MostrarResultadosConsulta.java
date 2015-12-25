@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 import javax.swing.table.TableModel;
- public class MostrarResultadosConsulta extends JFrame
+public class MostrarResultadosConsulta extends JFrame
  {
  //*****************************************************************************
      private static File Dir_trabajo;
@@ -38,7 +38,7 @@ import javax.swing.table.TableModel;
  static final String CONTRASENIA = "4dm1n";
 
  // la consulta predeterminada obtiene todos los datos de la tabla autores
- static final String CONSULTA_PREDETERMINADA = "SELECT ID_MENSUAL,FECHA,ESTABLESER,GUARDADO FROM MENSUAL";
+ static final String CONSULTA_PREDETERMINADA = "SELECT ID_MENSUAL,FECHA,ESTABLESER,GUARDADO,FLAGACTIVO FROM MENSUAL";
 
  private ResultSetTableModel modeloTabla;
  private JTextArea areaConsulta;

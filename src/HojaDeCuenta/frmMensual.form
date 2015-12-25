@@ -172,14 +172,10 @@
                   <EmptySpace min="8" pref="8" max="-2" attributes="0"/>
                   <Component id="btnAnterior" min="-2" pref="51" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblMes" min="-2" pref="103" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="63" pref="63" max="-2" attributes="0"/>
-                          <Component id="btnPosterior" min="-2" pref="47" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="lblMes" min="-2" pref="103" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnPosterior" min="-2" pref="47" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jsnAnio" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Component id="btnEstablecer" min="-2" pref="39" max="-2" attributes="0"/>
@@ -206,8 +202,8 @@
                           <Component id="btnImprimir" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnEstablecer" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jsnAnio" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnPosterior" alignment="3" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="btnPosterior" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -322,8 +318,11 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="211" max="32767" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="122" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnNumeroEntradas" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -333,7 +332,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="387" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnNumeroEntradas" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="344" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -345,6 +346,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnNumeroEntradas">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="NUMERO DE ENTRADAS"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNumeroEntradasActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -663,7 +672,7 @@
                                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="txtSalidaCC" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="txtSaldoRestanteCC" alignment="3" min="-2" max="-2" attributes="0"/>

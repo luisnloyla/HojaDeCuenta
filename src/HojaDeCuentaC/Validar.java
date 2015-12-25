@@ -57,6 +57,9 @@ public final class Validar {
         date.setYear(jdc.getCalendar().get(Calendar.YEAR));
         return date;
     }
+    public int numeroMes(Date fecha){
+        return (fecha.getMonth()+1);
+    }
     /**
      * @return the Antecesor
      */

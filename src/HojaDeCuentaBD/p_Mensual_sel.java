@@ -82,7 +82,7 @@ public class p_Mensual_sel {
                 }
                 this.ReturnVal=0;
             }
-            if (this.Accion == 3){
+            if (this.Accion == 3){//BUSQUEDA DE FECHA POR AÑO Y MES
                 pstLista=con.prepareStatement("SELECT * FROM MENSUAL WHERE MONTH(FECHA) = ? AND YEAR(FECHA) = ? AND FLAGACTIVO = '1'");
                 
                 pstLista.setInt(1, (this.Fecha.getMonth()+1));//AQUI EL MES
@@ -94,7 +94,7 @@ public class p_Mensual_sel {
                 }
                 this.ReturnVal=0;
             }
-            if (this.Accion == 4){
+            if (this.Accion == 4){//FECHA MAXIMA
                 pstLista=con.prepareStatement("SELECT * FROM MENSUAL WHERE FLAGACTIVO = '1' AND FECHA = (SELECT MAX(FECHA) FROM MENSUAL WHERE FLAGACTIVO = '1')");
                 rs=pstLista.executeQuery();
                 while (rs.next()) {
@@ -112,7 +112,7 @@ public class p_Mensual_sel {
                     aMensualBE.add(objMensualBElista);
                 }
                 this.ReturnVal=0;
-            }
+            }            
             con.commit();
             con.setAutoCommit(true);
 //            pstOperacion.close();

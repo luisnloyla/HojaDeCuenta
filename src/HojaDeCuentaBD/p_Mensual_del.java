@@ -60,46 +60,47 @@ public class p_Mensual_del {
         ResultSet rs=null;
         
         PreparedStatement pstOperacion = null;
-        PreparedStatement pstLista = null;
+//        PreparedStatement pstLista = null;
         try {
             con.setAutoCommit(false);
 //            st = con.createStatement();            
             if (this.Accion == 1){
                 pstOperacion=con.prepareStatement("DELETE FROM MENSUAL WHERE ID_MENSUAL = ?");
                 pstOperacion.setInt(1, this.Id_Mensual);
-                pstOperacion.executeUpdate();
-//                st.executeUpdate("DELETE FROM PARAMETRO WHERE ID_PARAMETRO = "+this.Id_Parametro);
                 this.ReturnVal= 0;
-//                rs=st.executeQuery("SELECT * FROM Parametro WHERE ID_PARAMETRO = " + this.Id_Parametro);
-                pstLista=con.prepareStatement("SELECT * FROM MENSUAL WHERE ID_MENSUAL = ?");
-                pstLista.setInt(1, this.Id_Mensual);
-                rs = pstLista.executeQuery();
-                while (rs.next()) {
-                    this.ReturnVal= -1;
-                }
+                if(pstOperacion.executeUpdate()==0) this.ReturnVal= -1;
+                
+                
+//                pstLista=con.prepareStatement("SELECT * FROM MENSUAL WHERE ID_MENSUAL = ?");
+//                pstLista.setInt(1, this.Id_Mensual);
+//                rs = pstLista.executeQuery();
+//                while (rs.next()) {
+//                    this.ReturnVal= -1;
+//                }
             }
             if (this.Accion == 2){               //DESTRUCCION TOTAL DE DATOS
                 pstOperacion=con.prepareStatement("DELETE FROM MENSUAL");
                 pstOperacion.executeUpdate();
 ////                st.executeUpdate("DELETE FROM PARAMETRO");
                 this.ReturnVal=0;
-                pstLista=con.prepareStatement("SELECT * FROM MENSUAL WHERE Id_MENSUAL = ?");
-                rs = pstLista.executeQuery();
-//                rs=st.executeQuery("SELECT * FROM Parametro");
-                while (rs.next()) {
-                    this.ReturnVal=-1;
-                }
+                if(pstOperacion.executeUpdate()==0) this.ReturnVal= -1;
+//                pstLista=con.prepareStatement("SELECT * FROM MENSUAL WHERE Id_MENSUAL = ?");
+//                rs = pstLista.executeQuery();
+////                rs=st.executeQuery("SELECT * FROM Parametro");
+//                while (rs.next()) {
+//                    this.ReturnVal=-1;
+//                }
             }
             con.commit();
             con.setAutoCommit(true);
 //            st.close();
             pstOperacion.close();
-            pstLista.close();
+//            pstLista.close();
         } catch (Exception e) {
             con.rollback();
             con.setAutoCommit(true);
             pstOperacion.close();
-            pstLista.close();
+//            pstLista.close();
             System.out.println(e);
             this.ReturnVal=-1;
         }
