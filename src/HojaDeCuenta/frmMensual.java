@@ -1,5 +1,5 @@
 package HojaDeCuenta;
-
+import HojaDeCuenta.TB.TM.OblifinmesTM;
 import HojaDeCuentaBE.MensualBE;
 import HojaDeCuentaBL.cMensualBL;
 import HojaDeCuentaBL.cMensualBLL;
@@ -37,9 +37,12 @@ public final class frmMensual extends javax.swing.JFrame {
     int indiceEntradaActual = 0;
     
     int SelectindiceEntradaActual = 0;
+    ////////////////TABLAS DE OBLIGACION A FIN DE MES //////////////////////////
+    private OblifinmesTM mto;
     
     public frmMensual() throws SQLException {
         super("HOJA DE CUENTA");
+        initComponents();
         /////////////////////////////////////////////////////
         JFrame.setDefaultLookAndFeelDecorated(true);
 //        SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.BusinessBlackSteelSkin");
@@ -49,7 +52,11 @@ public final class frmMensual extends javax.swing.JFrame {
 //        SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark. SubstanceBubblesWatermark");
         setResizable(false);
         
-        initComponents();
+        
+        
+        mto = new OblifinmesTM();
+        this.jtActuales.setModel(mto);
+        
         /////////////////////////////////////////////////////
         this.setLocationRelativeTo(this);
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/currency.png"));
@@ -91,6 +98,8 @@ public final class frmMensual extends javax.swing.JFrame {
             AsignarMes();
 //            anteriorPosterior(true);
         }
+        /////////////////////////OBLIGACION A FIN DE MES////////////////////////
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,6 +119,10 @@ public final class frmMensual extends javax.swing.JFrame {
         txtEntradaR1 = new javax.swing.JTextField();
         txtSalidaR1 = new javax.swing.JTextField();
         txtSaldoRestanteR1 = new javax.swing.JTextField();
+        jpmCrud = new javax.swing.JPopupMenu();
+        jmpNuevo = new javax.swing.JMenuItem();
+        jmpGuardar = new javax.swing.JMenuItem();
+        jmpEliminar = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         btnAnterior = new javax.swing.JButton();
         btnPosterior = new javax.swing.JButton();
@@ -123,6 +136,7 @@ public final class frmMensual extends javax.swing.JFrame {
         jpIngreso = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         btnNumeroEntradas = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -173,7 +187,7 @@ public final class frmMensual extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         txtTotalActuales = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jtActual = new javax.swing.JTable();
+        jtActuales = new javax.swing.JTable();
         jPanel10 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         txtTotalLargoPlazo = new javax.swing.JTextField();
@@ -261,6 +275,17 @@ public final class frmMensual extends javax.swing.JFrame {
                     .addComponent(txtSaldoRestanteR1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
+
+        jpmCrud.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jmpNuevo.setText("NUEVO");
+        jpmCrud.add(jmpNuevo);
+
+        jmpGuardar.setText("GUARDAR");
+        jpmCrud.add(jmpGuardar);
+
+        jmpEliminar.setText("ELIMINAR");
+        jpmCrud.add(jmpEliminar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -391,6 +416,13 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("jButton1");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpIngresoLayout = new javax.swing.GroupLayout(jpIngreso);
         jpIngreso.setLayout(jpIngresoLayout);
         jpIngresoLayout.setHorizontalGroup(
@@ -398,18 +430,21 @@ public final class frmMensual extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpIngresoLayout.createSequentialGroup()
                 .addContainerGap(122, Short.MAX_VALUE)
                 .addGroup(jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNumeroEntradas)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(btnNumeroEntradas))
                 .addGap(201, 201, 201))
         );
         jpIngresoLayout.setVerticalGroup(
             jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpIngresoLayout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addGap(65, 65, 65)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNumeroEntradas)
-                .addContainerGap(344, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(307, Short.MAX_VALUE))
         );
 
         EGRESO.addTab("EGRESO", jpIngreso);
@@ -942,19 +977,17 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         });
 
-        jtActual.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jtActual.setModel(new javax.swing.table.DefaultTableModel(
+        jtActuales.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jtActuales.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title3"
+                "Title 1", "Title 2", "Title3", "Title4", "Title5", "Title6"
             }
         ));
-        jScrollPane3.setViewportView(jtActual);
+        jtActuales.setComponentPopupMenu(jpmCrud);
+        jScrollPane3.setViewportView(jtActuales);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -1001,15 +1034,13 @@ public final class frmMensual extends javax.swing.JFrame {
         jtLargoPlazo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jtLargoPlazo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title3"
             }
         ));
+        jtLargoPlazo.setComponentPopupMenu(jpmCrud);
         jScrollPane4.setViewportView(jtLargoPlazo);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
@@ -1575,6 +1606,15 @@ public final class frmMensual extends javax.swing.JFrame {
     private void btnNumeroEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNumeroEntradasActionPerformed
         btnNumeroEntradas.setText(""+numeroDeEntradas);
     }//GEN-LAST:event_btnNumeroEntradasActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            frmParametro p = new frmParametro();            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
     public void keyTyped(java.awt.event.KeyEvent evt, String s) {
         char c = evt.getKeyChar();
         if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)
@@ -1953,6 +1993,7 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JButton btnPosterior;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1990,11 +2031,15 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private com.toedter.calendar.JDateChooser jdcFecha;
+    private javax.swing.JMenuItem jmpEliminar;
+    private javax.swing.JMenuItem jmpGuardar;
+    private javax.swing.JMenuItem jmpNuevo;
     private javax.swing.JPanel jpCrud;
     private javax.swing.JPanel jpEgreso;
     private javax.swing.JPanel jpIngreso;
+    private javax.swing.JPopupMenu jpmCrud;
     private javax.swing.JSpinner jsnAnio;
-    private javax.swing.JTable jtActual;
+    private javax.swing.JTable jtActuales;
     private javax.swing.JTable jtLargoPlazo;
     private javax.swing.JLabel lblId_Mes;
     private javax.swing.JLabel lblMes;
