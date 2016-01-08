@@ -11,11 +11,11 @@ public class conex {
     private static File Dir_trabajo;
     static boolean directorio=false;
     static boolean archivoBD=false;
-
+    
     static String dirAplic, sistOperativo;
     private static boolean existFile=false;
     private boolean existDir = false;
-
+    
     public conex() {
     }
    
@@ -38,7 +38,7 @@ public class conex {
                 Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
                 //Recupera la cadena para el Sistema Operativo
                 String so = getSistOpNombre();
-                conex = DriverManager.getConnection("jdbc:derby:"+ruta+so+"bd123;create=true;user=admin;password=4dm1n");
+                conex = DriverManager.getConnection("jdbc:derby:"+ruta+so+"BD_HojaDeCuenta;create=true;user=admin;password=4dm1n");
                 Statement st = conex.createStatement();
                 String[] names = { "TABLE" };
                 ResultSet result;
@@ -109,16 +109,16 @@ public class conex {
                                 "    ,Descripcion varchar(100) " +
                                 "    ,Id_Parametro_Origen int " +
                                 " )");
-                        st.executeUpdate("INSERT INTO PARAMETRO (CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN)VALUES"
-                                + "('T','TRANSACCION',0),"//1
-                                + "('001','INGRESO',1),"//2
-                                + "('002','EGRESO',1),"//3
-                                + "('O','Contribuciones para la OM',2),"//4
-                                + "('S','Contribuciones para el FSR',2),"//5
-                                + "('C','Contribuciones de la Congregación',2)"//6
-                                + "");
                         
-                        JOptionPane.showMessageDialog(null, "SE CREO LAS TABLAS", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                        st.executeUpdate("CREATE TABLE Oblifinmes("
+                        + " Id_Oblifinmes INT NOT NULL PRIMARY KEY  GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)" 
+                        + ", Id_Mensual INT NOT NULL"
+                        + ", Obligacion VARCHAR(200)"
+                        + ", Importe    FLOAT"
+                        + ", Actual_Plazo CHAR(1)"
+                        + ", FlagActivo CHAR(1))");                        
+//                        JOptionPane.showMessageDialog(null, "SE CREO LAS TABLAS", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "SE CREO LAS TABLAS", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                     }
                }
           }
@@ -179,3 +179,4 @@ public class conex {
     return Dir_trabajo;
     }
 }
+

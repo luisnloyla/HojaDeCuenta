@@ -151,7 +151,7 @@ public class p_Mensual_upd {
             this.ReturnVal=-1;
         }
     }
-    public p_Mensual_upd(Connection strCn,MensualBE objMensualBE) {
+    public p_Mensual_upd(Connection con,MensualBE objMensualBE) throws SQLException{
         this.Accion = objMensualBE.getAccion();
         this.Id_Mensual = objMensualBE.getId_Mensual();
         this.Fecha = objMensualBE.getFecha();        
@@ -172,7 +172,31 @@ public class p_Mensual_upd {
         this.Totplazo = objMensualBE.getTotplazo();
         this.Guardado = objMensualBE.getGuardado();
         this.Flagactivo = objMensualBE.getFlagactivo();
-//        this.ReturnVal = objMensualBE.getReturnVal();
+        
+        ResultSet rs=null;
+        PreparedStatement pstOperacion = null;
+        try {
+            con.setAutoCommit(false);
+            if (this.Accion == 6){
+                pstOperacion=con.prepareStatement("UPDATE MENSUAL SET TOTACTUAL = ? WHERE ID_MENSUAL = ?");
+                pstOperacion.setFloat(1, this.Totactual);
+                pstOperacion.setInt(2, this.Id_Mensual);
+                pstOperacion.executeUpdate();
+                this.ReturnVal=0;
+            }
+            if (this.Accion == 7){
+                pstOperacion=con.prepareStatement("UPDATE MENSUAL SET TOTPLAZO = ? WHERE ID_MENSUAL = ?");
+                pstOperacion.setFloat(1, this.Totplazo);
+                pstOperacion.setInt(2, this.Id_Mensual);
+                pstOperacion.executeUpdate();
+                this.ReturnVal=0;
+            }
+            pstOperacion.close();
+        } catch (Exception e) {            
+            pstOperacion.close();
+            System.out.println(e);
+            this.ReturnVal=-1;
+        }
     }
     public int getReturVal() {
         return ReturnVal;

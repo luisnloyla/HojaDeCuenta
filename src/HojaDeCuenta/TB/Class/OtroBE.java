@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HojaDeCuenta.TB.C;
+package HojaDeCuenta.TB.Class;
 
 import HojaDeCuentaBE.*;
 
@@ -11,23 +11,24 @@ import HojaDeCuentaBE.*;
  *
  * @author Loyola
  */
-public class DccorrienteBE {
+public class OtroBE {
     private int Accion;
-    private int Id_Dccorriente;
-    private int Id_Ccorriente ;
+    private int Id_Otro ;
+    private int Id_Mensual ;
+    private int Id_Ccorriente;
     private int Id_Transaccion ;
-    private int Id_Opcion ;
     private int Id_Tabla ;
     private String Descripcion ;
     private double Importe ;
     private String Flagactivo ;
     private int ReturnVal;
-    public DccorrienteBE(int Accion, int Id_Dccorriente, int Id_Ccorriente, int Id_Transaccion, int Id_Opcion, int Id_Tabla, String Descripcion, double Importe, String Flagactivo) {
+
+    public OtroBE(int Accion, int Id_Otro, int Id_Mensual, int Id_Ccorriente, int Id_Transaccion, int Id_Tabla, String Descripcion, double Importe, String Flagactivo) {
         this.Accion = Accion;
-        this.Id_Dccorriente = Id_Dccorriente;
+        this.Id_Otro = Id_Otro;
+        this.Id_Mensual = Id_Mensual;
         this.Id_Ccorriente = Id_Ccorriente;
         this.Id_Transaccion = Id_Transaccion;
-        this.Id_Opcion = Id_Opcion;
         this.Id_Tabla = Id_Tabla;
         this.Descripcion = Descripcion;
         this.Importe = Importe;
@@ -49,17 +50,31 @@ public class DccorrienteBE {
     }
 
     /**
-     * @return the Id_Dccorriente
+     * @return the Id_Otro
      */
-    public int getId_Dccorriente() {
-        return Id_Dccorriente;
+    public int getId_Otro() {
+        return Id_Otro;
     }
 
     /**
-     * @param Id_Dccorriente the Id_Dccorriente to set
+     * @param Id_Otro the Id_Otro to set
      */
-    public void setId_Dccorriente(int Id_Dccorriente) {
-        this.Id_Dccorriente = Id_Dccorriente;
+    public void setId_Otro(int Id_Otro) {
+        this.Id_Otro = Id_Otro;
+    }
+
+    /**
+     * @return the Id_Mensual
+     */
+    public int getId_Mensual() {
+        return Id_Mensual;
+    }
+
+    /**
+     * @param Id_Mensual the Id_Mensual to set
+     */
+    public void setId_Mensual(int Id_Mensual) {
+        this.Id_Mensual = Id_Mensual;
     }
 
     /**
@@ -88,20 +103,6 @@ public class DccorrienteBE {
      */
     public void setId_Transaccion(int Id_Transaccion) {
         this.Id_Transaccion = Id_Transaccion;
-    }
-
-    /**
-     * @return the Id_Opcion
-     */
-    public int getId_Opcion() {
-        return Id_Opcion;
-    }
-
-    /**
-     * @param Id_Opcion the Id_Opcion to set
-     */
-    public void setId_Opcion(int Id_Opcion) {
-        this.Id_Opcion = Id_Opcion;
     }
 
     /**

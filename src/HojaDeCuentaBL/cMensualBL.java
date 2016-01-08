@@ -20,6 +20,7 @@ interface MensualBL {
     public int Insertar(Connection strCn,MensualBE objMensualBE );
     public int Eliminar(Coneccion strCn,MensualBE objMensualBE );
     public int Actualizar(Coneccion strCn,MensualBE objMensualBE );
+    public int Actualizar(Connection strCn,MensualBE objMensualBE );
 }
 //******************************************************************************
 public class cMensualBL implements MensualBL{
@@ -42,6 +43,12 @@ public class cMensualBL implements MensualBL{
 
     @Override
     public int Actualizar(Coneccion strCn, MensualBE objMensualBE) {
+        cMensualDA MensualDA = new cMensualDA();
+        return MensualDA.Actualizar(strCn, objMensualBE);
+    }
+
+    @Override
+    public int Actualizar(Connection strCn, MensualBE objMensualBE) {
         cMensualDA MensualDA = new cMensualDA();
         return MensualDA.Actualizar(strCn, objMensualBE);
     }

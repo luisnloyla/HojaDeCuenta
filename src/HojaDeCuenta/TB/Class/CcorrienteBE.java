@@ -3,68 +3,91 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HojaDeCuenta.TB.C;
+package HojaDeCuenta.TB.Class;
 
-import HojaDeCuentaBE.*;
+import java.sql.Date;
 
 /**
  *
  * @author Loyola
  */
-public class DRecibidoBE {
+public class CcorrienteBE {
+
     private int Accion;
-    private int Id_Drecibido ;
-    private int Id_Recibido ;
+    private int Id_Ccorriente;
+    private int Id_Mensual;
+    private Date Fecha;
     private int Id_Concepto;
-    private String Descripcion;
+    private double Cuentan;
     private double Importe;
     private String Flagactivo;
     private int ReturnVal;
 
-    public DRecibidoBE(int Accion,int Id_Drecibido, int Id_Recibido, int Id_Concepto, String Descripcion, double Importe, String Flagactivo) {
+    public CcorrienteBE(int Accion, int Id_Ccorriente, int Id_Mensual, Date Fecha, int Id_Concepto, double Cuentan, double Importe, String Flagactivo) {
         this.Accion = Accion;
-        this.Id_Drecibido = Id_Drecibido;
-        this.Id_Recibido = Id_Recibido;
+        this.Id_Ccorriente = Id_Ccorriente;
+        this.Id_Mensual = Id_Mensual;
+        this.Fecha = Fecha;
         this.Id_Concepto = Id_Concepto;
-        this.Descripcion = Descripcion;
+        this.Cuentan = Cuentan;
         this.Importe = Importe;
         this.Flagactivo = Flagactivo;
     }
 
+    /**
+     * @return the Accion
+     */
     public int getAccion() {
         return Accion;
     }
 
+    /**
+     * @param Accion the Accion to set
+     */
     public void setAccion(int Accion) {
         this.Accion = Accion;
     }
-    
+
     /**
-     * @return the Id_Drecibido
+     * @return the Id_Ccorriente
      */
-    public int getId_Drecibido() {
-        return Id_Drecibido;
+    public int getId_Ccorriente() {
+        return Id_Ccorriente;
     }
 
     /**
-     * @param Id_Drecibido the Id_Drecibido to set
+     * @param Id_Ccorriente the Id_Ccorriente to set
      */
-    public void setId_Drecibido(int Id_Drecibido) {
-        this.Id_Drecibido = Id_Drecibido;
+    public void setId_Ccorriente(int Id_Ccorriente) {
+        this.Id_Ccorriente = Id_Ccorriente;
     }
 
     /**
-     * @return the Id_Recibido
+     * @return the Id_Mensual
      */
-    public int getId_Recibido() {
-        return Id_Recibido;
+    public int getId_Mensual() {
+        return Id_Mensual;
     }
 
     /**
-     * @param Id_Recibido the Id_Recibido to set
+     * @param Id_Mensual the Id_Mensual to set
      */
-    public void setId_Recibido(int Id_Recibido) {
-        this.Id_Recibido = Id_Recibido;
+    public void setId_Mensual(int Id_Mensual) {
+        this.Id_Mensual = Id_Mensual;
+    }
+
+    /**
+     * @return the Fecha
+     */
+    public Date getFecha() {
+        return Fecha;
+    }
+
+    /**
+     * @param Fecha the Fecha to set
+     */
+    public void setFecha(Date Fecha) {
+        this.Fecha = Fecha;
     }
 
     /**
@@ -82,17 +105,17 @@ public class DRecibidoBE {
     }
 
     /**
-     * @return the Descripcion
+     * @return the Cuentan
      */
-    public String getDescripcion() {
-        return Descripcion;
+    public double getCuentan() {
+        return Cuentan;
     }
 
     /**
-     * @param Descripcion the Descripcion to set
+     * @param Cuentan the Cuentan to set
      */
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
+    public void setCuentan(double Cuentan) {
+        this.Cuentan = Cuentan;
     }
 
     /**
@@ -128,6 +151,13 @@ public class DRecibidoBE {
      */
     public int getReturnVal() {
         return ReturnVal;
+    }
+
+    /**
+     * @param ReturnVal the ReturnVal to set
+     */
+    public void setReturnVal(int ReturnVal) {
+        this.ReturnVal = ReturnVal;
     }
     
 }

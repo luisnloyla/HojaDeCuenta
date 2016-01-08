@@ -21,13 +21,13 @@ public class frmParametro {
         final JTable jt = new JTable(ParametroTB);
         jt.setRowHeight(32);
 //        ParametroTB.insertRow(ParametroTC);
-//
+//setmodel
 //        jt.getColumn(jt.getColumnName(0)).setWidth(0);
 //        jt.getColumn(jt.getColumnName(0)).setMinWidth(0);
 //        jt.getColumn(jt.getColumnName(0)).setMaxWidth(0);
-        jt.getColumn(jt.getColumnName(4)).setWidth(145);
-        jt.getColumn(jt.getColumnName(4)).setMinWidth(145);
-        jt.getColumn(jt.getColumnName(4)).setMaxWidth(145);
+        jt.getColumn(jt.getColumnName(4)).setWidth(200);
+        jt.getColumn(jt.getColumnName(4)).setMinWidth(200);
+        jt.getColumn(jt.getColumnName(4)).setMaxWidth(200);
 //
 //        jt.getColumn(jt.getColumnName(3)).setWidth(0);
 //        jt.getColumn(jt.getColumnName(3)).setMinWidth(0);
@@ -40,7 +40,7 @@ public class frmParametro {
 //        int postColumn = jt.getColumnModel().getColumnCount()-2;
 //        TableColumn tableColumn=jt.getColumnModel().getColumn(postColumn);
 //        tableColumn.setCellEditor(new ParametroJPP());
-
+        
         int postColumn3 = jt.getColumnModel().getColumnCount()-1;
         jt.setDefaultRenderer(JPanel.class, new ParametroCellRenderer());
         TableColumn tableColumn3=jt.getColumnModel().getColumn(postColumn3);
@@ -57,7 +57,6 @@ public class frmParametro {
 //        jPanel.setLayout(new GridLayout(10,10));
         jPanel.setVisible(true);
         ActionListener actionListener = new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 ParametroTC ParametroTC = null;

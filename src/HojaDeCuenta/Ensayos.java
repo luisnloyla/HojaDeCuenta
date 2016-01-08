@@ -7,7 +7,7 @@ package HojaDeCuenta;
 
 import HojaDeCuentaBE.MensualBE;
 import HojaDeCuentaBL.cMensualBLL;
-import HojaDeCuentaC.Validar;
+import HojaDeCuentaVar.V;
 import ejecutar.Coneccion;
 import java.sql.SQLException;
 import java.util.Date;
@@ -27,14 +27,14 @@ public class Ensayos extends javax.swing.JFrame {
     public Ensayos()  {
         initComponents();
         jdcFecha.setDate(new Date());
-        MensualBE mensualBE = new MensualBE(5, (int) jspAnio.getValue(), new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+        MensualBE mensualBE = new MensualBE(5, (int) jspAnio.getValue(), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
         
     }
     public void VuelveACargarLista() throws SQLException
     {//se cambi de planes solo que cargue un solo registro
         this.lista = null;
 //        MensualBE mensualBE = new MensualBE(5, Integer.parseInt( jsnAnio.getValue()), new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
-        MensualBE mensualBE = new MensualBE(5, (int) jspAnio.getValue(), new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+        MensualBE mensualBE = new MensualBE(5, (int) jspAnio.getValue(), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
 
         cMensualBLL mensualBLL = new cMensualBLL();
         this.lista = mensualBLL.Leer(new Coneccion(), mensualBE);

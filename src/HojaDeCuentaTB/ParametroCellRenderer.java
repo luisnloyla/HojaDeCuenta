@@ -4,10 +4,9 @@
  * and open the template in the editor.
  */
 package HojaDeCuentaTB;
-
-
 import HojaDeCuentaTC.ParametroTC;
 import java.awt.Component;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
@@ -28,7 +27,7 @@ public class ParametroCellRenderer implements TableCellRenderer{
     }
     
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object o, boolean bln, boolean bln1, int row, int i1) {
+    public Component getTableCellRendererComponent(JTable table, Object o, boolean bln, boolean bln1, int row, int column) {
         ParametroTB02= (ParametroTB)table.getModel();
         ParametroTC02= ParametroTB02.getRow(row);
         fila= row;
@@ -43,7 +42,8 @@ public class ParametroCellRenderer implements TableCellRenderer{
 //            insertar = 0;
 //        }
 ////        **************************************************
-        return jcbParametro;
+//        return jcbParametro;
+        return (JComponent) table.getValueAt(row, column);
     }
     
 }

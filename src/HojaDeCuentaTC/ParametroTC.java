@@ -37,14 +37,14 @@ public class ParametroTC {
     
     
     public static List<ParametroTC> getParametroTC() throws SQLException {
-        Coneccion coneccion= new Coneccion(); 
+        Coneccion coneccion= new Coneccion();
         ParametroBE ParametroBE = new ParametroBE(1, 0, "", "", 0);
         cParametroBLL ParametroBLL= new cParametroBLL();
 //            cParametroBL ParametroBL= new cParametroBL();
-        List<ParametroBE> objParametroBE=ParametroBLL.Leer(coneccion, ParametroBE);        
+        List<ParametroBE> objParametroBE=ParametroBLL.Leer(coneccion, ParametroBE);
         List<ParametroTC> objParametroTC = new ArrayList<>();
         for (ParametroBE obj : objParametroBE) {
-            ParametroTC utc = new ParametroTC(obj.getId_Parametro() , obj.getCodigo(), obj.getDescripcion(), obj.getId_Parametro_Origen(),null );
+            ParametroTC utc = new ParametroTC(obj.getId_Parametro() , obj.getCodigo(), obj.getDescripcion(), obj.getId_Parametro_Origen(),null);
             objParametroTC.add(utc);
         }
 //        ParametroTC utc = new ParametroTC(1, "MARLON", "123MJ", "1","Grabar");

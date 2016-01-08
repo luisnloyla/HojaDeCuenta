@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HojaDeCuenta.TB.C;
+package HojaDeCuenta.TB.Class;
 
 import HojaDeCuentaBE.*;
 import java.sql.Date;

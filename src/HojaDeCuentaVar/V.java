@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HojaDeCuentaC;
+package HojaDeCuentaVar;
 
 import HojaDeCuentaBE.MensualBE;
 import HojaDeCuentaBL.cMensualBLL;
@@ -19,14 +19,24 @@ import java.util.List;
  *
  * @author lois_
  */
-public final class Validar {
+public final class V {
     private boolean Antecesor;//*
     private MensualBE mensualBE;//*
+    static final public String actual = "0";
+    static final public String largoPlazo = "1";
+    static final public String cFlagActivo = "1";
+    static final public String cFlagInActivo = "0";
+    static final public String cCongregacion = "SAN JUAN PAMPA";
+    static final public String cNoGuardado = "0";
+    static final public String cGuardado = "1";
+    static final public String cACTUAL_LARGOPLAZO = "ALP";
+    static public int selleno = 0;
     
-    public Validar() {
-    }
+    public V() {
+        
+   }
     
-    public Validar( int Accion,Date date ) throws SQLException {
+    public V( int Accion,Date date ) throws SQLException {
         this.Antecesor = false;
         this.mensualBE = null;
         MensualBE mensualBE01 = null;
@@ -57,8 +67,17 @@ public final class Validar {
         date.setYear(jdc.getCalendar().get(Calendar.YEAR));
         return date;
     }
+    public int numeroMesjdc(JDateChooser jdc){
+        return numeroMes(fecha(jdc));
+    }
     public int numeroMes(Date fecha){
         return (fecha.getMonth()+1);
+    }
+    public int numeroAniojdc(JDateChooser jdc){
+        return numeroAnio(fecha(jdc));
+    }
+    public int numeroAnio(Date fecha){
+        return (fecha.getYear());
     }
     /**
      * @return the Antecesor

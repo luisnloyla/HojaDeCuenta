@@ -22,7 +22,7 @@ public class ParametroJPP extends AbstractCellEditor implements TableCellEditor 
     JPanel jcbParametro = new JPanel();
     Object valorActual;
     ParametroTC objParametroTC=null;
-    ParametroTB objParametroTB= null;    
+    ParametroTB objParametroTB= null;
     int fila = -1;
     int columna = -1;
     
@@ -41,7 +41,8 @@ public class ParametroJPP extends AbstractCellEditor implements TableCellEditor 
         button2.setActionCommand("Eliminar");
         button3.setActionCommand("Nuevo");
         jcbParametro.setSize(15,15);
-         ActionListener actionListener = new ActionListener() {
+        jcbParametro.setOpaque(true);
+        ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getActionCommand().equals("Insertar")) {
@@ -57,7 +58,6 @@ public class ParametroJPP extends AbstractCellEditor implements TableCellEditor 
                             }else JOptionPane.showMessageDialog(null, "Guardado Exitoso");
 //                            JOptionPane.showMessageDialog(null, " N ="+n);
                             objParametroTC.setId_Parametro(n);
-                            
                         } catch (SQLException ex) {
                             Logger.getLogger(ParametroJPP.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -74,7 +74,7 @@ public class ParametroJPP extends AbstractCellEditor implements TableCellEditor 
                             }else JOptionPane.showMessageDialog(null, "Exito al Actualizar");
                         } catch (SQLException ex) {
                             Logger.getLogger(ParametroJPP.class.getName()).log(Level.SEVERE, null, ex);
-                        }   
+                        }
                     }
                 }
                 else if (e.getActionCommand().equals("Eliminar")) {
@@ -107,7 +107,7 @@ public class ParametroJPP extends AbstractCellEditor implements TableCellEditor 
                             Indice = i;
                         }
                     }
-//                    int resp = JOptionPane.showConfirmDialog(null,"Nuevo Item; Estas seguro?.","",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+//                     int resp = JOptionPane.showConfirmDialog(null,"Nuevo Item; Estas seguro?.","",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
                     if (contador==0)
                     {
                         objParametroTC = new ParametroTC(0, "", "", 0, jcbParametro);
@@ -124,7 +124,8 @@ public class ParametroJPP extends AbstractCellEditor implements TableCellEditor 
 //        jcbParametro.addKeyListener(null);
     }
     public Object getCellEditorValue() {
-        return valorActual;
+//        return valorActual;
+        return jcbParametro.getComponents();
     }
     
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
@@ -133,6 +134,15 @@ public class ParametroJPP extends AbstractCellEditor implements TableCellEditor 
         fila= row;
         columna = column;
         objTable= table;
+//        if (value== null) {//objDatos.getjDateChooser()
+//           jcbParametro =new JPanel();
+//       }
+//       jcbParametro=objParametroTC.getjPanel();
+        if (isSelected) {
+            jcbParametro.setBackground(table.getSelectionBackground());
+        }else {
+            jcbParametro.setBackground(table.getBackground());
+        }
         return jcbParametro;
     }
 }

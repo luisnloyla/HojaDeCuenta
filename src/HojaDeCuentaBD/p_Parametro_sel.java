@@ -45,7 +45,41 @@ public class p_Parametro_sel {
 
                 rs=st.executeQuery("SELECT*FROM Parametro");
                 while (rs.next()) {
+//                    System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                    aParametroBE.add(ParametroBE);
+                }
+              rs.close();
+              st.close(); 
+              this.ReturnVal=0;
+            }
+            if (this.Accion == 2){
+
+                rs=st.executeQuery("SELECT * FROM PARAMETRO WHERE Id_Parametro_Origen = (SELECT Id_Parametro FROM Parametro WHERE CODIGO = '"+this.Codigo+"' AND Id_Parametro_Origen = 0)");
+                while (rs.next()) {
                     System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                    aParametroBE.add(ParametroBE);
+                }
+              rs.close();
+              st.close(); 
+              this.ReturnVal=0;
+            }
+            if (this.Accion == 3){//BUSQUEDA DE DESCRIPCIONES IGUALES
+                rs=st.executeQuery("SELECT * FROM PARAMETRO WHERE Id_Parametro_Origen = (SELECT Id_Parametro FROM Parametro WHERE CODIGO = '"+this.Codigo+"' AND Id_Parametro_Origen = 0) AND Descripcion = '"+this.Descripcion+"'");
+                while (rs.next()) {
+                    System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                    aParametroBE.add(ParametroBE);
+                }
+              rs.close();
+              st.close(); 
+              this.ReturnVal=0;
+            }
+            if (this.Accion == 4){
+                rs=st.executeQuery("SELECT*FROM Parametro WHERE codigo = '"+this.Codigo+"'");
+                while (rs.next()) {
+//                    System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
                     ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
                     aParametroBE.add(ParametroBE);
                 }

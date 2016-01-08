@@ -14,6 +14,7 @@ interface MensualDA {
         public int Insertar(Connection strCn,MensualBE objMensualBE );
         public int Eliminar(Coneccion strCn,MensualBE objMensualBE );
         public int Actualizar(Coneccion strCn,MensualBE objMensualBE );        
+        public int Actualizar(Connection strCn,MensualBE objMensualBE );        
 }
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 public class cMensualDA implements MensualDA{
@@ -55,5 +56,18 @@ public class cMensualDA implements MensualDA{
             return -1;
         }
     }    
+
+    @Override
+    public int Actualizar(Connection strCn, MensualBE objMensualBE) {
+        p_Mensual_upd Mensual_upd;
+        try {
+            Mensual_upd = new p_Mensual_upd(strCn,objMensualBE);
+            return Mensual_upd.getReturVal();
+        } catch (SQLException ex) {
+            Logger.getLogger(cMensualDA.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        }
+        
+    }
    
 }

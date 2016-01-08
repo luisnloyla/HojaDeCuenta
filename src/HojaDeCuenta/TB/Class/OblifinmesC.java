@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package HojaDeCuenta.TB.C;
+package HojaDeCuenta.TB.Class;
 
-import com.toedter.calendar.JDateChooser;
+import HojaDeCuentaBE.OblifinmesBE;
+import HojaDeCuentaBL.cOblifinmesBLL;
+import HojaDeCuentaVar.V;
+import ejecutar.Coneccion;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 /**
  *
  * @author Loyola
@@ -107,20 +103,48 @@ public class OblifinmesC {
     public String getFlagActivo() {
         return FlagActivo;
     }
-
+    
     /**
      * @param FlagActivo the FlagActivo to set
      */
     public void setFlagActivo(String FlagActivo) {
         this.FlagActivo = FlagActivo;
     }
-    public static List<OblifinmesC> getOblifinmesC() throws SQLException {
+    public static List<OblifinmesC> getOblifinmesC(int id_mensual) throws SQLException {
         List<OblifinmesC> objOblifinmesC = new ArrayList<>();
-        OblifinmesC utc = new OblifinmesC(1, 1, "Construccion de rampa", 190, "A", "1");
-        OblifinmesC utc2 = new OblifinmesC(2, 1, "REMODELACION DE CUADRO", 300, "P", "1");
-        objOblifinmesC.add(utc);
-        objOblifinmesC.add(utc2);
-//        objParametroTC.add(utc3);
+        
+        OblifinmesBE oblifinmesBE = new OblifinmesBE(1, 0, id_mensual, "", 0, new V().actual, new V().cFlagActivo);
+        cOblifinmesBLL oblifinmesBLL = new cOblifinmesBLL();
+        List<OblifinmesBE> list = oblifinmesBLL.Leer(new Coneccion(), oblifinmesBE);        
+        for (OblifinmesBE objList : list) {
+            String objField = new String();
+//            objField.setText(objList.getObligacion());
+            OblifinmesC utc = new OblifinmesC(objList.getId_Oblifinmes(),objList.getId_Mensual(), objList.getObligacion(),objList.getImporte(), objList.getActual_Plazo(), objList.getFlagActivo());
+            objOblifinmesC.add(utc);
+        }
+        if (list.size()==0) {
+            OblifinmesC utc = new OblifinmesC(0, id_mensual, "", 0,  new V().actual, new V().cFlagInActivo);
+            objOblifinmesC.add(utc);
+        }
+        return objOblifinmesC;
+    }
+    public static List<OblifinmesC> getOblifinmesC01(int id_mensual) throws SQLException {
+        List<OblifinmesC> objOblifinmesC = new ArrayList<>();
+        
+        OblifinmesBE oblifinmesBE = new OblifinmesBE(1, 0, id_mensual, "", 0, new V().largoPlazo, new V().cFlagActivo);
+        cOblifinmesBLL oblifinmesBLL = new cOblifinmesBLL();
+        List<OblifinmesBE> list = oblifinmesBLL.Leer(new Coneccion(), oblifinmesBE);
+        
+        for (OblifinmesBE objList : list) {
+            String objField = new String();
+//            objField.setText(objList.getObligacion());
+            OblifinmesC utc = new OblifinmesC(objList.getId_Oblifinmes(),objList.getId_Mensual(), objList.getObligacion(),objList.getImporte(), objList.getActual_Plazo(), objList.getFlagActivo());
+            objOblifinmesC.add(utc);
+        }
+        if (list.size()==0) {
+            OblifinmesC utc = new OblifinmesC(0, id_mensual,"", 0,  new V().largoPlazo, new V().cFlagInActivo);
+            objOblifinmesC.add(utc);
+        }
         return objOblifinmesC;
     }
 }

@@ -33,7 +33,7 @@ public class MostrarResultadosConsulta extends JFrame
  //*****************************************************************************
  // URL de la base de datos, nombre de usuario y contraseña para JDBC
  static final String CONTROLADOR = "org.apache.derby.jdbc.ClientDriver";
- /*static final*/ String URL_BASEDATOS = "jdbc:derby:"+ruta+so+"bd123";
+ /*static final*/ String URL_BASEDATOS = "jdbc:derby:"+ruta+so+"BD_HojaDeCuenta";
  static final String NOMBREUSUARIO = "admin";
  static final String CONTRASENIA = "4dm1n";
 

@@ -6,7 +6,7 @@ import HojaDeCuentaBE.UsuarioBE;
 import HojaDeCuentaBL.cParametroBL;
 import HojaDeCuentaBL.cParametroBLL;
 import HojaDeCuentaBL.cUsuarioBL;
-import HojaDeCuentaC.Validar;
+import HojaDeCuentaVar.V;
 import ejecutar.Coneccion;
 
 import java.sql.SQLException;

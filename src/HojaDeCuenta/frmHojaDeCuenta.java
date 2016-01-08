@@ -1,9 +1,20 @@
 package HojaDeCuenta;
-import HojaDeCuenta.TB.TM.OblifinmesTM;
+import HojaDeCuenta.TB.Class.OblifinmesC;
+import HojaDeCuenta.TB.Class.ParametroC;
+import HojaDeCuenta.TB.Editor.OblifinmesEditor;
+import HojaDeCuenta.TB.Renderer.OblifinmesRenderer;
+import HojaDeCuenta.TB.TableModel.OblifinmesTM;
+import HojaDeCuenta.TB.TableModel.ParametroTM;
 import HojaDeCuentaBE.MensualBE;
+import HojaDeCuentaBE.OblifinmesBE;
+import HojaDeCuentaBE.ParametroBE;
+import HojaDeCuentaBL.cOblifinmesBL;
 import HojaDeCuentaBL.cMensualBL;
 import HojaDeCuentaBL.cMensualBLL;
-import HojaDeCuentaC.Validar;
+import HojaDeCuentaBL.cParametroBL;
+import HojaDeCuentaBL.cParametroBLL;
+import HojaDeCuentaVar.V;
+import com.mxrck.autocompleter.tests.Person;
 import ejecutar.Coneccion;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -17,11 +28,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.TableColumn;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
-
-public final class frmMensual extends javax.swing.JFrame {
-    
+public final class frmHojaDeCuenta extends javax.swing.JFrame {
     public boolean bNuevo = false;
     String[] Mes = {"MES", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
     int IdMes = 1;//1
@@ -39,9 +51,15 @@ public final class frmMensual extends javax.swing.JFrame {
     int SelectindiceEntradaActual = 0;
     ////////////////TABLAS DE OBLIGACION A FIN DE MES //////////////////////////
     private OblifinmesTM mto;
+    private OblifinmesTM mtl;
+    private ParametroTM mtparametro;
     
-    public frmMensual() throws SQLException {
-        super("HOJA DE CUENTA");
+    int arranqueTabla = 0;
+    //****AUTOCOMPLETO *********************************************************
+    private List<Person> ArrayList;
+    
+    public frmHojaDeCuenta() throws SQLException {
+        super("HOJA DE CUENTA  CONGREGACION:"+new V().cCongregacion);
         initComponents();
         /////////////////////////////////////////////////////
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -51,18 +69,10 @@ public final class frmMensual extends javax.swing.JFrame {
         SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark.SubstanceBinaryWatermark");
 //        SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark. SubstanceBubblesWatermark");
         setResizable(false);
+        ////////////////////////////////////////////////////////////////////////
         
-        
-        
-        mto = new OblifinmesTM();
-        this.jtActuales.setModel(mto);
-        
-        /////////////////////////////////////////////////////
-        this.setLocationRelativeTo(this);
-        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/currency.png"));
-        setIconImage(icon);
-        setSize(470,620);
-        setVisible(true);
+        ////////////////////////////////////////////////////////////////////////
+        //----AQUI ERA
 
 //        cboBusqueda.SelectedIndex = 1;
 //
@@ -85,7 +95,6 @@ public final class frmMensual extends javax.swing.JFrame {
         jsnAnio.setValue(Integer.parseInt(annioActual));
 //        estableser();
         lblId_Mes.setText("0");
-        
         VuelveACargarLista();//por cuestiones de seguridad
         SetearCamposModoGrabado();
         if (numeroDeEntradas==0) {
@@ -98,8 +107,19 @@ public final class frmMensual extends javax.swing.JFrame {
             AsignarMes();
 //            anteriorPosterior(true);
         }
-        /////////////////////////OBLIGACION A FIN DE MES////////////////////////
-        
+        /////////////////////////OBLIGACION A FIN DE MES////////////////////////        
+        mto = new OblifinmesTM(0,Integer.parseInt(lblId_Mes.getText()));
+        tablaOblifinmesT();
+        mtl = new OblifinmesTM(1,Integer.parseInt(lblId_Mes.getText()));
+        tablaOblifinmesTL();
+        mtparametro = new ParametroTM();
+        tablaParametro();
+        //----AHORA AQUI ESTOY
+        this.setLocationRelativeTo(this);
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/currency.png"));
+        setIconImage(icon);
+        setSize(470,620);
+        setVisible(true);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -123,6 +143,14 @@ public final class frmMensual extends javax.swing.JFrame {
         jmpNuevo = new javax.swing.JMenuItem();
         jmpGuardar = new javax.swing.JMenuItem();
         jmpEliminar = new javax.swing.JMenuItem();
+        jpmCrud02 = new javax.swing.JPopupMenu();
+        jmpNuevo02 = new javax.swing.JMenuItem();
+        jmpGuardar02 = new javax.swing.JMenuItem();
+        jmpEliminar02 = new javax.swing.JMenuItem();
+        jpmCrudParametro = new javax.swing.JPopupMenu();
+        jmpNuevoParametro = new javax.swing.JMenuItem();
+        jmpGuardarParametro = new javax.swing.JMenuItem();
+        jmpEliminarParametro = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         btnAnterior = new javax.swing.JButton();
         btnPosterior = new javax.swing.JButton();
@@ -133,10 +161,21 @@ public final class frmMensual extends javax.swing.JFrame {
         btnImprimir = new javax.swing.JButton();
         EGRESO = new javax.swing.JTabbedPane();
         jpEgreso = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        txtTotalActuales1 = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel21 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        txtTotalActuales2 = new javax.swing.JTextField();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jpIngreso = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         btnNumeroEntradas = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -174,6 +213,7 @@ public final class frmMensual extends javax.swing.JFrame {
         txtTotFondMes = new javax.swing.JTextField();
         jdcFecha = new com.toedter.calendar.JDateChooser();
         lblId_Mes = new javax.swing.JLabel();
+        lblGuardado = new javax.swing.JLabel();
         jpCrud = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
         btnGrabar = new javax.swing.JButton();
@@ -193,6 +233,17 @@ public final class frmMensual extends javax.swing.JFrame {
         txtTotalLargoPlazo = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         jtLargoPlazo = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel13 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jtParametro = new javax.swing.JTable();
+        jPanel14 = new javax.swing.JPanel();
+        jPanel15 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jPanel19 = new javax.swing.JPanel();
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Recibido:"));
 
@@ -279,13 +330,76 @@ public final class frmMensual extends javax.swing.JFrame {
         jpmCrud.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jmpNuevo.setText("NUEVO");
+        jmpNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpNuevoActionPerformed(evt);
+            }
+        });
         jpmCrud.add(jmpNuevo);
 
         jmpGuardar.setText("GUARDAR");
+        jmpGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpGuardarActionPerformed(evt);
+            }
+        });
         jpmCrud.add(jmpGuardar);
 
         jmpEliminar.setText("ELIMINAR");
+        jmpEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpEliminarActionPerformed(evt);
+            }
+        });
         jpmCrud.add(jmpEliminar);
+
+        jmpNuevo02.setText("NUEVO");
+        jmpNuevo02.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpNuevo02ActionPerformed(evt);
+            }
+        });
+        jpmCrud02.add(jmpNuevo02);
+
+        jmpGuardar02.setText("GUARDAR");
+        jmpGuardar02.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpGuardar02ActionPerformed(evt);
+            }
+        });
+        jpmCrud02.add(jmpGuardar02);
+
+        jmpEliminar02.setText("ELIMINAR");
+        jmpEliminar02.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpEliminar02ActionPerformed(evt);
+            }
+        });
+        jpmCrud02.add(jmpEliminar02);
+
+        jmpNuevoParametro.setText("NUEVO");
+        jmpNuevoParametro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpNuevoParametroActionPerformed(evt);
+            }
+        });
+        jpmCrudParametro.add(jmpNuevoParametro);
+
+        jmpGuardarParametro.setText("GUARDAR");
+        jmpGuardarParametro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpGuardarParametroActionPerformed(evt);
+            }
+        });
+        jpmCrudParametro.add(jmpGuardarParametro);
+
+        jmpEliminarParametro.setText("ELIMINAR");
+        jmpEliminarParametro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmpEliminarParametroActionPerformed(evt);
+            }
+        });
+        jpmCrudParametro.add(jmpEliminarParametro);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -389,18 +503,144 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         });
 
+        jPanel20.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        jLabel21.setText("Total:");
+
+        txtTotalActuales1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtTotalActuales1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalActuales1ActionPerformed(evt);
+            }
+        });
+        txtTotalActuales1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTotalActuales1KeyTyped(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
+        jPanel20.setLayout(jPanel20Layout);
+        jPanel20Layout.setHorizontalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel20Layout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTotalActuales1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel20Layout.setVerticalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(txtTotalActuales1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        jLabel22.setText("Total:");
+
+        txtTotalActuales2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtTotalActuales2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalActuales2ActionPerformed(evt);
+            }
+        });
+        txtTotalActuales2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTotalActuales2KeyTyped(evt);
+            }
+        });
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane9.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addComponent(jLabel22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTotalActuales2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel22)
+                    .addComponent(txtTotalActuales2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jpEgresoLayout = new javax.swing.GroupLayout(jpEgreso);
         jpEgreso.setLayout(jpEgresoLayout);
         jpEgresoLayout.setHorizontalGroup(
             jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 471, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpEgresoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(62, 62, 62))
         );
         jpEgresoLayout.setVerticalGroup(
             jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGroup(jpEgresoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
-        EGRESO.addTab("INGRESO", jpEgreso);
+        EGRESO.addTab("Recibido", jpEgreso);
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -423,6 +663,13 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("AUTOCOMPLETO");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpIngresoLayout = new javax.swing.GroupLayout(jpIngreso);
         jpIngreso.setLayout(jpIngresoLayout);
         jpIngresoLayout.setHorizontalGroup(
@@ -430,6 +677,7 @@ public final class frmMensual extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpIngresoLayout.createSequentialGroup()
                 .addContainerGap(122, Short.MAX_VALUE)
                 .addGroup(jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(btnNumeroEntradas))
@@ -444,10 +692,12 @@ public final class frmMensual extends javax.swing.JFrame {
                 .addComponent(btnNumeroEntradas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(307, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(258, Short.MAX_VALUE))
         );
 
-        EGRESO.addTab("EGRESO", jpIngreso);
+        EGRESO.addTab("CuentaCorriente", jpIngreso);
 
         jPanel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel12.setLayout(null);
@@ -844,7 +1094,9 @@ public final class frmMensual extends javax.swing.JFrame {
                         .addGap(65, 65, 65)
                         .addComponent(jdcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblId_Mes, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblId_Mes, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblGuardado))
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -859,7 +1111,9 @@ public final class frmMensual extends javax.swing.JFrame {
                             .addComponent(jdcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblId_Mes)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblGuardado)
+                            .addComponent(lblId_Mes))))
                 .addGap(13, 13, 13)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -959,7 +1213,7 @@ public final class frmMensual extends javax.swing.JFrame {
         jPanel12.add(jpCrud);
         jpCrud.setBounds(0, 410, 450, 60);
 
-        EGRESO.addTab("Conciliacion Hoja De Cuenta", jPanel12);
+        EGRESO.addTab("Conciliacion HojaCuenta", jPanel12);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
@@ -987,7 +1241,16 @@ public final class frmMensual extends javax.swing.JFrame {
             }
         ));
         jtActuales.setComponentPopupMenu(jpmCrud);
+        jtActuales.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtActualesMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jtActuales);
+        if (jtActuales.getColumnModel().getColumnCount() > 0) {
+            jtActuales.getColumnModel().getColumn(4).setHeaderValue("Title5");
+            jtActuales.getColumnModel().getColumn(5).setHeaderValue("Title6");
+        }
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -1037,10 +1300,15 @@ public final class frmMensual extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title3"
+                "Title 1", "Title 2", "Title3", "Title4", "Title5", "Title6"
             }
         ));
-        jtLargoPlazo.setComponentPopupMenu(jpmCrud);
+        jtLargoPlazo.setComponentPopupMenu(jpmCrud02);
+        jtLargoPlazo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtLargoPlazoMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jtLargoPlazo);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
@@ -1092,7 +1360,133 @@ public final class frmMensual extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(jPanel11);
 
-        EGRESO.addTab("Obligacion A Fin De Mes:", jScrollPane2);
+        EGRESO.addTab("Obligacion-FinMes", jScrollPane2);
+
+        jtParametro.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jtParametro.setComponentPopupMenu(jpmCrudParametro);
+        jtParametro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtParametroMouseClicked(evt);
+            }
+        });
+        jScrollPane8.setViewportView(jtParametro);
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Parametro", jPanel13);
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 459, Short.MAX_VALUE)
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Configuracion", jPanel14);
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 459, Short.MAX_VALUE)
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Usuario", jPanel15);
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 459, Short.MAX_VALUE)
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Impresion", jPanel16);
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 459, Short.MAX_VALUE)
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("SQL", jPanel17);
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 459, Short.MAX_VALUE)
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Back", jPanel18);
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 459, Short.MAX_VALUE)
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Ayuda", jPanel19);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
+        );
+
+        EGRESO.addTab("C", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1115,7 +1509,7 @@ public final class frmMensual extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSaldoAnteriorR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSaldoAnteriorR1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtSaldoAnteriorR1ActionPerformed
 
     private void txtEntradaR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEntradaR1ActionPerformed
@@ -1203,7 +1597,7 @@ public final class frmMensual extends javax.swing.JFrame {
             cMensualBL mensualBL = new cMensualBL();
             int ires = 0;
             
-            mensualBE = new MensualBE(5, Integer.parseInt(lblId_Mes.getText()), new Validar().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
+            mensualBE = new MensualBE(5, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
                 , 0//Float.parseFloat(txtTotalLargoPlazo.getText())
                 , 0, getEstableser(), "1");
             ires = mensualBL.Actualizar(c, mensualBE);
@@ -1215,7 +1609,7 @@ public final class frmMensual extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(this, getEstableser());
             estableser();
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEstablecerActionPerformed
 
@@ -1253,7 +1647,7 @@ public final class frmMensual extends javax.swing.JFrame {
                 obtenerFila(0);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
         bNuevo = false;
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -1275,6 +1669,8 @@ public final class frmMensual extends javax.swing.JFrame {
         }
         IdMes = obtenerFilaNext();
         AsignarMes();        
+        //*****************************************************************
+        cargarTablasOblifinmes();
     }//GEN-LAST:event_btnPosteriorActionPerformed
 
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
@@ -1287,13 +1683,15 @@ public final class frmMensual extends javax.swing.JFrame {
         if (numeroDeEntradas == 0) {            
             lblMes.setText(Mes[0]);        
             return;
-        }        
+        }
         indiceEntradaActual--;
         if (indiceEntradaActual < 0) {
-            indiceEntradaActual = numeroDeEntradas - 1;            
+            indiceEntradaActual = numeroDeEntradas - 1;
         }
         IdMes = obtenerFilaNext();
-        AsignarMes();        
+        AsignarMes();
+        //*****************************************************************
+        cargarTablasOblifinmes();
     }//GEN-LAST:event_btnAnteriorActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -1302,7 +1700,7 @@ public final class frmMensual extends javax.swing.JFrame {
             bNuevo = true;
             LimpiarCampos();
             jdcFecha.setFocusable(bNuevo);// es para focalizar
-            Validar v = new Validar(insertar, new Date());
+            V v = new V(insertar, new Date());
             
             if (v.getAntecesor()) {
                 habilitarCajastexto = 0;//la existencia hace que se genere automaticamente
@@ -1311,15 +1709,17 @@ public final class frmMensual extends javax.swing.JFrame {
                     SetearCamposModoEdicion();
                     jdcFecha.setDate(v.sumarRestarDiasFecha(v.getMensualBE().getFecha(), 1));
 //                    JOptionPane.showMessageDialog(rootPane, ",,,,,"+jdcFecha.getDate());
+                    obtenerFila02();
                 }else{
-                JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar del mes "+Mes[(v.getMensualBE().getFecha().getMonth()+1)]+" del año "+(v.getMensualBE().getFecha().getYear()+1900));
+                    JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar del mes "+Mes[(v.getMensualBE().getFecha().getMonth()+1)]+" del año "+(v.getMensualBE().getFecha().getYear()+1900));
+                    cargarCampos(lista.get(SelectindiceEntradaActual));
                 }
 //                VuelveACargarLista();
-                obtenerFila02();
+                
             }else
             SetearCamposModoEdicion();
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -1334,19 +1734,18 @@ public final class frmMensual extends javax.swing.JFrame {
 //                date = jdcFecha.getDate();
 //                date.setYear(jdcFecha.getCalendar().get(Calendar.YEAR));
 
-                Validar v = new Validar(actualizar, new Validar().fecha(jdcFecha));
+                V v = new V(actualizar, new V().fecha(jdcFecha));
 //                JOptionPane.showMessageDialog(rootPane, "VALIDO "+new Validar().fecha(jdcFecha));
 //                JOptionPane.showMessageDialog(rootPane, "Primero Finiquitar De la fecha "+v.getMensualBE().getFecha());
-                if (mensualBE.getGuardado()==0) {
+                if (mensualBE.getGuardado()== 0) {
                    if (v.getAntecesor()) {
                         habilitarCajastexto = 0;//la existencia hace que se genere automaticamente
                     }
                     SetearCamposModoEdicion(); 
                 }
-                
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -1387,14 +1786,14 @@ public final class frmMensual extends javax.swing.JFrame {
 //                date = jdcFecha.getDate();
 //                date.setYear(jdcFecha.getCalendar().get(Calendar.YEAR));
                 //************************************************************************
-                MensualBE objMensualBE = new MensualBE(3, 0, new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+                MensualBE objMensualBE = new MensualBE(3, 0, new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
                 cMensualBLL objCMensualBLL = new cMensualBLL();
                 List<MensualBE> objList = objCMensualBLL.Leer(new Coneccion(), objMensualBE);
                 for (MensualBE objList1 : objList) {
                     JOptionPane.showMessageDialog(this, "Ya existe una Hoja De Cuenta con esa fecha");
                     return;
                 }
-                mensualBE = new MensualBE(1, 0, new Validar().fecha(jdcFecha)//date
+                mensualBE = new MensualBE(1, 0, new V().fecha(jdcFecha)//date
                         , Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
                         , 0//Float.parseFloat(txtTotalLargoPlazo.getText())
                         , 0, this.estableser = 0, "1");
@@ -1405,11 +1804,16 @@ public final class frmMensual extends javax.swing.JFrame {
                     cargarCampos(lista.get(SelectindiceEntradaActual));
                 } else {
                     JOptionPane.showMessageDialog(this, "transaccion Exitosa");
-                    VuelveACargarLista();
-                    obtenerFilaId(ires);
+                    if (new V().numeroMesjdc(jdcFecha) == 1){//si es enero entonses se realiza lo siguiente
+                        jsnAnio.setValue(new V().numeroAniojdc(jdcFecha));
+                    }else{
+                        VuelveACargarLista();
+                        obtenerFilaId(ires);
+                    }
+                    cargarTablasOblifinmes();
                 }
             } else {
-                mensualBE = new MensualBE(3, Integer.parseInt(lblId_Mes.getText()), new Validar().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
+                mensualBE = new MensualBE(3, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
                         , 0//Float.parseFloat(txtTotalLargoPlazo.getText())
                         , 0, estableser = 0, "1");
                 ires = mensualBL.Actualizar(c, mensualBE);
@@ -1425,7 +1829,7 @@ public final class frmMensual extends javax.swing.JFrame {
             bNuevo = false;
 
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGrabarActionPerformed
 
@@ -1436,7 +1840,7 @@ public final class frmMensual extends javax.swing.JFrame {
             cMensualBL mensualBL = new cMensualBL();
             int ires = 0;
             
-            mensualBE = new MensualBE(4, Integer.parseInt(lblId_Mes.getText()), new Validar().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
+            mensualBE = new MensualBE(4, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
                 , 0//Float.parseFloat(txtTotalLargoPlazo.getText())
                 , 0, estableser = 0, "1");
             ires = mensualBL.Actualizar(c, mensualBE);
@@ -1446,23 +1850,24 @@ public final class frmMensual extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Exito al Finiquitar");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnFiniquitarActionPerformed
 
     private void jsnAnioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jsnAnioKeyPressed
-        JOptionPane.showMessageDialog(this, "Aqui el click");
+//        JOptionPane.showMessageDialog(this, "Aqui el click");
     }//GEN-LAST:event_jsnAnioKeyPressed
 
     private void jsnAnioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jsnAnioMouseClicked
-        JOptionPane.showMessageDialog(this, "Aqui el click ojala");
+//        JOptionPane.showMessageDialog(this, "Aqui el click ojala");
     }//GEN-LAST:event_jsnAnioMouseClicked
 
     private void jsnAnioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jsnAnioStateChanged
         try {
             VuelveACargarListaAnio();
+            cargarTablasOblifinmes();
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jsnAnioStateChanged
 
@@ -1611,10 +2016,281 @@ public final class frmMensual extends javax.swing.JFrame {
         try {
             frmParametro p = new frmParametro();            
         } catch (SQLException ex) {
-            Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jmpNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpNuevoActionPerformed
+        if (restriccionTabla()){ return;}
+        if (jtActuales.getSelectedRow()!=-1){
+            OblifinmesC oblifinmesC = null;
+            oblifinmesC = new OblifinmesC(0, 0, "", 0, new V().actual, "0");
+            mto.insertRow(oblifinmesC);
+            jtActuales.getSelectionModel().setSelectionInterval(jtActuales.getRowCount()-1,jtActuales.getRowCount()-1);
+        }
+    }//GEN-LAST:event_jmpNuevoActionPerformed
+
+    private void jmpGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpGuardarActionPerformed
+        if (restriccionTabla()){ return;}
+        int filaSelect = jtActuales.getSelectedRow();
+        int id_oblifinmes = Integer.parseInt(jtActuales.getValueAt(filaSelect, 0).toString());
+        String descripcion = jtActuales.getValueAt(filaSelect, 2).toString();
+        float monto = Float.parseFloat(jtActuales.getValueAt(filaSelect, 3).toString());
+        if (monto==0) {
+            JOptionPane.showMessageDialog(null, "monto no puede ser cero intente otra vez", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        String flag = jtActuales.getValueAt(filaSelect, 5).toString();
+        OblifinmesBE objOblifinmesBE = null;
+        cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
+        MensualBE objMensualBE = new MensualBE(6, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, sumarMontoActual(), 0, 0, 0, "1");
+        int ires = 0;
+        try {
+            if (flag.equals(new V().cFlagInActivo)) {//accion = 1
+                objOblifinmesBE = new OblifinmesBE(4 ,0 , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().actual, new V().cFlagActivo);
+                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    mto.setValueAt(ires, jtActuales.getSelectedRow(),0);
+                    mto.setValueAt(new V().cFlagActivo, jtActuales.getSelectedRow(),5);
+                    llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }else{//accio = 1
+                objOblifinmesBE = new OblifinmesBE(3 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().actual, new V().cFlagActivo);
+                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jmpGuardarActionPerformed
+
+    private void jmpEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpEliminarActionPerformed
+        if (restriccionTabla()){ return;}
+        if (jtActuales.getSelectedRow()!=-1 ){
+            try {
+                int filaSelect = jtActuales.getSelectedRow();
+                int id_oblifinmes = Integer.parseInt(jtActuales.getValueAt(filaSelect, 0).toString());
+                OblifinmesBE objOblifinmesBE = null;
+                cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
+                int ires = 0;
+                objOblifinmesBE = new OblifinmesBE(1 ,id_oblifinmes , 0, "", 0,new V().actual, new V().cFlagActivo);
+                ires = oblifinmesBL.Eliminar(new Coneccion(), objOblifinmesBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se Elimino", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    mto.deleteRow(jtActuales.getSelectedRow());
+                    JOptionPane.showMessageDialog(null, "Exito al eliminar", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }                
+            } catch (SQLException ex) {
+                Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (jtActuales.getRowCount()==0 ){
+            OblifinmesC oblifinmesC = null;
+            oblifinmesC = new OblifinmesC(0, 0, "", 0, new V().actual, "0");
+            mto.insertRow(oblifinmesC);
+            jtActuales.getSelectionModel().setSelectionInterval(0,0);
+        }
+    }//GEN-LAST:event_jmpEliminarActionPerformed
+    
+    private void jtActualesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtActualesMouseClicked
+        
+    }//GEN-LAST:event_jtActualesMouseClicked
+
+    private void jtLargoPlazoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtLargoPlazoMouseClicked
+        
+    }//GEN-LAST:event_jtLargoPlazoMouseClicked
+
+    private void jmpNuevo02ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpNuevo02ActionPerformed
+        if (restriccionTabla()){ return;}
+        if (jtLargoPlazo.getSelectedRow()!=-1){
+            OblifinmesC oblifinmesC = null;
+            oblifinmesC = new OblifinmesC(0, 0, "", 0,  new V().largoPlazo, "0");
+            mtl.insertRow(oblifinmesC);
+            jtLargoPlazo.getSelectionModel().setSelectionInterval(jtLargoPlazo.getRowCount()-1,jtLargoPlazo.getRowCount()-1);
+        }
+    }//GEN-LAST:event_jmpNuevo02ActionPerformed
+
+    private void jmpGuardar02ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpGuardar02ActionPerformed
+        if (restriccionTabla()){ return;}
+        int filaSelect = jtLargoPlazo.getSelectedRow();
+        int id_oblifinmes = Integer.parseInt(jtLargoPlazo.getValueAt(filaSelect, 0).toString());
+        String descripcion = jtLargoPlazo.getValueAt(filaSelect, 2).toString();
+        float monto = Float.parseFloat(jtLargoPlazo.getValueAt(filaSelect, 3).toString());
+        if (monto==0) {
+            JOptionPane.showMessageDialog(null, "monto no puede ser cero intente otra vez", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        String flag = jtLargoPlazo.getValueAt(filaSelect, 5).toString();
+        OblifinmesBE objOblifinmesBE = null;
+        cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
+        MensualBE objMensualBE = new MensualBE(7, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, sumarlargoPlazo(), 0, 0, "1");
+        int ires = 0;
+        try {
+            if (flag.equals(new V().cFlagInActivo)) {//accion 1
+                objOblifinmesBE = new OblifinmesBE(4 ,0 , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().largoPlazo, new V().cFlagActivo);
+                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                    mto.setValueAt(ires, jtLargoPlazo.getSelectedRow(),0);
+                    mto.setValueAt(new V().cFlagActivo, jtLargoPlazo.getSelectedRow(),5);
+                }
+            }else{//accion 1
+                objOblifinmesBE = new OblifinmesBE(3 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().largoPlazo, new V().cFlagActivo);
+                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }                    
+        } catch (SQLException ex) {
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jmpGuardar02ActionPerformed
+
+    private void jmpEliminar02ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpEliminar02ActionPerformed
+        if (restriccionTabla()){ 
+            return;
+        }
+        if (jtLargoPlazo.getSelectedRow()!=-1 ){
+            try {
+                int filaSelect = jtLargoPlazo.getSelectedRow();
+                int id_oblifinmes = Integer.parseInt(jtLargoPlazo.getValueAt(filaSelect, 0).toString());
+                OblifinmesBE objOblifinmesBE = null;
+                cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
+                int ires = 0;
+                objOblifinmesBE = new OblifinmesBE(1 ,id_oblifinmes , 0, "", 0,new V().largoPlazo, new V().cFlagActivo);
+                ires = oblifinmesBL.Eliminar(new Coneccion(), objOblifinmesBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se Elimino", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    mtl.deleteRow(jtLargoPlazo.getSelectedRow());
+                    JOptionPane.showMessageDialog(null, "Exito al eliminar", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }                
+            } catch (SQLException ex) {
+                Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }
+        if (jtLargoPlazo.getRowCount()==0 ){
+            OblifinmesC oblifinmesC = null;
+            oblifinmesC = new OblifinmesC(0, 0, "", 0,new V().actual, "0");
+            mtl.insertRow(oblifinmesC);
+            jtLargoPlazo.getSelectionModel().setSelectionInterval(0,0);
+        }
+    }//GEN-LAST:event_jmpEliminar02ActionPerformed
+
+    private void jmpNuevoParametroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpNuevoParametroActionPerformed
+        if (jtParametro.getSelectedRow()!=-1){
+            ParametroC objParametroTC = null;
+            objParametroTC = new ParametroC(0, "", "", 0);
+            mtparametro.insertRow(objParametroTC);
+            jtParametro.getSelectionModel().setSelectionInterval(jtParametro.getRowCount()-1,jtParametro.getRowCount()-1);
+        }
+    }//GEN-LAST:event_jmpNuevoParametroActionPerformed
+
+    private void jmpGuardarParametroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpGuardarParametroActionPerformed
+        int filaSelect = jtParametro.getSelectedRow();
+        int Id_Par = Integer.parseInt(jtParametro.getValueAt(filaSelect, 0).toString());
+        String codigo = jtParametro.getValueAt(filaSelect, 1).toString();
+        String descripcion = jtParametro.getValueAt(filaSelect, 2).toString();
+        int Id_ParOriginal = Integer.parseInt(jtParametro.getValueAt(filaSelect, 3).toString());
+        ParametroBE objParametroBE = null;
+        cParametroBL objParametroBL = new cParametroBL();
+        int ires = 0;
+        try {
+            if (Id_Par == 0) {//accion = 1
+                objParametroBE = new ParametroBE(1, 0, codigo, descripcion, Id_ParOriginal);            
+                ires = objParametroBL.Insertar(new Coneccion(), objParametroBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje ",JOptionPane.INFORMATION_MESSAGE);
+                    mtparametro.setValueAt(ires, filaSelect,0);
+//                    actrualizarParametro(ires, filaSelect, 0);
+                }
+            }else{//accio = 1
+                objParametroBE = new ParametroBE(1, Id_Par, codigo, descripcion, Id_ParOriginal);
+                ires = objParametroBL.Actualizar(new Coneccion(), objParametroBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jmpGuardarParametroActionPerformed
+
+    private void jmpEliminarParametroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpEliminarParametroActionPerformed
+        if (jtParametro.getSelectedRow()!=-1 ){
+            try {
+                int filaSelect = jtParametro.getSelectedRow();
+                int id_Par = Integer.parseInt(jtParametro.getValueAt(filaSelect, 0).toString());
+                ParametroBE objParametroBE = null;                
+                cParametroBL objParametroBL = new cParametroBL();
+                int ires = 0;
+                objParametroBE = new ParametroBE(1, id_Par, "", "", 0);
+                ires = objParametroBL.Eliminar(new Coneccion(), objParametroBE);
+                if (ires<0) {
+                    JOptionPane.showMessageDialog(null, "No se Elimino", "Advertencia",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    mtparametro.deleteRow(jtParametro.getSelectedRow());
+                    JOptionPane.showMessageDialog(null, "Exito al eliminar", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }
+        if (jtParametro.getRowCount()==0 ){
+            ParametroC objParametroC = new ParametroC(0, "", "", 0);
+            mtparametro.insertRow(objParametroC);
+            jtParametro.getSelectionModel().setSelectionInterval(0,0);
+        }
+    }//GEN-LAST:event_jmpEliminarParametroActionPerformed
+
+    private void jtParametroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtParametroMouseClicked
+        
+    }//GEN-LAST:event_jtParametroMouseClicked
+
+    private void txtTotalActuales1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActuales1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActuales1ActionPerformed
+
+    private void txtTotalActuales1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTotalActuales1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActuales1KeyTyped
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        JOptionPane.showMessageDialog(rootPane, "Hola como estas");
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void txtTotalActuales2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActuales2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActuales2ActionPerformed
+
+    private void txtTotalActuales2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTotalActuales2KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActuales2KeyTyped
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
     public void keyTyped(java.awt.event.KeyEvent evt, String s) {
         char c = evt.getKeyChar();
         if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)
@@ -1774,26 +2450,24 @@ public final class frmMensual extends javax.swing.JFrame {
         }
     }
     public void anteriorPosterior(boolean b){
-            btnPosterior.setEnabled(b);
-            btnAnterior.setEnabled(b);
-            jsnAnio.setEnabled(b);
+        btnPosterior.setEnabled(b);
+        btnAnterior.setEnabled(b);
+        jsnAnio.setEnabled(b);
     }
     public void VuelveACargarLista() throws SQLException {
         this.numeroDeEntradas = 0;
         this.indiceEntradaActual= 0;
         this.lista = null;
-        MensualBE mensualBE = new MensualBE(5, (int) jsnAnio.getValue(), new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+        MensualBE mensualBE = new MensualBE(5, (int) jsnAnio.getValue(), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
         cMensualBLL mensualBLL = new cMensualBLL();
         this.lista = mensualBLL.Leer(new Coneccion(), mensualBE);
-//        if (this.lista != null) {
-            numeroDeEntradas = this.lista.size();
-//        }
+        numeroDeEntradas = this.lista.size();
     }
     public void VuelveACargarListaAnio() throws SQLException {
         this.numeroDeEntradas = 0;
         this.indiceEntradaActual= 0;
         this.lista = null;
-        MensualBE mensualBE = new MensualBE(5, (int) jsnAnio.getValue(), new Validar().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+        MensualBE mensualBE = new MensualBE(5, (int) jsnAnio.getValue(), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
         cMensualBLL mensualBLL = new cMensualBLL();
         this.lista = mensualBLL.Leer(new Coneccion(), mensualBE);
         numeroDeEntradas = this.lista.size();
@@ -1885,23 +2559,28 @@ public final class frmMensual extends javax.swing.JFrame {
         txtEntradaR.setText("" + mensualBE.getEntradar());
         txtSalidaR.setText("" + mensualBE.getSalidar());
         txtSaldoRestanteR.setText("" + mensualBE.getSaldorestanter());
-
+        
         txtSaldoAnteriorCC.setText("" + mensualBE.getSaldoanteriorcc());
         txtEntradaCC.setText("" + mensualBE.getEntradacc());
         txtSalidaCC.setText("" + mensualBE.getSalidacc());
         txtSaldoRestanteCC.setText("" + mensualBE.getSaldorestantecc());
-
+        
         txtSaldoAnteriorO.setText("" + mensualBE.getSaldoanterioro());
         txtEntradaO.setText("" + mensualBE.getEntradao());
         txtSalidaO.setText("" + mensualBE.getSalidao());
         txtSaldoRestanteO.setText("" + mensualBE.getSaldorestanteo());
 
         txtTotFondMes.setText("" + mensualBE.getTotfondmes());
+        
+        lblGuardado.setText("" + mensualBE.getGuardado());
+        txtTotalActuales.setText("" + mensualBE.getTotactual());
+        txtTotalLargoPlazo.setText("" + mensualBE.getTotplazo());
+        
         //extras
-        IdMes = new Validar().numeroMes(mensualBE.getFecha());
+        IdMes = new V().numeroMes(mensualBE.getFecha());
         AsignarMes();
     }
-
+    
     public void cargarCamposNuevo(MensualBE mensualBE) {
         this.mensualBE = mensualBE;
         lblId_Mes.setText("0");
@@ -1919,8 +2598,12 @@ public final class frmMensual extends javax.swing.JFrame {
 //        txtEntradaO.setText(""+mensualBE.getEntradao());
 //        txtSalidaO.setText(""+mensualBE.getSalidao());
         txtSaldoRestanteO.setText(""+mensualBE.getSaldorestanteo());
-
-        txtTotFondMes.setText(""+mensualBE.getTotfondmes());        
+        
+        lblGuardado.setText(""+0);
+        txtTotalActuales.setText("" + 0);
+        txtTotalLargoPlazo.setText("" + 0);
+        
+        txtTotFondMes.setText(""+mensualBE.getTotfondmes());
         lblMes.setText(Mes[0]);
     }
     public void sumaTotal(){
@@ -1931,7 +2614,201 @@ public final class frmMensual extends javax.swing.JFrame {
         a = b + c + d;
         txtTotFondMes.setText(""+a);
     }
-
+    public void  tablaOblifinmesT() throws SQLException{
+        this.jtActuales.setModel(mto);
+        /* esto es algo que vale*/
+        jtActuales.setDefaultRenderer(JTextArea.class, new OblifinmesRenderer());
+        int postColumn01 = 2;
+        TableColumn column = jtActuales.getColumnModel().getColumn(postColumn01);
+        column.setCellEditor(new OblifinmesEditor());        
+        
+        
+////////        jtActuales.setDefaultRenderer(JTextArea.class, new OblifinmesRenderer());
+////////        jtActuales.setDefaultEditor( JTextArea.class, new OblifinmesEditor());//*
+//        TableColumn tableColumn01=jtActuales.getColumnModel().getColumn(postColumn01);
+//        tableColumn01.setCellEditor(new OblifinmesEditor());
+        
+        jtActuales.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jtActuales.getSelectionModel().setSelectionInterval(0,0);
+        jtActuales.getColumnModel().getColumn(0).setMaxWidth(0);
+        jtActuales.getColumnModel().getColumn(0).setMinWidth(0);
+        jtActuales.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        jtActuales.getColumnModel().getColumn(1).setMaxWidth(0);
+        jtActuales.getColumnModel().getColumn(1).setMinWidth(0);
+        jtActuales.getColumnModel().getColumn(1).setPreferredWidth(0);
+        /************************************************************/
+        jtActuales.getColumnModel().getColumn(2).setMaxWidth(300);
+        jtActuales.getColumnModel().getColumn(2).setMinWidth(300);
+        jtActuales.getColumnModel().getColumn(2).setPreferredWidth(300);
+        /************************************************************/
+        jtActuales.getColumnModel().getColumn(4).setMaxWidth(0);
+        jtActuales.getColumnModel().getColumn(4).setMinWidth(0);
+        jtActuales.getColumnModel().getColumn(4).setPreferredWidth(0);
+        
+        jtActuales.getColumnModel().getColumn(5).setMaxWidth(0);
+        jtActuales.getColumnModel().getColumn(5).setMinWidth(0);
+        jtActuales.getColumnModel().getColumn(5).setPreferredWidth(0);
+    }
+    public void  tablaOblifinmesTL() throws SQLException{
+        
+        this.jtLargoPlazo.setModel(mtl);
+        
+        jtLargoPlazo.setDefaultRenderer(JTextArea.class, new OblifinmesRenderer());
+        int postColumn01 = 2;
+        TableColumn column = jtLargoPlazo.getColumnModel().getColumn(postColumn01);
+        column.setCellEditor(new OblifinmesEditor());        
+        
+        jtLargoPlazo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jtLargoPlazo.getSelectionModel().setSelectionInterval(0,0);
+        jtLargoPlazo.getColumnModel().getColumn(0).setMaxWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(0).setMinWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        jtLargoPlazo.getColumnModel().getColumn(1).setMaxWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(1).setMinWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(1).setPreferredWidth(0);
+        /************************************************************/
+        jtLargoPlazo.getColumnModel().getColumn(2).setMaxWidth(300);
+        jtLargoPlazo.getColumnModel().getColumn(2).setMinWidth(300);
+        jtLargoPlazo.getColumnModel().getColumn(2).setPreferredWidth(300);
+        /************************************************************/
+        jtLargoPlazo.getColumnModel().getColumn(4).setMaxWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(4).setMinWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(4).setPreferredWidth(0);
+        
+        jtLargoPlazo.getColumnModel().getColumn(5).setMaxWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(5).setMinWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(5).setPreferredWidth(0);
+    }    
+    public void  tablaParametro(){        
+        this.jtParametro.setModel(mtparametro);     
+        jtParametro.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jtParametro.getSelectionModel().setSelectionInterval(0,0);
+        
+        jtParametro.getColumnModel().getColumn(0).setMaxWidth(52);
+        jtParametro.getColumnModel().getColumn(0).setMinWidth(52);
+        jtParametro.getColumnModel().getColumn(0).setPreferredWidth(52);
+        
+        jtParametro.getColumnModel().getColumn(1).setMaxWidth(55);
+        jtParametro.getColumnModel().getColumn(1).setMinWidth(55);
+        jtParametro.getColumnModel().getColumn(1).setPreferredWidth(55);
+        /************************************************************/
+        jtParametro.getColumnModel().getColumn(2).setMaxWidth(260);
+        jtParametro.getColumnModel().getColumn(2).setMinWidth(260);
+        jtParametro.getColumnModel().getColumn(2).setPreferredWidth(260);
+        /************************************************************/
+        jtParametro.getColumnModel().getColumn(3).setMaxWidth(80);
+        jtParametro.getColumnModel().getColumn(3).setMinWidth(80);
+        jtParametro.getColumnModel().getColumn(3).setPreferredWidth(80);        
+        
+    }
+    public void cargarTablasOblifinmes(){
+        //*****************************************************************
+            if (numeroDeEntradas != 0) {
+                if (arranqueTabla != 0) {
+                    eliminarfilasActual();            
+                    eliminarfilaslargoPlazo();
+                    try {
+                        llenarfilasActual();
+                        llenarfilaslargoPlazo();
+                    } catch (SQLException e) {
+                        System.out.println(e);
+                    }
+                }
+            }else{
+                eliminarfilasActual();
+                eliminarfilaslargoPlazo();
+            }
+            arranqueTabla = 1;
+    }
+    public void eliminarfilasActual(){
+        while(jtActuales.getRowCount()!=0 ){
+            jtActuales.getSelectionModel().setSelectionInterval(jtActuales.getRowCount()-1,jtActuales.getRowCount()-1);//de fila tal a fila tal...
+            mto.deleteRow(jtActuales.getSelectedRow());
+        }
+    }
+    public void llenarfilasActual() throws SQLException {
+        int id_mensual = Integer.parseInt(lblId_Mes.getText());
+        List<OblifinmesC> listoblifinmesC = new OblifinmesC(0, 0,"", 0, "", "").getOblifinmesC(id_mensual);
+        for (OblifinmesC listoblifinmesC1 : listoblifinmesC) {
+            mto.insertRow(listoblifinmesC1);
+        }
+        jtActuales.getSelectionModel().setSelectionInterval(0,0);//de fila tal a fila tal...
+    }
+    public void eliminarfilaslargoPlazo(){
+        while(jtLargoPlazo.getRowCount()!=0 ){
+            jtLargoPlazo.getSelectionModel().setSelectionInterval(jtLargoPlazo.getRowCount()-1,jtLargoPlazo.getRowCount()-1);//de fila tal a fila tal...
+            mtl.deleteRow(jtLargoPlazo.getSelectedRow());
+        }
+    }
+    public void llenarfilaslargoPlazo() throws SQLException {
+        int id_mensual = Integer.parseInt(lblId_Mes.getText());
+        List<OblifinmesC> listoblifinmesC = new OblifinmesC(0, 0, "", 0, "", "").getOblifinmesC01(id_mensual);
+        for (OblifinmesC listoblifinmesC1 : listoblifinmesC) {
+            mtl.insertRow(listoblifinmesC1);
+        }
+        jtLargoPlazo.getSelectionModel().setSelectionInterval(0,0);//de fila tal a fila tal...
+    }
+    public boolean restriccionTabla(){
+        if (Integer.parseInt(lblId_Mes.getText())== 0) {
+            JOptionPane.showMessageDialog(rootPane, "Crear una hoja de cuenta");
+            return true;
+        }
+        if (getEstableser()== 1) {//esta establesido esto juega en contrario
+            JOptionPane.showMessageDialog(rootPane, "falta Estableser");
+            return true;
+        }
+        if (lblGuardado.getText().equals(new V().cGuardado)) {
+            JOptionPane.showMessageDialog(rootPane, "no se guardará: Esta Finiquitado");
+            return true ;
+        }
+        return false;
+    }
+    public float sumarMontoActual() {
+        float r = 0;
+        for (int i = 0; i < jtActuales.getRowCount(); i++) {
+            if (jtActuales.getValueAt(i, 5).toString().equals(new V().cFlagActivo)) {
+                r=r+Float.parseFloat(jtActuales.getValueAt(i, 3).toString());
+            }
+        }
+        txtTotalActuales.setText(""+r);
+        return r;
+    }
+    public float sumarlargoPlazo() {
+        float r = 0;
+        for (int i = 0; i < jtLargoPlazo.getRowCount(); i++) {
+            if (jtLargoPlazo.getValueAt(i, 5).toString().equals(new V().cFlagActivo)) {
+                r=r+Float.parseFloat(jtLargoPlazo.getValueAt(i, 3).toString());
+            }
+        }
+        txtTotalLargoPlazo.setText(""+r);
+        return r;
+    }    
+    public void llenarAutcompleto(String CodigoPadre,String Descripcion) throws SQLException {
+        ParametroBE objParametroBE = new ParametroBE(3, 0, CodigoPadre, Descripcion, 0);
+        cParametroBLL objParametroBLL = new cParametroBLL();
+        List<ParametroBE> listParametroBE = objParametroBLL.Leer(new Coneccion(), objParametroBE);
+        if (listParametroBE.size() == 0) {
+            ParametroBE objParametroBE02 = new ParametroBE(4, 0, CodigoPadre, Descripcion, 0);
+            cParametroBLL objParametroBLL02 = new cParametroBLL();
+            List<ParametroBE> listParametroBE02 = objParametroBLL.Leer(new Coneccion(), objParametroBE);
+            JOptionPane.showMessageDialog(rootPane, listParametroBE02.size());
+            if (listParametroBE02.size() == 1) {
+                for (ParametroBE obj : listParametroBE02) {
+                    ParametroBE objParametroBE03 = new ParametroBE(1, 0, "", Descripcion, objParametroBE.getId_Parametro_Origen());
+                    cParametroBL objParametroBL = new cParametroBL();
+                    V v = new V();v.selleno = 1;
+                    if(objParametroBL.Insertar(new Coneccion(), objParametroBE)< 0){
+                        JOptionPane.showMessageDialog(rootPane, "No se inserto datos al auto completado");
+                        v.selleno = 0;
+                    }                    
+                }
+            }
+            
+        }      
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -1949,14 +2826,22 @@ public final class frmMensual extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmMensual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmHojaDeCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmMensual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmHojaDeCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmMensual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmHojaDeCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmMensual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmHojaDeCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1970,9 +2855,9 @@ public final class frmMensual extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new frmMensual().setVisible(true);
+                    new frmHojaDeCuenta().setVisible(true);
                 } catch (SQLException ex) {
-                    Logger.getLogger(frmMensual.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -1994,6 +2879,7 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2007,6 +2893,8 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2018,6 +2906,16 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -2030,17 +2928,33 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private com.toedter.calendar.JDateChooser jdcFecha;
     private javax.swing.JMenuItem jmpEliminar;
+    private javax.swing.JMenuItem jmpEliminar02;
+    private javax.swing.JMenuItem jmpEliminarParametro;
     private javax.swing.JMenuItem jmpGuardar;
+    private javax.swing.JMenuItem jmpGuardar02;
+    private javax.swing.JMenuItem jmpGuardarParametro;
     private javax.swing.JMenuItem jmpNuevo;
+    private javax.swing.JMenuItem jmpNuevo02;
+    private javax.swing.JMenuItem jmpNuevoParametro;
     private javax.swing.JPanel jpCrud;
     private javax.swing.JPanel jpEgreso;
     private javax.swing.JPanel jpIngreso;
     private javax.swing.JPopupMenu jpmCrud;
+    private javax.swing.JPopupMenu jpmCrud02;
+    private javax.swing.JPopupMenu jpmCrudParametro;
     private javax.swing.JSpinner jsnAnio;
     private javax.swing.JTable jtActuales;
     private javax.swing.JTable jtLargoPlazo;
+    private javax.swing.JTable jtParametro;
+    private javax.swing.JLabel lblGuardado;
     private javax.swing.JLabel lblId_Mes;
     private javax.swing.JLabel lblMes;
     private javax.swing.JTextField txtEntradaCC;
@@ -2061,6 +2975,8 @@ public final class frmMensual extends javax.swing.JFrame {
     private javax.swing.JTextField txtSalidaR1;
     private javax.swing.JTextField txtTotFondMes;
     private javax.swing.JTextField txtTotalActuales;
+    private javax.swing.JTextField txtTotalActuales1;
+    private javax.swing.JTextField txtTotalActuales2;
     private javax.swing.JTextField txtTotalLargoPlazo;
     // End of variables declaration//GEN-END:variables
 
