@@ -19,14 +19,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
-public class OblifinmesEditor extends AbstractCellEditor implements TableCellEditor {
+public class OblifinmesEditor02 extends AbstractCellEditor implements TableCellEditor {
    private OblifinmesC objOblifinmesC;
    private OblifinmesTM objOblifinmesTM;
    protected Object value;
    
    JComponent component = new JTextField();
    TextAutoCompleter textAutoCompleter;
-   public OblifinmesEditor() throws SQLException {
+   public OblifinmesEditor02() throws SQLException {
 //        jTextField = new JTextField();
 //        jTextField.setOpaque(true);
 //        jTextField.setText("luis");
@@ -39,7 +39,7 @@ public class OblifinmesEditor extends AbstractCellEditor implements TableCellEdi
 //        textAutoCompleter.addItem("manoa");
 //        component = new JTextField();
         component.setOpaque(true);
-        textAutoCompleter = new TextAutoCompleter((JTextField) component);
+        textAutoCompleter = new TextAutoCompleter((JTextField) component);        
         
         llenadoAutomatico();
    }
@@ -70,13 +70,13 @@ public class OblifinmesEditor extends AbstractCellEditor implements TableCellEdi
             ((JTextField) component).setText(String.valueOf(value));
        } catch (Exception e) {
        }        
-        if (new V().selleno == 1) {
+        if (new V().selleno02 == 1) {
            try {
                llenadoAutomatico();
                V v = new V();
-               v.selleno = 0;
+               v.selleno02 = 0;
            } catch (SQLException ex) {
-               Logger.getLogger(OblifinmesEditor.class.getName()).log(Level.SEVERE, null, ex);
+               Logger.getLogger(OblifinmesEditor02.class.getName()).log(Level.SEVERE, null, ex);
            }
         }
         return component;

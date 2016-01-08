@@ -26,8 +26,11 @@ public class p_Oblifinmes_sel {
     private float Importe;
     private String Actual_Plazo;
     private String FlagActivo ;
-    private List<OblifinmesBE> aOblifinmesBE = new ArrayList<>();
+    private List<OblifinmesBE> aOblifinmesBE = new ArrayList<>();    
     private int ReturnVal ;
+    //particulares
+    private OblifinmesBE uOblifinmesBE = null;
+    private float valor = 0;
     
     public p_Oblifinmes_sel(Coneccion strCn,OblifinmesBE objOblifinmesBE) throws SQLException {
         this.Accion = objOblifinmesBE.getAccion();
@@ -64,6 +67,16 @@ public class p_Oblifinmes_sel {
                 }
                 this.ReturnVal=0;
             }
+            if (this.Accion == 3){
+                pstLista=con.prepareStatement("SELECT SUM(IMPORTE) FROM Oblifinmes WHERE ID_MENSUAL = ? AND ACTUAL_PLAZO = ? AND FLAGACTIVO = '1'");
+                pstLista.setInt(1, this.Id_Mensual);
+                pstLista.setString(2, this.Actual_Plazo);
+                rs=pstLista.executeQuery();
+                while (rs.next()) {
+                    this.valor = rs.getFloat(1);
+                }
+                this.ReturnVal=0;
+            }            
             con.commit();
             con.setAutoCommit(true);
             pstLista.close();
@@ -98,4 +111,21 @@ public class p_Oblifinmes_sel {
     public void setaOblifinmesBE(List<OblifinmesBE> aOblifinmesBE) {
         this.aOblifinmesBE = aOblifinmesBE;
     }    
+
+    public OblifinmesBE getuOblifinmesBE() {
+        return uOblifinmesBE;
+    }
+
+    public void setuOblifinmesBE(OblifinmesBE uOblifinmesBE) {
+        this.uOblifinmesBE = uOblifinmesBE;
+    }
+
+    public float getValor() {
+        return valor;
+    }
+
+    public void setValor(float valor) {
+        this.valor = valor;
+    }   
+    
 }

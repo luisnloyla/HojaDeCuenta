@@ -16,11 +16,18 @@ import java.util.List;
  */
 interface MensualBLL {
     public List<MensualBE> Leer(Coneccion strCn,MensualBE objMensualBE );
+    public MensualBE LeerObj(Coneccion strCn,MensualBE objMensualBE );
 }
 public class cMensualBLL implements MensualBLL{
     @Override
     public List<MensualBE> Leer(Coneccion strCn, MensualBE objMensualBE) {
         cMensualDAL MensualDAL = new cMensualDAL();
         return MensualDAL.Leer(strCn, objMensualBE);
+    }
+
+    @Override
+    public MensualBE LeerObj(Coneccion strCn, MensualBE objMensualBE) {
+        cMensualDAL MensualDAL = new cMensualDAL();
+        return MensualDAL.Leerobj(strCn, objMensualBE);
     }
 }

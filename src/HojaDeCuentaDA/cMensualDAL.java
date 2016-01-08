@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 interface MensualDAL {
         public List<MensualBE> Leer(Coneccion strCn,MensualBE objMensualBE );
         public List<MensualBE> Leer(Connection strCn,MensualBE objMensualBE );
+        public MensualBE Leerobj(Coneccion strCn,MensualBE objMensualBE );
 }
 public class cMensualDAL implements MensualDAL{
     @Override
@@ -32,5 +33,17 @@ public class cMensualDAL implements MensualDAL{
     public List<MensualBE> Leer(Connection strCn, MensualBE objMensualBE) {
         p_Mensual_sel Mensual_sel=new p_Mensual_sel(strCn,objMensualBE);
         return Mensual_sel.getaMensualBE();
+    }
+
+    @Override
+    public MensualBE Leerobj(Coneccion strCn, MensualBE objMensualBE) {
+        p_Mensual_sel Mensual_sel;
+        try {
+            Mensual_sel = new p_Mensual_sel(strCn,objMensualBE);
+            return Mensual_sel.getuMensualBE();
+        } catch (SQLException ex) {
+            Logger.getLogger(cMensualDAL.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 }

@@ -38,6 +38,7 @@ public class p_Oblifinmes_upd {
         Connection con = strCn.getCon();
         ResultSet rs=null;
         PreparedStatement pstOperacion = null;
+        PreparedStatement pstUpdFinMes = null;
 //        PreparedStatement pstLista = null;
         try {
             con.setAutoCommit(false);
@@ -60,15 +61,52 @@ public class p_Oblifinmes_upd {
                 pstOperacion.setInt(1, this.Id_Oblifinmes);
                 pstOperacion.executeUpdate();
                 this.ReturnVal=0;
-            }            
+            }//ya existe el 3
+            if (this.Accion == 4){ //ACTUALIZACION DE DEGISTROS DE UNA TABLA
+                pstOperacion=con.prepareStatement("UPDATE Oblifinmes SET " 
+                + " Obligacion = ?"
+                + ",Importe    = ?"
+                +"WHERE ID_Oblifinmes = ?");
+                
+                pstOperacion.setString(1, this.Obligacion);
+                pstOperacion.setFloat(2, this.Importe);
+                pstOperacion.setInt(3, this.Id_Oblifinmes);
+                                                
+                this.ReturnVal=-1;
+                if (pstOperacion.executeUpdate()>0) {
+                    this.ReturnVal=0;
+                    pstUpdFinMes = con.prepareStatement(
+                    "UPDATE MENSUAL SET "+
+                    "TOTACTUAL = (SELECT  "
+                            +"CASE WHEN SUM(IMPORTE) IS NULL THEN 0 ELSE SUM(IMPORTE) END "
+                            + "FROM Oblifinmes WHERE Id_Mensual = "
+                            + "(SELECT Id_Mensual FROM Oblifinmes WHERE ID_Oblifinmes = ? ) "
+                            + "AND FlagActivo = '1' AND Actual_Plazo = '0') " +
+                    ",TOTPLAZO = (SELECT "
+                            +"CASE WHEN SUM(IMPORTE) IS NULL THEN 0 ELSE SUM(IMPORTE) END "
+                            + "FROM Oblifinmes WHERE Id_Mensual = "
+                            + "(SELECT Id_Mensual FROM Oblifinmes WHERE ID_Oblifinmes = ? ) "
+                            + "AND FlagActivo = '1' AND Actual_Plazo = '1') " +
+                    "WHERE ID_MENSUAL =  (SELECT Id_Mensual FROM Oblifinmes WHERE ID_Oblifinmes = ? )");
+                    pstUpdFinMes.setInt(1, this.Id_Oblifinmes);
+                    pstUpdFinMes.setInt(2, this.Id_Oblifinmes);
+                    pstUpdFinMes.setInt(3, this.Id_Oblifinmes);                    
+                    
+                    if (pstUpdFinMes.executeUpdate()==0) {
+                        throw new UnsupportedOperationException("No se inserto");
+                    }
+                }
+            }
             con.commit();
             con.setAutoCommit(true);
             pstOperacion.close();
+            if (pstUpdFinMes != null) pstUpdFinMes.close();
 //            pstLista.close();
         } catch (Exception e) {
             con.rollback();
             con.setAutoCommit(true);
             pstOperacion.close();
+            if (pstUpdFinMes != null) pstUpdFinMes.close();
 //            pstLista.close();
             System.out.println(e);
             this.ReturnVal=-1;
@@ -100,7 +138,7 @@ public class p_Oblifinmes_upd {
                 
                 pstOperacion.executeUpdate();
                 this.ReturnVal=0;
-            }         
+            }//ya existe 4
             pstOperacion.close();
         } catch (Exception e) {
             pstOperacion.close();

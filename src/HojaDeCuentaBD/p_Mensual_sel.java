@@ -34,6 +34,7 @@ public class p_Mensual_sel {
     private int Estableser ;
     private int ReturnVal ;
     private List<MensualBE> aMensualBE = new ArrayList<>();     
+    private MensualBE uMensualBE = null;
 
     public p_Mensual_sel(Coneccion strCn,MensualBE objMensualBE) throws SQLException {
         this.Accion = objMensualBE.getAccion();
@@ -112,7 +113,21 @@ public class p_Mensual_sel {
                     aMensualBE.add(objMensualBElista);
                 }
                 this.ReturnVal=0;
-            }            
+            }
+            if (this.Accion == 6){//para totales actuales y largo plazo
+                pstLista=con.prepareStatement("SELECT * FROM MENSUAL WHERE ID_MENSUAL = ? AND FLAGACTIVO = '1'");
+                pstLista.setInt(1, this.Id_Mensual);
+                rs=pstLista.executeQuery();
+                int cont= 0;
+                while (rs.next()) {
+                    cont++;
+                    uMensualBE = new MensualBE(0, rs.getInt(1), rs.getDate(2), rs.getFloat(3), rs.getFloat(4), rs.getFloat(5), rs.getFloat(6), rs.getFloat(7), rs.getFloat(8), rs.getFloat(9), rs.getFloat(10), rs.getFloat(11), rs.getFloat(12), rs.getFloat(13), rs.getFloat(14), rs.getFloat(15), rs.getFloat(16), rs.getFloat(17), rs.getInt(18), rs.getInt(19),rs.getString(20));
+                }
+                if (cont>1) {
+                    throw new UnsupportedOperationException("error mas de un registro");
+                }
+                this.ReturnVal=0;
+            }
             con.commit();
             con.setAutoCommit(true);
 //            pstOperacion.close();
@@ -161,4 +176,13 @@ public class p_Mensual_sel {
     public List<MensualBE> getaMensualBE() {
         return aMensualBE;
     }
+
+    public MensualBE getuMensualBE() {
+        return uMensualBE;
+    }
+
+    public void setuMensualBE(MensualBE uMensualBE) {
+        this.uMensualBE = uMensualBE;
+    }
+    
 }

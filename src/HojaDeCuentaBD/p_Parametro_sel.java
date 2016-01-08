@@ -76,11 +76,12 @@ public class p_Parametro_sel {
               st.close(); 
               this.ReturnVal=0;
             }
-            if (this.Accion == 4){
-                rs=st.executeQuery("SELECT*FROM Parametro WHERE codigo = '"+this.Codigo+"'");
+            if (this.Accion == 4){//
+                rs=st.executeQuery("SELECT * FROM Parametro WHERE CODIGO = '"+this.Codigo+"' AND Id_Parametro_Origen = 0");
                 while (rs.next()) {
-//                    System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
-                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                    System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+                    System.out.println("AQUI LUCHIN NAZARIO");
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));                    
                     aParametroBE.add(ParametroBE);
                 }
               rs.close();

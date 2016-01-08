@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  */
 interface OblifinmesDAL {
         public List<OblifinmesBE> Leer(Coneccion strCn,OblifinmesBE objOblifinmesBE );
+        public float LeerValor(Coneccion strCn,OblifinmesBE objOblifinmesBE );
 }
 public class cOblifinmesDAL implements OblifinmesDAL{
 
@@ -30,6 +31,17 @@ public class cOblifinmesDAL implements OblifinmesDAL{
         } catch (SQLException ex) {
             Logger.getLogger(cOblifinmesDAL.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }
+    }
+
+    @Override
+    public float LeerValor(Coneccion strCn, OblifinmesBE objOblifinmesBE) {
+        try {
+            p_Oblifinmes_sel Oblifinmes_sel=new p_Oblifinmes_sel(strCn,objOblifinmesBE);
+            return Oblifinmes_sel.getValor();
+        } catch (SQLException ex) {
+            Logger.getLogger(cOblifinmesDAL.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
         }
     }
    

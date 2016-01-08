@@ -31,7 +31,7 @@ public final class V {
     static final public String cGuardado = "1";
     static final public String cACTUAL_LARGOPLAZO = "ALP";
     static public int selleno = 0;
-    
+    static public int selleno02 = 0;
     public V() {
         
    }

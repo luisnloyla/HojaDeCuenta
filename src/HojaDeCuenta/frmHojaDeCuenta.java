@@ -2,6 +2,7 @@ package HojaDeCuenta;
 import HojaDeCuenta.TB.Class.OblifinmesC;
 import HojaDeCuenta.TB.Class.ParametroC;
 import HojaDeCuenta.TB.Editor.OblifinmesEditor;
+import HojaDeCuenta.TB.Editor.OblifinmesEditor02;
 import HojaDeCuenta.TB.Renderer.OblifinmesRenderer;
 import HojaDeCuenta.TB.TableModel.OblifinmesTM;
 import HojaDeCuenta.TB.TableModel.ParametroTM;
@@ -108,6 +109,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 //            anteriorPosterior(true);
         }
         /////////////////////////OBLIGACION A FIN DE MES////////////////////////        
+        
         mto = new OblifinmesTM(0,Integer.parseInt(lblId_Mes.getText()));
         tablaOblifinmesT();
         mtl = new OblifinmesTM(1,Integer.parseInt(lblId_Mes.getText()));
@@ -1259,12 +1261,13 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel19)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTotalActuales, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtTotalActuales, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1323,8 +1326,8 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1343,10 +1346,10 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2047,9 +2050,10 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         MensualBE objMensualBE = new MensualBE(6, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, sumarMontoActual(), 0, 0, 0, "1");
         int ires = 0;
         try {
-            if (flag.equals(new V().cFlagInActivo)) {//accion = 1
-                objOblifinmesBE = new OblifinmesBE(4 ,0 , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().actual, new V().cFlagActivo);
-                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE,objMensualBE);
+            if (flag.equals(new V().cFlagInActivo)) {//accion = 1//ACCION 4
+                objOblifinmesBE = new OblifinmesBE(5 ,0 , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().actual, new V().cFlagActivo);
+//                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
@@ -2058,15 +2062,17 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                     llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
                     JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                 }
-            }else{//accio = 1
-                objOblifinmesBE = new OblifinmesBE(3 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().actual, new V().cFlagActivo);
-                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE,objMensualBE);
+            }else{//accio = 1//ACCION = 3
+                objOblifinmesBE = new OblifinmesBE(4 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().actual, new V().cFlagActivo);
+//                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
                     JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                    llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
                 }
-            }            
+            }
         } catch (SQLException ex) {
             Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2141,9 +2147,10 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
-                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                     mto.setValueAt(ires, jtLargoPlazo.getSelectedRow(),0);
                     mto.setValueAt(new V().cFlagActivo, jtLargoPlazo.getSelectedRow(),5);
+                    llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                 }
             }else{//accion 1
                 objOblifinmesBE = new OblifinmesBE(3 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().largoPlazo, new V().cFlagActivo);
@@ -2657,7 +2664,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         jtLargoPlazo.setDefaultRenderer(JTextArea.class, new OblifinmesRenderer());
         int postColumn01 = 2;
         TableColumn column = jtLargoPlazo.getColumnModel().getColumn(postColumn01);
-        column.setCellEditor(new OblifinmesEditor());        
+        column.setCellEditor(new OblifinmesEditor02());
         
         jtLargoPlazo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtLargoPlazo.getSelectionModel().setSelectionInterval(0,0);
@@ -2792,19 +2799,21 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         if (listParametroBE.size() == 0) {
             ParametroBE objParametroBE02 = new ParametroBE(4, 0, CodigoPadre, Descripcion, 0);
             cParametroBLL objParametroBLL02 = new cParametroBLL();
-            List<ParametroBE> listParametroBE02 = objParametroBLL.Leer(new Coneccion(), objParametroBE);
-            JOptionPane.showMessageDialog(rootPane, listParametroBE02.size());
-            if (listParametroBE02.size() == 1) {
-                for (ParametroBE obj : listParametroBE02) {
-                    ParametroBE objParametroBE03 = new ParametroBE(1, 0, "", Descripcion, objParametroBE.getId_Parametro_Origen());
-                    cParametroBL objParametroBL = new cParametroBL();
-                    V v = new V();v.selleno = 1;
-                    if(objParametroBL.Insertar(new Coneccion(), objParametroBE)< 0){
-                        JOptionPane.showMessageDialog(rootPane, "No se inserto datos al auto completado");
-                        v.selleno = 0;
-                    }                    
+            List<ParametroBE> listParametroBE02 = objParametroBLL.Leer(new Coneccion(), objParametroBE02);
+            for (ParametroBE listParametroBE021 : listParametroBE02) {
+                if (listParametroBE02.size() > 0) {
+                    for (ParametroBE obj : listParametroBE02) {
+                        ParametroBE objParametroBE03 = new ParametroBE(1, 0, "", Descripcion, listParametroBE021.getId_Parametro());
+                        cParametroBL objParametroBL = new cParametroBL();
+                        V v = new V();v.selleno = 1;v.selleno02 = 1;
+                        if(objParametroBL.Insertar(new Coneccion(), objParametroBE03)< 0){
+                            JOptionPane.showMessageDialog(rootPane, "No se inserto datos al auto completado");
+                            v.selleno = 0;v.selleno02 = 0;
+                        }
+                        return;
+                    }
                 }
-            }
+            }           
             
         }      
         
