@@ -6,10 +6,9 @@
 package HojaDeCuentaBD;
 
 import HojaDeCuentaBE.RecibidoBE;
-import HojaDeCuentaBE.UsuarioBE;
 import ejecutar.Coneccion;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *

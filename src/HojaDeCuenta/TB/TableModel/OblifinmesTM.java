@@ -8,8 +8,8 @@ import javax.swing.table.AbstractTableModel;
 
 public class OblifinmesTM extends AbstractTableModel{
     private List<OblifinmesC> objOblifinmesC = new ArrayList<>() ;
-    private String[] columnas = {"Id_Oblifinmes","Id_Mensual","Obligacion","Importe","Actual_Plazo","FlagActivo"};
-    private boolean [] editables = { true,  true,  true,  true,  true,  true};
+    private String[] columnas = {"Id_Obli","Id_Mensual","Obligacion","Importe","Actual_Plazo","FlagActivo"};
+    private boolean [] editables = { false,  true,  true,  true,  true,  true};
     private Class [] tipoColumna = {Object.class,Object.class,JTextField.class,Object.class,Object.class,Object.class};
     
     public OblifinmesTM(int tipo,int id_mensual) throws SQLException {

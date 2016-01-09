@@ -543,7 +543,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
                     .addGroup(jPanel20Layout.createSequentialGroup()
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -555,12 +555,12 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(txtTotalActuales1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -601,7 +601,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel21Layout.createSequentialGroup()
                         .addComponent(jLabel22)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -613,33 +613,33 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
                     .addComponent(txtTotalActuales2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jpEgresoLayout = new javax.swing.GroupLayout(jpEgreso);
         jpEgreso.setLayout(jpEgresoLayout);
         jpEgresoLayout.setHorizontalGroup(
             jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpEgresoLayout.createSequentialGroup()
+            .addGroup(jpEgresoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(62, 62, 62))
+                .addGroup(jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jpEgresoLayout.setVerticalGroup(
             jpEgresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpEgresoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         EGRESO.addTab("Recibido", jpEgreso);
@@ -1219,7 +1219,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 
         jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-        jLabel19.setText("Total:");
+        jLabel19.setText("Total Actual:");
 
         txtTotalActuales.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtTotalActuales.addActionListener(new java.awt.event.ActionListener() {
@@ -1283,7 +1283,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 
         jPanel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-        jLabel20.setText("Total:");
+        jLabel20.setText("Total Largo Plazo:");
 
         txtTotalLargoPlazo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtTotalLargoPlazo.addActionListener(new java.awt.event.ActionListener() {
@@ -2046,8 +2046,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         }
         String flag = jtActuales.getValueAt(filaSelect, 5).toString();
         OblifinmesBE objOblifinmesBE = null;
-        cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
-        MensualBE objMensualBE = new MensualBE(6, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, sumarMontoActual(), 0, 0, 0, "1");
+        cOblifinmesBL oblifinmesBL = new cOblifinmesBL();        
         int ires = 0;
         try {
             if (flag.equals(new V().cFlagInActivo)) {//accion = 1//ACCION 4
@@ -2073,6 +2072,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                     llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
                 }
             }
+            resultadoActualLargo();
         } catch (SQLException ex) {
             Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2086,8 +2086,8 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 int id_oblifinmes = Integer.parseInt(jtActuales.getValueAt(filaSelect, 0).toString());
                 OblifinmesBE objOblifinmesBE = null;
                 cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
-                int ires = 0;
-                objOblifinmesBE = new OblifinmesBE(1 ,id_oblifinmes , 0, "", 0,new V().actual, new V().cFlagActivo);
+                int ires = 0;//accion = 1
+                objOblifinmesBE = new OblifinmesBE(3 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), "", 0,new V().actual, new V().cFlagActivo);
                 ires = oblifinmesBL.Eliminar(new Coneccion(), objOblifinmesBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se Elimino", "Advertencia",JOptionPane.WARNING_MESSAGE);
@@ -2095,6 +2095,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                     mto.deleteRow(jtActuales.getSelectedRow());
                     JOptionPane.showMessageDialog(null, "Exito al eliminar", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                 }                
+                resultadoActualLargo();
             } catch (SQLException ex) {
                 Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2137,30 +2138,32 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         }
         String flag = jtLargoPlazo.getValueAt(filaSelect, 5).toString();
         OblifinmesBE objOblifinmesBE = null;
-        cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
-        MensualBE objMensualBE = new MensualBE(7, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, sumarlargoPlazo(), 0, 0, "1");
+        cOblifinmesBL oblifinmesBL = new cOblifinmesBL();        
         int ires = 0;
         try {
-            if (flag.equals(new V().cFlagInActivo)) {//accion 1
-                objOblifinmesBE = new OblifinmesBE(4 ,0 , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().largoPlazo, new V().cFlagActivo);
-                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE,objMensualBE);
+            if (flag.equals(new V().cFlagInActivo)) {//accion 1//accion 4
+                objOblifinmesBE = new OblifinmesBE(5 ,0 , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().largoPlazo, new V().cFlagActivo);
+//                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                ires = oblifinmesBL.Insertar(new Coneccion(), objOblifinmesBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
-                    mto.setValueAt(ires, jtLargoPlazo.getSelectedRow(),0);
-                    mto.setValueAt(new V().cFlagActivo, jtLargoPlazo.getSelectedRow(),5);
+                    mtl.setValueAt(ires, jtLargoPlazo.getSelectedRow(),0);
+                    mtl.setValueAt(new V().cFlagActivo, jtLargoPlazo.getSelectedRow(),5);
                     llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
                     JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                 }
-            }else{//accion 1
-                objOblifinmesBE = new OblifinmesBE(3 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().largoPlazo, new V().cFlagActivo);
-                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE,objMensualBE);
+            }else{//accion 1//accion 3
+                objOblifinmesBE = new OblifinmesBE(4 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), descripcion, monto,new V().largoPlazo, new V().cFlagActivo);
+//                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE,objMensualBE);
+                ires = oblifinmesBL.Actualizar(new Coneccion(), objOblifinmesBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
                     JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                 }
             }                    
+            resultadoActualLargo();
         } catch (SQLException ex) {
             Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2176,15 +2179,16 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 int id_oblifinmes = Integer.parseInt(jtLargoPlazo.getValueAt(filaSelect, 0).toString());
                 OblifinmesBE objOblifinmesBE = null;
                 cOblifinmesBL oblifinmesBL = new cOblifinmesBL();
-                int ires = 0;
-                objOblifinmesBE = new OblifinmesBE(1 ,id_oblifinmes , 0, "", 0,new V().largoPlazo, new V().cFlagActivo);
+                int ires = 0;//1
+                objOblifinmesBE = new OblifinmesBE(3 ,id_oblifinmes , Integer.parseInt(lblId_Mes.getText()), "", 0,new V().largoPlazo, new V().cFlagActivo);
                 ires = oblifinmesBL.Eliminar(new Coneccion(), objOblifinmesBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se Elimino", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
                     mtl.deleteRow(jtLargoPlazo.getSelectedRow());
                     JOptionPane.showMessageDialog(null, "Exito al eliminar", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
-                }                
+                }        
+                resultadoActualLargo();
             } catch (SQLException ex) {
                 Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
             }            
@@ -2637,9 +2641,9 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         
         jtActuales.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtActuales.getSelectionModel().setSelectionInterval(0,0);
-        jtActuales.getColumnModel().getColumn(0).setMaxWidth(0);
-        jtActuales.getColumnModel().getColumn(0).setMinWidth(0);
-        jtActuales.getColumnModel().getColumn(0).setPreferredWidth(0);
+        jtActuales.getColumnModel().getColumn(0).setMaxWidth(50);
+        jtActuales.getColumnModel().getColumn(0).setMinWidth(50);
+        jtActuales.getColumnModel().getColumn(0).setPreferredWidth(50);
         
         jtActuales.getColumnModel().getColumn(1).setMaxWidth(0);
         jtActuales.getColumnModel().getColumn(1).setMinWidth(0);
@@ -2668,9 +2672,9 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         
         jtLargoPlazo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtLargoPlazo.getSelectionModel().setSelectionInterval(0,0);
-        jtLargoPlazo.getColumnModel().getColumn(0).setMaxWidth(0);
-        jtLargoPlazo.getColumnModel().getColumn(0).setMinWidth(0);
-        jtLargoPlazo.getColumnModel().getColumn(0).setPreferredWidth(0);
+        jtLargoPlazo.getColumnModel().getColumn(0).setMaxWidth(50);
+        jtLargoPlazo.getColumnModel().getColumn(0).setMinWidth(50);
+        jtLargoPlazo.getColumnModel().getColumn(0).setPreferredWidth(50);
         
         jtLargoPlazo.getColumnModel().getColumn(1).setMaxWidth(0);
         jtLargoPlazo.getColumnModel().getColumn(1).setMinWidth(0);
@@ -2817,6 +2821,15 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             
         }      
         
+    }
+    public void resultadoActualLargo() throws SQLException{
+        MensualBE objMensualBE = new MensualBE(6, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+        cMensualBLL objCMensualBLL = new cMensualBLL();
+        MensualBE objList = objCMensualBLL.LeerObj(new Coneccion(), objMensualBE);
+        if (objList != null) {
+            txtTotalActuales.setText(""+objList.getTotactual());
+            txtTotalLargoPlazo.setText(""+objList.getTotplazo());
+        }
     }
     /**
      * @param args the command line arguments
