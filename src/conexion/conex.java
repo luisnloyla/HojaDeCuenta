@@ -65,7 +65,9 @@ public class conex {
                 // SI es false crea toda las tablas
                if (tableExists==false)
                {
-                    int resp = JOptionPane.showConfirmDialog(null,"No existen las Tablas en su Base de Datos, Desea Crearlas?.","",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                    int resp =0;
+//                    int resp = JOptionPane.showConfirmDialog(null,"No existen las Tablas en su Base de Datos, Desea Crearlas?.","",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No existen las Tablas en su Base de Datos, vamos a Crearlas");
                     if (resp==0)
                     {
                          //Eliminando todas las tablas
@@ -152,6 +154,7 @@ public class conex {
           catch (Exception ex)
           {
                 JOptionPane.showMessageDialog(null, "Hubo un error en la conexion a la Base de Datos, el programa se cerrara.","ERROR",JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
           }
         return conex;
     }

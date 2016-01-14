@@ -21,7 +21,6 @@ public class RecibidoBE {
     private int IngresoSalida;
     private String FlagActivo;
     private int ReturnVal;
-
     public RecibidoBE(int Accion, int Id_Recibido, int Id_Mensual, Date Fecha, String Recibidon, double Importe, int IngresoSalida, String FlagActivo) {
         this.Accion = Accion;
         this.Id_Recibido = Id_Recibido;

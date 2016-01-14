@@ -10,19 +10,21 @@ package HojaDeCuentaBE;
  * @author Loyola
  */
 public class ParametroBE {
-    private int Accion;
-    private int Id_Parametro ;
-    private String Codigo ;
-    private String Descripcion ;
-    private int Id_Parametro_Origen;
-    private int ReturnVal;
+    private int     Accion;
+    private int     Id_Parametro;
+    private String  Codigo;
+    private String  Descripcion;
+    private int     Id_Parametro_Origen;
+    private int     Tipo;
+    private String  FlagActivo ;
+    private int     ReturnVal;
 
     public ParametroBE(int Accion, int Id_Parametro, String Codigo, String Descripcion, int Id_Parametro_Origen) {
         this.Accion = Accion;
         this.Id_Parametro = Id_Parametro;
         this.Codigo = Codigo;
         this.Descripcion = Descripcion;
-        this.Id_Parametro_Origen = Id_Parametro_Origen;        
+        this.Id_Parametro_Origen = Id_Parametro_Origen;
     }
 
     /**

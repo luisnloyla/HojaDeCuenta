@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public class DRecibidoBE {
     private int Accion;
-    private int Id_Drecibido ;
-    private int Id_Recibido ;
+    private int Id_Drecibido;
+    private int Id_Recibido;
     private int Id_Concepto;
     private String Descripcion;
     private double Importe;

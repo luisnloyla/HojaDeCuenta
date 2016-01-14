@@ -18,6 +18,7 @@ import HojaDeCuentaVar.V;
 import com.mxrck.autocompleter.tests.Person;
 import ejecutar.Coneccion;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -93,7 +94,14 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         String dia = Integer.toString(c.get(Calendar.DATE));
         String mes = Integer.toString(c.get(Calendar.MONTH));
         annioActual = Integer.toString(c.get(Calendar.YEAR));
+        /***************************************************/
+        int anioEstablesido= HallandoAnioEstablesido();
+        if (anioEstablesido != 0) {
+            annioActual = ""+anioEstablesido;
+        }
+        /***************************************************/
         jsnAnio.setValue(Integer.parseInt(annioActual));
+
 //        estableser();
         lblId_Mes.setText("0");
         VuelveACargarLista();//por cuestiones de seguridad
@@ -115,7 +123,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         mtl = new OblifinmesTM(1,Integer.parseInt(lblId_Mes.getText()));
         tablaOblifinmesTL();
         mtparametro = new ParametroTM();
-        tablaParametro();
+        tablaParametro();        
         //----AHORA AQUI ESTOY
         this.setLocationRelativeTo(this);
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/currency.png"));
@@ -1806,14 +1814,13 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 //                    obtenerFila(Integer.parseInt(lblId_Mes.getText()));
                     cargarCampos(lista.get(SelectindiceEntradaActual));
                 } else {
-                    JOptionPane.showMessageDialog(this, "transaccion Exitosa");
                     if (new V().numeroMesjdc(jdcFecha) == 1){//si es enero entonses se realiza lo siguiente
                         jsnAnio.setValue(new V().numeroAniojdc(jdcFecha));
-                    }else{
-                        VuelveACargarLista();
-                        obtenerFilaId(ires);
                     }
+                    VuelveACargarLista();
+                    obtenerFilaId(ires);
                     cargarTablasOblifinmes();
+                    JOptionPane.showMessageDialog(this, "transaccion Exitosa");
                 }
             } else {
                 mensualBE = new MensualBE(3, Integer.parseInt(lblId_Mes.getText()), new V().fecha(jdcFecha), Float.parseFloat(txtSaldoAnteriorR.getText()), Float.parseFloat(txtEntradaR.getText()), Float.parseFloat(txtSalidaR.getText()), Float.parseFloat(txtSaldoRestanteR.getText()), Float.parseFloat(txtSaldoAnteriorCC.getText()), Float.parseFloat(txtEntradaCC.getText()), Float.parseFloat(txtSalidaCC.getText()), Float.parseFloat(txtSaldoRestanteCC.getText()), Float.parseFloat(txtSaldoAnteriorO.getText()), Float.parseFloat(txtEntradaO.getText()), Float.parseFloat(txtSalidaO.getText()), Float.parseFloat(txtSaldoRestanteO.getText()), Float.parseFloat(txtTotFondMes.getText()), 0//Float.parseFloat(txtTotalActuales.getText())
@@ -2032,6 +2039,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             mto.insertRow(oblifinmesC);
             jtActuales.getSelectionModel().setSelectionInterval(jtActuales.getRowCount()-1,jtActuales.getRowCount()-1);
         }
+
     }//GEN-LAST:event_jmpNuevoActionPerformed
 
     private void jmpGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpGuardarActionPerformed
@@ -2465,6 +2473,16 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         btnAnterior.setEnabled(b);
         jsnAnio.setEnabled(b);
     }
+    public int HallandoAnioEstablesido() throws SQLException {
+        MensualBE mensualBE = new MensualBE(7, (int) jsnAnio.getValue(), new V().fecha(jdcFecha), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "1");
+        cMensualBLL mensualBLL = new cMensualBLL();
+        MensualBE listmensualBE = mensualBLL.LeerObj(new Coneccion(), mensualBE);
+        if (listmensualBE != null) {
+            return new V().numeroAnioR(listmensualBE.getFecha());
+        }
+
+        return 0;
+    }
     public void VuelveACargarLista() throws SQLException {
         this.numeroDeEntradas = 0;
         this.indiceEntradaActual= 0;
@@ -2590,6 +2608,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         //extras
         IdMes = new V().numeroMes(mensualBE.getFecha());
         AsignarMes();
+//        lblMes.setText(Mes[IdMes]);
     }
     
     public void cargarCamposNuevo(MensualBE mensualBE) {

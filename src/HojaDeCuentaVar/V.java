@@ -79,6 +79,9 @@ public final class V {
     public int numeroAnio(Date fecha){
         return (fecha.getYear());
     }
+    public int numeroAnioR(Date fecha){//EL AÑO LA FIRME
+        return (fecha.getYear()+1900);
+    }
     /**
      * @return the Antecesor
      */
