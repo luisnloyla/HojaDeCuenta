@@ -110,42 +110,50 @@ public class conex {
                                 "    ,Codigo varchar(50) " +
                                 "    ,Descripcion varchar(100) " +
                                 "    ,Id_Parametro_Origen int " +
+                                "    ,Tipo int " +
+                                "    ,FLAGACTIVO CHAR(10)" +
                                 " )");
-                        st.executeUpdate("INSERT INTO PARAMETRO (CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN)VALUES"
-                                + " ('T','TRANSACCION',0)"//1
-                                + ",('001','ENTRADA_RECIBIDO',1)"//2
-                                + ",('002','ENTRADA_CUENTACORRIENTE',1)"//3
-                                + ",('003','ENTRADA_OTRO',1)"//4
-                                + ",('004','SALIDA',1)"//5
+                        st.executeUpdate("INSERT INTO PARAMETRO (CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,Tipo,FLAGACTIVO)VALUES"
+                                + " ('T','TRANSACCION',0,0,'1')"//1
+                                + ",('001','ENTRADA_RECIBIDO',1,0,'1')"//2
+                                + ",('002','ENTRADA_CUENTACORRIENTE',1,0,'1')"//3
+                                + ",('003','ENTRADA_OTRO',1,0,'1')"//4
+                                + ",('004','SALIDA',1,0,'1')"//5
                                 
-                                + ",('O','Contribuciones para la OM',2)"//6
-                                + ",('S','Contribuciones para el FSR',2)"//7
-                                + ",('C','Contribuciones de la Congregación',2)"//8
-                                + ",('T','Boletos de autobus',2)"//9
+                                + ",('O','Contribuciones para la OM',2,0,'1')"//6
+                                + ",('S','Contribuciones para el FSR',2,0,'1')"//7
+                                + ",('C','Contribuciones de la Congregación',2,0,'1')"//8
+                                + ",('T','Boletos de autobus',2,0,'1')"//9
                                 
-                                + ",('D','Depositado en la cuenta corriente',3)"//10
-                                + ",('I','Intereses',3)"//11
+                                + ",('D','Depositado en la cuenta corriente',3,0,'1')"//10
+                                + ",('I','Intereses',3,0,'1')"//11
                                 
-                                + ",('B','Fondos Depositados',4)"//12
+                                + ",('B','Fondos Depositados',4,0,'1')"//12
                                 
-                                + ",('G','Gastos visita supte. Circuito (num. 204)',5)"//13
-                                + ",('G','Articulos de limpieza (num. 205)',5)"//14
-                                + ",('G','Compañía Electrica Unida (num. 206)',5)"//15
-                                + ",('G','Recargo por servicio bancario',5)"//16
-                                + ",('G','Cheque num. 206 anulado (cambio de nombre)',5)"//17
-                                + ",('G','Compañía Electrica Consolidada (num. 207)',5)"//18
-                                + ",('G','Compañía de gas (num. 208)',5)"//19
-                                + ",('ALP','ACTUAL_LARGOPLAZO',0)"//20
-                                + ",('','Boleto de autobús',20)"//21
-                                + ",('','Saldo restante del préstamo',20)"//22
+                                + ",('G','Gastos visita supte. Circuito (num. 204)',5,1,'1')"//13
+                                + ",('G','Articulos de limpieza (num. 205)',5,1,'1')"//14
+                                + ",('G','Compañía Electrica Unida (num. 206)',5,1,'1')"//15
+                                + ",('G','Recargo por servicio bancario',5,1,'1')"//16
+                                + ",('G','Cheque num. 206 anulado (cambio de nombre)',5,1,'1')"//17
+                                + ",('G','Compañía Electrica Consolidada (num. 207)',5,1,'1')"//18
+                                + ",('G','Compañía de gas (num. 208)',5,1,'1')"//19
+                                + ",('ALP','ACTUAL_LARGOPLAZO',0,0,'1')"//20
+                                + ",('','Boleto de autobús',20,1,'1')"//21
+                                + ",('','Saldo restante del préstamo',20,1,'1')"//22
                                 + "");
                         st.executeUpdate("CREATE TABLE Oblifinmes("
-                        + " Id_Oblifinmes INT NOT NULL PRIMARY KEY  GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)" 
-                        + ", Id_Mensual INT NOT NULL"
-                        + ", Obligacion VARCHAR(200)"
-                        + ", Importe    FLOAT"
-                        + ", Actual_Plazo CHAR(1)"
-                        + ", FlagActivo CHAR(1))");                        
+                                + " Id_Oblifinmes INT NOT NULL PRIMARY KEY  GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)" 
+                                + ", Id_Mensual INT NOT NULL"
+                                + ", Obligacion VARCHAR(200)"
+                                + ", Importe    FLOAT"
+                                + ", Actual_Plazo CHAR(1)"
+                                + ", FlagActivo CHAR(1))");
+                        st.executeUpdate("CREATE TABLE AUTOMATICO("
+                                + "ID_AUTOMATICO INT NOT NULL PRIMARY KEY  GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)"
+                                + ",CODIGO INT"
+                                + ",DESCRIPCION VARCHAR(32000)"
+                                + ",IndiceDESCRIPCION GENERATED ALWAYS AS(UPPER(DESCRIPCION)))");
+                        st.executeUpdate("CREATE INDEX AUTOMATICOIndiceCodigo ON AUTOMATICO(IndiceDESCRIPCION)");
 //                        JOptionPane.showMessageDialog(null, "SE CREO LAS TABLAS", "Advertencia",JOptionPane.WARNING_MESSAGE);
                         JOptionPane.showMessageDialog(null, "SE CREO LAS TABLAS", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -153,7 +161,7 @@ public class conex {
           }
           catch (Exception ex)
           {
-                JOptionPane.showMessageDialog(null, "Hubo un error en la conexion a la Base de Datos, el programa se cerrara.","ERROR",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Hubo un error en la conexion a la Base de Datos, el programa se cerrara. "+ex,"ERROR",JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
           }
         return conex;

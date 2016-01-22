@@ -1,11 +1,10 @@
 package HojaDeCuenta.TB.Editor;
-import HojaDeCuenta.AutoCompletar;
 import HojaDeCuenta.TB.Class.OblifinmesC;
 import HojaDeCuenta.TB.TableModel.OblifinmesTM;
 import HojaDeCuentaBE.ParametroBE;
 import HojaDeCuentaBL.cParametroBLL;
 import HojaDeCuentaVar.V;
-import com.mxrck.autocompleter.TextAutoCompleter;
+import HojaDeCuenta.AutoCom.TextAutoCompleter;
 import ejecutar.Coneccion;
 import java.awt.Component;
 import java.sql.SQLException;
@@ -25,6 +24,7 @@ public class OblifinmesEditor extends AbstractCellEditor implements TableCellEdi
    protected Object value;
    
    JComponent component = new JTextField();
+   
    TextAutoCompleter textAutoCompleter;
    public OblifinmesEditor() throws SQLException {
 //        jTextField = new JTextField();
@@ -39,8 +39,7 @@ public class OblifinmesEditor extends AbstractCellEditor implements TableCellEdi
 //        textAutoCompleter.addItem("manoa");
 //        component = new JTextField();
         component.setOpaque(true);
-        textAutoCompleter = new TextAutoCompleter((JTextField) component);
-        
+        textAutoCompleter = new TextAutoCompleter((JTextField) component);        
         llenadoAutomatico();
    }
    @Override
@@ -82,15 +81,14 @@ public class OblifinmesEditor extends AbstractCellEditor implements TableCellEdi
         return component;
    }
    public void llenadoAutomatico() throws SQLException{//ACCION 2
-       ParametroBE objParametroBE = new ParametroBE(2, 0, "ALP", "ACTUAL_LARGOPLAZO", 0);
+       ParametroBE objParametroBE = new ParametroBE(2, 0, "ALP", "ACTUAL_LARGOPLAZO", 0,0,new V().cFlagActivo);
         cParametroBLL objParametroBLL = new cParametroBLL();
         List<ParametroBE> listParametroBE = objParametroBLL.Leer(new Coneccion(), objParametroBE);
-        List<AutoCompletar> aAutoCompletar = new ArrayList<>();        
+        ArrayList<String> aAutoCompletar = new ArrayList<>();        
         for (ParametroBE listR : listParametroBE) {
-           AutoCompletar p = new AutoCompletar(""+listR.getDescripcion(), 25);
-           aAutoCompletar.add(p);
+           aAutoCompletar.add(listR.getDescripcion());
         }
         textAutoCompleter.removeAllItems();
-        textAutoCompleter.addItems(aAutoCompletar.toArray());
+        textAutoCompleter.addItems(aAutoCompletar);
    }
 }

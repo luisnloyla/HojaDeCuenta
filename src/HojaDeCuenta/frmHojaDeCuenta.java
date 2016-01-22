@@ -15,10 +15,9 @@ import HojaDeCuentaBL.cMensualBLL;
 import HojaDeCuentaBL.cParametroBL;
 import HojaDeCuentaBL.cParametroBLL;
 import HojaDeCuentaVar.V;
-import com.mxrck.autocompleter.tests.Person;
+import HojaDeCuenta.AutoCom.TextAutoCompleter;
 import ejecutar.Coneccion;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -58,7 +57,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     
     int arranqueTabla = 0;
     //****AUTOCOMPLETO *********************************************************
-    private List<Person> ArrayList;
+    
     
     public frmHojaDeCuenta() throws SQLException {
         super("HOJA DE CUENTA  CONGREGACION:"+new V().cCongregacion);
@@ -123,7 +122,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         mtl = new OblifinmesTM(1,Integer.parseInt(lblId_Mes.getText()));
         tablaOblifinmesTL();
         mtparametro = new ParametroTM();
-        tablaParametro();        
+        tablaParametro();
         //----AHORA AQUI ESTOY
         this.setLocationRelativeTo(this);
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/currency.png"));
@@ -1378,7 +1377,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
             }
         ));
         jtParametro.setComponentPopupMenu(jpmCrudParametro);
@@ -2212,7 +2211,8 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     private void jmpNuevoParametroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpNuevoParametroActionPerformed
         if (jtParametro.getSelectedRow()!=-1){
             ParametroC objParametroTC = null;
-            objParametroTC = new ParametroC(0, "", "", 0);
+            objParametroTC = new ParametroC(0, "", "", 0,0,new V().cFlagInActivo);
+            
             mtparametro.insertRow(objParametroTC);
             jtParametro.getSelectionModel().setSelectionInterval(jtParametro.getRowCount()-1,jtParametro.getRowCount()-1);
         }
@@ -2224,12 +2224,14 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         String codigo = jtParametro.getValueAt(filaSelect, 1).toString();
         String descripcion = jtParametro.getValueAt(filaSelect, 2).toString();
         int Id_ParOriginal = Integer.parseInt(jtParametro.getValueAt(filaSelect, 3).toString());
+        int tipo = Integer.parseInt(jtParametro.getValueAt(filaSelect, 4).toString());
+        String flag = jtParametro.getValueAt(filaSelect, 5).toString();
         ParametroBE objParametroBE = null;
         cParametroBL objParametroBL = new cParametroBL();
         int ires = 0;
         try {
             if (Id_Par == 0) {//accion = 1
-                objParametroBE = new ParametroBE(1, 0, codigo, descripcion, Id_ParOriginal);            
+                objParametroBE = new ParametroBE(1, 0, codigo, descripcion, Id_ParOriginal,tipo,flag);
                 ires = objParametroBL.Insertar(new Coneccion(), objParametroBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
@@ -2239,7 +2241,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 //                    actrualizarParametro(ires, filaSelect, 0);
                 }
             }else{//accio = 1
-                objParametroBE = new ParametroBE(1, Id_Par, codigo, descripcion, Id_ParOriginal);
+                objParametroBE = new ParametroBE(1, Id_Par, codigo, descripcion, Id_ParOriginal,tipo,flag);
                 ires = objParametroBL.Actualizar(new Coneccion(), objParametroBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
@@ -2260,7 +2262,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 ParametroBE objParametroBE = null;                
                 cParametroBL objParametroBL = new cParametroBL();
                 int ires = 0;
-                objParametroBE = new ParametroBE(1, id_Par, "", "", 0);
+                objParametroBE = new ParametroBE(1, id_Par, "", "", 0,0,new V().cFlagActivo);
                 ires = objParametroBL.Eliminar(new Coneccion(), objParametroBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se Elimino", "Advertencia",JOptionPane.WARNING_MESSAGE);
@@ -2273,7 +2275,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             }            
         }
         if (jtParametro.getRowCount()==0 ){
-            ParametroC objParametroC = new ParametroC(0, "", "", 0);
+            ParametroC objParametroC = new ParametroC(0, "", "", 0,0,new V().cFlagInActivo);
             mtparametro.insertRow(objParametroC);
             jtParametro.getSelectionModel().setSelectionInterval(0,0);
         }
@@ -2737,7 +2739,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         //*****************************************************************
             if (numeroDeEntradas != 0) {
                 if (arranqueTabla != 0) {
-                    eliminarfilasActual();            
+                    eliminarfilasActual();
                     eliminarfilaslargoPlazo();
                     try {
                         llenarfilasActual();
@@ -2816,23 +2818,23 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         return r;
     }    
     public void llenarAutcompleto(String CodigoPadre,String Descripcion) throws SQLException {
-        ParametroBE objParametroBE = new ParametroBE(3, 0, CodigoPadre, Descripcion, 0);
+        ParametroBE objParametroBE = new ParametroBE(3, 0, CodigoPadre, Descripcion, 0,0,new V().cFlagActivo);
         cParametroBLL objParametroBLL = new cParametroBLL();
         List<ParametroBE> listParametroBE = objParametroBLL.Leer(new Coneccion(), objParametroBE);
         if (listParametroBE.size() == 0) {
-            ParametroBE objParametroBE02 = new ParametroBE(4, 0, CodigoPadre, Descripcion, 0);
+            ParametroBE objParametroBE02 = new ParametroBE(4, 0, CodigoPadre, Descripcion, 0,0,new V().cFlagActivo);
             cParametroBLL objParametroBLL02 = new cParametroBLL();
             List<ParametroBE> listParametroBE02 = objParametroBLL.Leer(new Coneccion(), objParametroBE02);
             for (ParametroBE listParametroBE021 : listParametroBE02) {
                 if (listParametroBE02.size() > 0) {
                     for (ParametroBE obj : listParametroBE02) {
-                        ParametroBE objParametroBE03 = new ParametroBE(1, 0, "", Descripcion, listParametroBE021.getId_Parametro());
+                        ParametroBE objParametroBE03 = new ParametroBE(1, 0, "", Descripcion, listParametroBE021.getId_Parametro(),0,new V().cFlagActivo);
                         cParametroBL objParametroBL = new cParametroBL();
                         V v = new V();v.selleno = 1;v.selleno02 = 1;
                         if(objParametroBL.Insertar(new Coneccion(), objParametroBE03)< 0){
                             JOptionPane.showMessageDialog(rootPane, "No se inserto datos al auto completado");
                             v.selleno = 0;v.selleno02 = 0;
-                        }
+                        }                        
                         return;
                     }
                 }

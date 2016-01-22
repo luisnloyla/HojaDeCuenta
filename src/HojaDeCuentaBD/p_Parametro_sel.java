@@ -23,15 +23,18 @@ public class p_Parametro_sel {
     private String Codigo ;
     private String Descripcion ;
     private int Id_Parametro_Origen;
+    private int     Tipo;
+    private String  FlagActivo ;
     private int ReturnVal;
-    private List<ParametroBE> aParametroBE = new ArrayList<>(); 
-
+    private List<ParametroBE> aParametroBE = new ArrayList<>();
     public p_Parametro_sel(Coneccion strCn,ParametroBE objParametroBE) {
         this.Accion = objParametroBE.getAccion();
         this.Id_Parametro = objParametroBE.getId_Parametro();
         this.Codigo = objParametroBE.getCodigo();
         this.Descripcion = objParametroBE.getDescripcion();
         this.Id_Parametro_Origen = objParametroBE.getId_Parametro_Origen();
+        this.Tipo = objParametroBE.getTipo();
+        this.FlagActivo = objParametroBE.getFlagActivo();
         this.ReturnVal = objParametroBE.getReturnVal();
         Statement st=null;
         ResultSet rs=null;
@@ -45,8 +48,8 @@ public class p_Parametro_sel {
 
                 rs=st.executeQuery("SELECT*FROM Parametro");
                 while (rs.next()) {
-//                    System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
-                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+//                    System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));                    
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6));
                     aParametroBE.add(ParametroBE);
                 }
               rs.close();
@@ -58,7 +61,7 @@ public class p_Parametro_sel {
                 rs=st.executeQuery("SELECT * FROM PARAMETRO WHERE Id_Parametro_Origen = (SELECT Id_Parametro FROM Parametro WHERE CODIGO = '"+this.Codigo+"' AND Id_Parametro_Origen = 0)");
                 while (rs.next()) {
                     System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
-                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6));
                     aParametroBE.add(ParametroBE);
                 }
               rs.close();
@@ -69,7 +72,7 @@ public class p_Parametro_sel {
                 rs=st.executeQuery("SELECT * FROM PARAMETRO WHERE Id_Parametro_Origen = (SELECT Id_Parametro FROM Parametro WHERE CODIGO = '"+this.Codigo+"' AND Id_Parametro_Origen = 0) AND Descripcion = '"+this.Descripcion+"'");
                 while (rs.next()) {
                     System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
-                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6));
                     aParametroBE.add(ParametroBE);
                 }
               rs.close();
@@ -81,7 +84,17 @@ public class p_Parametro_sel {
                 while (rs.next()) {
                     System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
                     System.out.println("AQUI LUCHIN NAZARIO");
-                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));                    
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6));
+                    aParametroBE.add(ParametroBE);
+                }
+              rs.close();
+              st.close(); 
+              this.ReturnVal=0;
+            }
+            if (this.Accion == 5){//
+                rs=st.executeQuery("SELECT * FROM Parametro WHERE " + this.Descripcion);
+                while (rs.next()) {                    
+                    ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6));
                     aParametroBE.add(ParametroBE);
                 }
               rs.close();

@@ -1,11 +1,10 @@
 package HojaDeCuenta.TB.Editor;
-import HojaDeCuenta.AutoCompletar;
 import HojaDeCuenta.TB.Class.OblifinmesC;
 import HojaDeCuenta.TB.TableModel.OblifinmesTM;
 import HojaDeCuentaBE.ParametroBE;
 import HojaDeCuentaBL.cParametroBLL;
 import HojaDeCuentaVar.V;
-import com.mxrck.autocompleter.TextAutoCompleter;
+import HojaDeCuenta.AutoCom.TextAutoCompleter;
 import ejecutar.Coneccion;
 import java.awt.Component;
 import java.sql.SQLException;
@@ -82,15 +81,15 @@ public class OblifinmesEditor02 extends AbstractCellEditor implements TableCellE
         return component;
    }
    public void llenadoAutomatico() throws SQLException{//ACCION 2
-       ParametroBE objParametroBE = new ParametroBE(2, 0, "ALP", "ACTUAL_LARGOPLAZO", 0);
+       ParametroBE objParametroBE = new ParametroBE(2, 0, "ALP", "ACTUAL_LARGOPLAZO", 0,0,new V().cFlagActivo);
         cParametroBLL objParametroBLL = new cParametroBLL();
         List<ParametroBE> listParametroBE = objParametroBLL.Leer(new Coneccion(), objParametroBE);
-        List<AutoCompletar> aAutoCompletar = new ArrayList<>();        
+        ArrayList<String> aAutoCompletar = new ArrayList<>();        
         for (ParametroBE listR : listParametroBE) {
-           AutoCompletar p = new AutoCompletar(""+listR.getDescripcion(), 25);
-           aAutoCompletar.add(p);
+//           AutoCompletar p = new AutoCompletar(""+listR.getDescripcion(), 25);
+           aAutoCompletar.add(listR.getDescripcion());
         }
         textAutoCompleter.removeAllItems();
-        textAutoCompleter.addItems(aAutoCompletar.toArray());
+        textAutoCompleter.addItems(aAutoCompletar);
    }
 }

@@ -11,6 +11,7 @@ import com.toedter.calendar.JDateChooser;
 import ejecutar.Coneccion;
 //import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -81,6 +82,40 @@ public final class V {
     }
     public int numeroAnioR(Date fecha){//EL AÑO LA FIRME
         return (fecha.getYear()+1900);
+    }
+    public List<String> lista(String s){
+        List<String> list = new ArrayList<>();
+        String cadA="";
+        s=s +" ";//le aumento un espacio en blanco al para evitarme de problemas para que si o si guarde las palabras
+        for (int i = 0; i < s.length(); i++) {
+            if (' '!= s.charAt(i)){
+                cadA=cadA+s.substring(i,i+1);
+            }
+            else{
+                if(cadA.length()>0){
+                    list.add(cadA);
+                    cadA="";
+                }
+            }
+        }
+        return list;
+    }
+    public String cadenaSql(List<String> items,String columna){
+        String cadena = "";
+        int cont = 1;
+        for (String item : items) {
+            if (cont == 1) {
+                cadena = columna + " like '%"+item+"%'";
+            }else{
+                cadena = cadena + " and "+columna + " like '%"+item+"%'";
+            }
+            cont++;
+        }
+        System.out.println(cadena);
+        return cadena;
+    }
+    public String cadenaTerminada(String cad,String columna){        
+        return cadenaSql(lista(cad), columna);
     }
     /**
      * @return the Antecesor

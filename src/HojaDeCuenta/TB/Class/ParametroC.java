@@ -7,6 +7,7 @@ package HojaDeCuenta.TB.Class;
 
 import HojaDeCuentaBE.ParametroBE;
 import HojaDeCuentaBL.cParametroBLL;
+import HojaDeCuentaVar.V;
 import ejecutar.Coneccion;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,14 +24,20 @@ public class ParametroC {
     private int Id_Parametro ;
     private String Codigo ;
     private String Descripcion ;
-    private int Id_Parametro_Origen;    
+    private int Id_Parametro_Origen; 
+    private int     Tipo;
+    private String  FlagActivo ;
 
-    public ParametroC(int Id_Parametro, String Codigo, String Descripcion, int Id_Parametro_Origen) {
+    public ParametroC(int Id_Parametro, String Codigo, String Descripcion, int Id_Parametro_Origen, int Tipo, String FlagActivo) {
         this.Id_Parametro = Id_Parametro;
         this.Codigo = Codigo;
         this.Descripcion = Descripcion;
         this.Id_Parametro_Origen = Id_Parametro_Origen;
+        this.Tipo = Tipo;
+        this.FlagActivo = FlagActivo;
     }
+    
+    
 
     public int getId_Parametro() {
         return Id_Parametro;
@@ -63,18 +70,32 @@ public class ParametroC {
     public void setId_Parametro_Origen(int Id_Parametro_Origen) {
         this.Id_Parametro_Origen = Id_Parametro_Origen;
     }   
-    
+    public int getTipo() {
+        return Tipo;
+    }
+
+    public void setTipo(int Tipo) {
+        this.Tipo = Tipo;
+    }
+
+    public String getFlagActivo() {
+        return FlagActivo;
+    }
+
+    public void setFlagActivo(String FlagActivo) {
+        this.FlagActivo = FlagActivo;
+    }
     public static List<ParametroC> getParametroTC() throws SQLException {                
-        ParametroBE ParametroBE = new ParametroBE(1, 0, "", "", 0);
+        ParametroBE ParametroBE = new ParametroBE(1, 0, "", "", 0,0,new V().cFlagActivo);
         cParametroBLL ParametroBLL= new cParametroBLL();
         List<ParametroBE> objParametroBE=ParametroBLL.Leer(new Coneccion(), ParametroBE);
         List<ParametroC> objParametroTC = new ArrayList<>();
         for (ParametroBE obj : objParametroBE) {
-            ParametroC utc = new ParametroC(obj.getId_Parametro() , obj.getCodigo(), obj.getDescripcion(), obj.getId_Parametro_Origen());
+            ParametroC utc = new ParametroC(obj.getId_Parametro() , obj.getCodigo(), obj.getDescripcion(), obj.getId_Parametro_Origen(),obj.getTipo(),obj.getFlagActivo());
             objParametroTC.add(utc);
         }
         if (objParametroBE.size()==0) {
-            ParametroC utc = new ParametroC(0, "", "", 0);
+            ParametroC utc = new ParametroC(0, "", "", 0,0,new V().cFlagInActivo);
             objParametroTC.add(utc);
         }
         return objParametroTC;

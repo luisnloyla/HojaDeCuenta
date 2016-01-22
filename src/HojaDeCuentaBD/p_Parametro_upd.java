@@ -22,6 +22,8 @@ public class p_Parametro_upd {
     private String Codigo ;
     private String Descripcion ;
     private int Id_Parametro_Origen;
+    private int     Tipo;
+    private String  FlagActivo ;
     private int ReturnVal;
     public p_Parametro_upd(Coneccion strCn,ParametroBE objParametroBE) throws SQLException {
         this.Accion = objParametroBE.getAccion();
@@ -29,6 +31,8 @@ public class p_Parametro_upd {
         this.Codigo = objParametroBE.getCodigo();
         this.Descripcion = objParametroBE.getDescripcion();
         this.Id_Parametro_Origen = objParametroBE.getId_Parametro_Origen();
+        this.Tipo = objParametroBE.getTipo();
+        this.FlagActivo = objParametroBE.getFlagActivo();
         this.ReturnVal = objParametroBE.getReturnVal();
         Connection con = strCn.getCon();
         Statement st=null;
