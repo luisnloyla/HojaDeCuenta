@@ -2075,8 +2075,8 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
-                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                     llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
+                    JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             resultadoActualLargo();
@@ -2167,9 +2167,10 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
+                    llenarAutcompleto(new V().cACTUAL_LARGOPLAZO, descripcion);
                     JOptionPane.showMessageDialog(null, "Guardado exitoso", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
                 }
-            }                    
+            }
             resultadoActualLargo();
         } catch (SQLException ex) {
             Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);

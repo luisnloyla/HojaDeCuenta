@@ -12,21 +12,18 @@ import ejecutar.Coneccion;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
-
-
 /**
  *
  * @author Loyola
  */
 public class ParametroC {
 
-    private int Id_Parametro ;
-    private String Codigo ;
-    private String Descripcion ;
-    private int Id_Parametro_Origen; 
-    private int     Tipo;
-    private String  FlagActivo ;
+    private int    Id_Parametro;
+    private String Codigo;
+    private String Descripcion;
+    private int    Id_Parametro_Origen;
+    private int    Tipo;
+    private String FlagActivo;
 
     public ParametroC(int Id_Parametro, String Codigo, String Descripcion, int Id_Parametro_Origen, int Tipo, String FlagActivo) {
         this.Id_Parametro = Id_Parametro;
@@ -35,9 +32,7 @@ public class ParametroC {
         this.Id_Parametro_Origen = Id_Parametro_Origen;
         this.Tipo = Tipo;
         this.FlagActivo = FlagActivo;
-    }
-    
-    
+    }  
 
     public int getId_Parametro() {
         return Id_Parametro;
