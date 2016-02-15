@@ -21,8 +21,7 @@ public class p_Parametro_ins {
     private int Id_Parametro ;
     private String Codigo ;
     private String Descripcion ;
-    private int Id_Parametro_Origen;
-    private int     Tipo;
+    private int Id_Parametro_Origen;    
     private String  FlagActivo ;
     private int ReturnVal;
 
@@ -31,8 +30,7 @@ public class p_Parametro_ins {
         this.Id_Parametro = objParametroBE.getId_Parametro();
         this.Codigo = objParametroBE.getCodigo();
         this.Descripcion = objParametroBE.getDescripcion();
-        this.Id_Parametro_Origen = objParametroBE.getId_Parametro_Origen();
-        this.Tipo = objParametroBE.getTipo();
+        this.Id_Parametro_Origen = objParametroBE.getId_Parametro_Origen();        
         this.FlagActivo = objParametroBE.getFlagActivo();
         this.ReturnVal = objParametroBE.getReturnVal();
         Connection con = strCn.getCon();
@@ -51,17 +49,16 @@ public class p_Parametro_ins {
                 }
 //              st.executeUpdate("CREATE TABLE USUARIO(Id_Usuario INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,Nombre VARCHAR(100),Password VARCHAR(100))");
                 
-                st.executeUpdate("INSERT INTO Parametro  (Codigo,Descripcion,Id_Parametro_Origen,Tipo,FlagActivo)VALUES("+
+                st.executeUpdate("INSERT INTO Parametro  (Codigo,Descripcion,Id_Parametro_Origen,FlagActivo)VALUES("+
                     "'"+this.Codigo+"'"+
                     ",'"+this.Descripcion+"'"+
-                    ","+this.Id_Parametro_Origen +
-                    ","+this.Tipo +
+                    ","+this.Id_Parametro_Origen +                    
                     ",'"+this.FlagActivo +
                         "')");
                 rs=st.executeQuery("SELECT max(ID_PARAMETRO) FROM Parametro");
                 int idActual=0;
                 while (rs.next()) {
-                    idActual=rs.getInt(1);                    
+                    idActual=rs.getInt(1);
                 }
                 this.ReturnVal=-1;
                 if (idValidAnterior<idActual) {

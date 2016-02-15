@@ -1,6 +1,8 @@
 package HojaDeCuenta;
 import conexion.conex;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -47,18 +49,22 @@ public class MostrarResultadosConsulta extends JFrame
  public MostrarResultadosConsulta()
  {
     super( "Visualizacion de los resultados de la consulta" );
-
+    //AHORA LA CENTRARÉ EN LA PANTALLA
+    Dimension pantalla, cuadro;
+    pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+    cuadro = this.getSize();
+    this.setLocation(((pantalla.width - cuadro.width)/3),(pantalla.height - cuadro.height)/3);
     // crea objeto ResultSetTableModel y muestra la tabla de la base de datos
     try
     {
         // crea objeto TableModel para los resultados de la consulta SELECT * FROM autores
      modeloTabla = new ResultSetTableModel( CONTROLADOR, URL_BASEDATOS,
-     NOMBREUSUARIO, CONTRASENIA, CONSULTA_PREDETERMINADA );
+     NOMBREUSUARIO, CONTRASENIA, CONSULTA_PREDETERMINADA);
 
     // establece objeto JTextArea en el que el usuario escribe las consultas
-     areaConsulta = new JTextArea( CONSULTA_PREDETERMINADA, 3, 100 );
-     areaConsulta.setWrapStyleWord( true );
-     areaConsulta.setLineWrap( true );
+     areaConsulta = new JTextArea( CONSULTA_PREDETERMINADA, 3, 100);
+     areaConsulta.setWrapStyleWord(true);
+     areaConsulta.setLineWrap(true);
 
      JScrollPane scrollPane = new JScrollPane( areaConsulta,
      ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -66,12 +72,14 @@ public class MostrarResultadosConsulta extends JFrame
 
      // establece objeto JButton para enviar las consultas
      JButton botonEnviar = new JButton( "Enviar consulta" );
+     JButton botonPrincipal = new JButton( "|^|" );
 
      // crea objeto Box para manejar la colocación de areaConsulta y
      // botonEnviar en la GUI
      Box boxNorte = Box.createHorizontalBox();
      boxNorte.add( scrollPane );
      boxNorte.add( botonEnviar );
+     boxNorte.add( botonPrincipal );
 
      // crea delegado de JTable para modeloTabla
      JTable tablaResultados = new JTable( modeloTabla );
@@ -130,7 +138,20 @@ public class MostrarResultadosConsulta extends JFrame
             } // fin de actionPerformed
         } // fin de la clase interna ActionListener
      ); // fin de la llamada a addActionListener
-
+     // crea componente de escucha de eventos para botonEnviar
+     botonPrincipal.addActionListener(
+             
+        new ActionListener()
+        {
+        // pasa la consulta al modelo de la tabla
+        public void actionPerformed( ActionEvent evento )
+           {
+                // realiza una nueva consulta
+               setVisible(false);
+            } // fin de actionPerformed
+         
+        } // fin de la clase interna ActionListener
+     ); // fin de la llamada a addActionListener
      final TableRowSorter< TableModel > sorter =
      new TableRowSorter< TableModel >( modeloTabla );
      tablaResultados.setRowSorter( sorter );
@@ -202,7 +223,7 @@ public class MostrarResultadosConsulta extends JFrame
     ); // fin de la llamada a addWindowListener
  } // fin del constructor de MostrarResultadosConsulta
  // ejecuta la aplicación
- public static void main( String args[] )
+ public static void main( String args[])
  {
     new MostrarResultadosConsulta();
  } // fin de main

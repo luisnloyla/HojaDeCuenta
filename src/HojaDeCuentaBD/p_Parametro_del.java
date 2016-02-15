@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
@@ -22,8 +21,7 @@ public class p_Parametro_del {
     private int Id_Parametro ;
     private String Codigo ;
     private String Descripcion ;
-    private int Id_Parametro_Origen;
-    private int     Tipo;
+    private int Id_Parametro_Origen;    
     private String  FlagActivo ;
     private int ReturnVal;
 
@@ -32,8 +30,7 @@ public class p_Parametro_del {
         this.Id_Parametro = objParametroBE.getId_Parametro();
         this.Codigo = objParametroBE.getCodigo();
         this.Descripcion = objParametroBE.getDescripcion();
-        this.Id_Parametro_Origen = objParametroBE.getId_Parametro_Origen();
-        this.Tipo = objParametroBE.getTipo();
+        this.Id_Parametro_Origen = objParametroBE.getId_Parametro_Origen();        
         this.FlagActivo = objParametroBE.getFlagActivo();
         this.ReturnVal = objParametroBE.getReturnVal();
         Connection con = strCn.getCon();

@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejecutar;
 import conexion.conex;
 import java.sql.*;
-/**
- *
- * @author Loyola
- */
+
 public class Coneccion {
     private static Connection con;
     private Statement st=null;
@@ -27,9 +19,6 @@ public class Coneccion {
     public static void setCon(Connection aCon) {
         con = aCon;
     }
-    
-  
-    
 
     public Statement getSt() {
         return st;

@@ -81,7 +81,7 @@ public class OblifinmesEditor02 extends AbstractCellEditor implements TableCellE
         return component;
    }
    public void llenadoAutomatico() throws SQLException{//ACCION 2
-       ParametroBE objParametroBE = new ParametroBE(2, 0, "ALP", "ACTUAL_LARGOPLAZO", 0,0,new V().cFlagActivo);
+       ParametroBE objParametroBE = new ParametroBE(2, 0, "ALP", "ACTUAL_LARGOPLAZO",0,new V().cFlagActivo);
         cParametroBLL objParametroBLL = new cParametroBLL();
         List<ParametroBE> listParametroBE = objParametroBLL.Leer(new Coneccion(), objParametroBE);
         ArrayList<String> aAutoCompletar = new ArrayList<>();        

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package HojaDeCuentaBD;
 
 import HojaDeCuentaBE.ParametroBE;
@@ -12,18 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author Loyola
- */
 public class p_Parametro_upd {
     private int Accion;
     private int Id_Parametro ;
-    private String Codigo ;
-    private String Descripcion ;
+    private String Codigo;
+    private String Descripcion;
     private int Id_Parametro_Origen;
-    private int     Tipo;
-    private String  FlagActivo ;
+    private String  FlagActivo;
     private int ReturnVal;
     public p_Parametro_upd(Coneccion strCn,ParametroBE objParametroBE) throws SQLException {
         this.Accion = objParametroBE.getAccion();
@@ -31,7 +21,6 @@ public class p_Parametro_upd {
         this.Codigo = objParametroBE.getCodigo();
         this.Descripcion = objParametroBE.getDescripcion();
         this.Id_Parametro_Origen = objParametroBE.getId_Parametro_Origen();
-        this.Tipo = objParametroBE.getTipo();
         this.FlagActivo = objParametroBE.getFlagActivo();
         this.ReturnVal = objParametroBE.getReturnVal();
         Connection con = strCn.getCon();
@@ -40,13 +29,18 @@ public class p_Parametro_upd {
         try {
             con.setAutoCommit(false);
             st = con.createStatement();
+            //******************************************************************
+            rs = st.executeQuery("SELECT*FROM PARAMETRO WHERE (CODIGO LIKE 'K_E%' OR CODIGO LIKE 'K_D%') AND ID_PARAMETRO = "+this.Id_Parametro);
+            while (rs.next()) {
+                throw new UnsupportedOperationException("Error al editar reegistros K_E,K_D");                 
+            }            
+            //******************************************************************
             if (this.Accion == 1){
                 st.executeUpdate("UPDATE PARAMETRO SET "
                         +"CODIGO='"+this.Codigo+"'"
                         +",DESCRIPCION='"+this.Descripcion+"'"
                         +",Id_Parametro_Origen= "+this.Id_Parametro_Origen
                + " WHERE ID_PARAMETRO = "+this.Id_Parametro);
-                
 //                st.close(); 
               this.ReturnVal=0;
             }
@@ -63,6 +57,10 @@ public class p_Parametro_upd {
             if (this.Accion == 3){//ELIMINACION DE UNA TABLA FISICA EN UNA BASE DE DATOS
               st.executeUpdate("DROP TABLE Parametro");
 //              st.close(); 
+              this.ReturnVal=0;
+            }
+            if (this.Accion == 4){//FLAGACTIVO = 0
+              st.executeUpdate("UPDATE PARAMETRO SET FLAGACTIVO = '0' WHERE Id_Parametro = "+this.Id_Parametro);
               this.ReturnVal=0;
             }
             con.commit();

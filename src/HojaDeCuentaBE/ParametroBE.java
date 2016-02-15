@@ -14,18 +14,16 @@ public class ParametroBE {
     private int     Id_Parametro;
     private String  Codigo;
     private String  Descripcion;
-    private int     Id_Parametro_Origen;
-    private int     Tipo;
+    private int     Id_Parametro_Origen;    
     private String  FlagActivo ;
     private int     ReturnVal;
 
-    public ParametroBE(int Accion, int Id_Parametro, String Codigo, String Descripcion, int Id_Parametro_Origen, int Tipo, String FlagActivo) {
+    public ParametroBE(int Accion, int Id_Parametro, String Codigo, String Descripcion, int Id_Parametro_Origen, String FlagActivo) {
         this.Accion = Accion;
         this.Id_Parametro = Id_Parametro;
         this.Codigo = Codigo;
         this.Descripcion = Descripcion;
         this.Id_Parametro_Origen = Id_Parametro_Origen;
-        this.Tipo = Tipo;
         this.FlagActivo = FlagActivo;        
     }
 
@@ -69,14 +67,6 @@ public class ParametroBE {
         this.Id_Parametro_Origen = Id_Parametro_Origen;
     }
 
-    public int getTipo() {
-        return Tipo;
-    }
-
-    public void setTipo(int Tipo) {
-        this.Tipo = Tipo;
-    }
-
     public String getFlagActivo() {
         return FlagActivo;
     }
@@ -92,6 +82,5 @@ public class ParametroBE {
     public void setReturnVal(int ReturnVal) {
         this.ReturnVal = ReturnVal;
     }
-    
-    
+   
 }

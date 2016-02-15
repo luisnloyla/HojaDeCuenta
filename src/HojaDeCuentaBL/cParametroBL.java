@@ -19,7 +19,7 @@ interface ParametroBL {
     public int Insertar(Coneccion strCn,ParametroBE objParametroBE );
     public int Insertar(Connection strCn,ParametroBE objParametroBE );
     public int Eliminar(Coneccion strCn,ParametroBE objParametroBE );
-    public int Actualizar(Coneccion strCn,ParametroBE objParametroBE );
+    public int Actualizar(Coneccion strCn,ParametroBE objParametroBE );    
 }
 //******************************************************************************
 public class cParametroBL implements ParametroBL{

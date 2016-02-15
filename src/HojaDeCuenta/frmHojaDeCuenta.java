@@ -15,7 +15,6 @@ import HojaDeCuentaBL.cMensualBLL;
 import HojaDeCuentaBL.cParametroBL;
 import HojaDeCuentaBL.cParametroBLL;
 import HojaDeCuentaVar.V;
-import HojaDeCuenta.AutoCom.TextAutoCompleter;
 import ejecutar.Coneccion;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -57,7 +56,8 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     
     int arranqueTabla = 0;
     //****AUTOCOMPLETO *********************************************************
-    
+    MostrarResultadosConsulta consulta = null;
+    int ban = 0;
     
     public frmHojaDeCuenta() throws SQLException {
         super("HOJA DE CUENTA  CONGREGACION:"+new V().cCongregacion);
@@ -87,6 +87,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 //        Else
 //            LlenarCamposDeFilaSeleccionada()
 //        End If
+        
         AsignarMes();
         Calendar c = new GregorianCalendar();
         jdcFecha.setDate(new Date());
@@ -181,7 +182,6 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jpIngreso = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         btnNumeroEntradas = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -251,6 +251,12 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         jPanel15 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
+        btnConsultas = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        txtQuery = new javax.swing.JTextArea();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        txtResultadoQuery = new javax.swing.JTextArea();
+        btnEjecutar = new javax.swing.JButton();
         jPanel18 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
 
@@ -651,13 +657,6 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 
         EGRESO.addTab("Recibido", jpEgreso);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         btnNumeroEntradas.setText("NUMERO DE ENTRADAS");
         btnNumeroEntradas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -687,7 +686,6 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 .addContainerGap(122, Short.MAX_VALUE)
                 .addGroup(jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3)
-                    .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(btnNumeroEntradas))
                 .addGap(201, 201, 201))
@@ -695,15 +693,13 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         jpIngresoLayout.setVerticalGroup(
             jpIngresoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpIngresoLayout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(94, 94, 94)
                 .addComponent(btnNumeroEntradas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addContainerGap(258, Short.MAX_VALUE))
+                .addContainerGap(299, Short.MAX_VALUE))
         );
 
         EGRESO.addTab("CuentaCorriente", jpIngreso);
@@ -1401,7 +1397,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1415,7 +1411,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Configuracion", jPanel14);
@@ -1428,7 +1424,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Usuario", jPanel15);
@@ -1441,20 +1437,55 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Impresion", jPanel16);
+
+        btnConsultas.setText("CONSULTAS");
+        btnConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultasActionPerformed(evt);
+            }
+        });
+
+        txtQuery.setColumns(20);
+        txtQuery.setRows(5);
+        jScrollPane7.setViewportView(txtQuery);
+
+        txtResultadoQuery.setColumns(20);
+        txtResultadoQuery.setRows(5);
+        jScrollPane10.setViewportView(txtResultadoQuery);
+
+        btnEjecutar.setText("INSERTAR");
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 459, Short.MAX_VALUE)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7)
+                    .addComponent(jScrollPane10)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addComponent(btnEjecutar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
+                        .addComponent(btnConsultas)))
+                .addContainerGap())
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConsultas)
+                    .addComponent(btnEjecutar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("SQL", jPanel17);
@@ -1467,7 +1498,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Back", jPanel18);
@@ -1480,7 +1511,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Ayuda", jPanel19);
@@ -2011,11 +2042,19 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtSaldoAnteriorOKeyReleased
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        MostrarResultadosConsulta consulta = new MostrarResultadosConsulta();
-        consulta.show();
-        consulta.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultasActionPerformed
+        if(ban == 0){
+            if (consulta ==null) {
+                consulta = new MostrarResultadosConsulta();
+                consulta.show();
+            }
+            ban = 1;
+            consulta.setVisible(true);
+        }else{
+            ban = 0;
+            consulta.setVisible(false);
+        }
+    }//GEN-LAST:event_btnConsultasActionPerformed
 
     private void btnNumeroEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNumeroEntradasActionPerformed
         btnNumeroEntradas.setText(""+numeroDeEntradas);
@@ -2046,6 +2085,10 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         int filaSelect = jtActuales.getSelectedRow();
         int id_oblifinmes = Integer.parseInt(jtActuales.getValueAt(filaSelect, 0).toString());
         String descripcion = jtActuales.getValueAt(filaSelect, 2).toString();
+        if (descripcion.equals("")) {
+            JOptionPane.showMessageDialog(null, "La descripcion no puede ser vacia", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         float monto = Float.parseFloat(jtActuales.getValueAt(filaSelect, 3).toString());
         if (monto==0) {
             JOptionPane.showMessageDialog(null, "monto no puede ser cero intente otra vez", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
@@ -2138,6 +2181,10 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         int filaSelect = jtLargoPlazo.getSelectedRow();
         int id_oblifinmes = Integer.parseInt(jtLargoPlazo.getValueAt(filaSelect, 0).toString());
         String descripcion = jtLargoPlazo.getValueAt(filaSelect, 2).toString();
+        if (descripcion.equals("")) {
+            JOptionPane.showMessageDialog(null, "La descripcion no puede ser vacia", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         float monto = Float.parseFloat(jtLargoPlazo.getValueAt(filaSelect, 3).toString());
         if (monto==0) {
             JOptionPane.showMessageDialog(null, "monto no puede ser cero intente otra vez", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
@@ -2212,7 +2259,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     private void jmpNuevoParametroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmpNuevoParametroActionPerformed
         if (jtParametro.getSelectedRow()!=-1){
             ParametroC objParametroTC = null;
-            objParametroTC = new ParametroC(0, "", "", 0,0,new V().cFlagInActivo);
+            objParametroTC = new ParametroC(0, "", "", 0,new V().cFlagInActivo);
             
             mtparametro.insertRow(objParametroTC);
             jtParametro.getSelectionModel().setSelectionInterval(jtParametro.getRowCount()-1,jtParametro.getRowCount()-1);
@@ -2225,14 +2272,13 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         String codigo = jtParametro.getValueAt(filaSelect, 1).toString();
         String descripcion = jtParametro.getValueAt(filaSelect, 2).toString();
         int Id_ParOriginal = Integer.parseInt(jtParametro.getValueAt(filaSelect, 3).toString());
-        int tipo = Integer.parseInt(jtParametro.getValueAt(filaSelect, 4).toString());
-        String flag = jtParametro.getValueAt(filaSelect, 5).toString();
+        String flag = jtParametro.getValueAt(filaSelect, 4).toString();
         ParametroBE objParametroBE = null;
         cParametroBL objParametroBL = new cParametroBL();
         int ires = 0;
         try {
             if (Id_Par == 0) {//accion = 1
-                objParametroBE = new ParametroBE(1, 0, codigo, descripcion, Id_ParOriginal,tipo,flag);
+                objParametroBE = new ParametroBE(1, 0, codigo, descripcion, Id_ParOriginal,flag);
                 ires = objParametroBL.Insertar(new Coneccion(), objParametroBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
@@ -2242,7 +2288,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
 //                    actrualizarParametro(ires, filaSelect, 0);
                 }
             }else{//accio = 1
-                objParametroBE = new ParametroBE(1, Id_Par, codigo, descripcion, Id_ParOriginal,tipo,flag);
+                objParametroBE = new ParametroBE(1, Id_Par, codigo, descripcion, Id_ParOriginal,flag);
                 ires = objParametroBL.Actualizar(new Coneccion(), objParametroBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se guardo", "Advertencia",JOptionPane.WARNING_MESSAGE);
@@ -2260,11 +2306,11 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             try {
                 int filaSelect = jtParametro.getSelectedRow();
                 int id_Par = Integer.parseInt(jtParametro.getValueAt(filaSelect, 0).toString());
-                ParametroBE objParametroBE = null;                
+                ParametroBE objParametroBE = null;
                 cParametroBL objParametroBL = new cParametroBL();
-                int ires = 0;
-                objParametroBE = new ParametroBE(1, id_Par, "", "", 0,0,new V().cFlagActivo);
-                ires = objParametroBL.Eliminar(new Coneccion(), objParametroBE);
+                int ires = 0;//ACCION = 1
+                objParametroBE = new ParametroBE(4, id_Par, "", "", 0,new V().cFlagActivo);
+                ires = objParametroBL.Actualizar(new Coneccion(), objParametroBE);
                 if (ires<0) {
                     JOptionPane.showMessageDialog(null, "No se Elimino", "Advertencia",JOptionPane.WARNING_MESSAGE);
                 }else{
@@ -2273,10 +2319,10 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
-            }            
+            }
         }
         if (jtParametro.getRowCount()==0 ){
-            ParametroC objParametroC = new ParametroC(0, "", "", 0,0,new V().cFlagInActivo);
+            ParametroC objParametroC = new ParametroC(0, "", "", 0,new V().cFlagInActivo);
             mtparametro.insertRow(objParametroC);
             jtParametro.getSelectionModel().setSelectionInterval(0,0);
         }
@@ -2311,7 +2357,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
+        setTitle("HOJA DE CUENTA  CONGREGACION: Yanacancha");
     }//GEN-LAST:event_jButton3ActionPerformed
     public void keyTyped(java.awt.event.KeyEvent evt, String s) {
         char c = evt.getKeyChar();
@@ -2819,17 +2865,17 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         return r;
     }    
     public void llenarAutcompleto(String CodigoPadre,String Descripcion) throws SQLException {
-        ParametroBE objParametroBE = new ParametroBE(3, 0, CodigoPadre, Descripcion, 0,0,new V().cFlagActivo);
+        ParametroBE objParametroBE = new ParametroBE(3, 0, CodigoPadre, Descripcion, 0,new V().cFlagActivo);
         cParametroBLL objParametroBLL = new cParametroBLL();
         List<ParametroBE> listParametroBE = objParametroBLL.Leer(new Coneccion(), objParametroBE);
         if (listParametroBE.size() == 0) {
-            ParametroBE objParametroBE02 = new ParametroBE(4, 0, CodigoPadre, Descripcion, 0,0,new V().cFlagActivo);
+            ParametroBE objParametroBE02 = new ParametroBE(4, 0, CodigoPadre, Descripcion, 0,new V().cFlagActivo);
             cParametroBLL objParametroBLL02 = new cParametroBLL();
             List<ParametroBE> listParametroBE02 = objParametroBLL.Leer(new Coneccion(), objParametroBE02);
             for (ParametroBE listParametroBE021 : listParametroBE02) {
                 if (listParametroBE02.size() > 0) {
                     for (ParametroBE obj : listParametroBE02) {
-                        ParametroBE objParametroBE03 = new ParametroBE(1, 0, "", Descripcion, listParametroBE021.getId_Parametro(),0,new V().cFlagActivo);
+                        ParametroBE objParametroBE03 = new ParametroBE(1, 0, "", Descripcion, listParametroBE021.getId_Parametro(),new V().cFlagActivo);
                         cParametroBL objParametroBL = new cParametroBL();
                         V v = new V();v.selleno = 1;v.selleno02 = 1;
                         if(objParametroBL.Insertar(new Coneccion(), objParametroBE03)< 0){
@@ -2910,7 +2956,9 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane EGRESO;
     private javax.swing.JButton btnAnterior;
+    private javax.swing.JButton btnConsultas;
     private javax.swing.JButton btnDeshacer;
+    private javax.swing.JButton btnEjecutar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEstablecer;
     private javax.swing.JButton btnFiniquitar;
@@ -2921,7 +2969,6 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     private javax.swing.JButton btnNumeroEntradas;
     private javax.swing.JButton btnPosterior;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -2968,11 +3015,13 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -3005,6 +3054,8 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     private javax.swing.JTextField txtEntradaO;
     private javax.swing.JTextField txtEntradaR;
     private javax.swing.JTextField txtEntradaR1;
+    private javax.swing.JTextArea txtQuery;
+    private javax.swing.JTextArea txtResultadoQuery;
     private javax.swing.JTextField txtSaldoAnteriorCC;
     private javax.swing.JTextField txtSaldoAnteriorO;
     private javax.swing.JTextField txtSaldoAnteriorR;

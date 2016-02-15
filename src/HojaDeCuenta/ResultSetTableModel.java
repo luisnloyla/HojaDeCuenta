@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package HojaDeCuenta;
- // Fig. 25.25: ResultSetTableModel.java
- // Un objeto TableModel que suministra datos ResultSet a un objeto JTable.
- import java.sql.Connection;
- import java.sql.Statement;
- import java.sql.DriverManager;
- import java.sql.ResultSet;
- import java.sql.ResultSetMetaData;
- import java.sql.SQLException;
- import javax.swing.table.AbstractTableModel;
+import ejecutar.Coneccion;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.swing.table.AbstractTableModel;
 
  // las filas y columnas del objeto ResultSet se cuentan desde 1 y
  // las filas y columnas del objeto JTable se cuentan desde 0. Al procesar
@@ -27,24 +21,28 @@ package HojaDeCuenta;
     private ResultSet conjuntoResultados;
     private ResultSetMetaData metaDatos;
     private int numeroDeFilas;
-
+    
     // lleva la cuenta del estado de la conexión a la base de datos
     private boolean conectadoABaseDatos = false;
-
+    
     // el constructor inicializa conjuntoResultados y obtiene su objeto de metadatos;
     // determina el número de filas
     public ResultSetTableModel( String controlador,String url, String nombreusuario,
     String contrasenia, String consulta )
     throws SQLException, ClassNotFoundException
     {
-        Class.forName( controlador );
+        Class.forName(controlador);
+        /**********************************************************************/
+        Coneccion c = new Coneccion();
+        /**********************************************************************/
         // se conecta a la base de datos
-        conexion = DriverManager.getConnection( url, nombreusuario, contrasenia );
-
-        // crea objeto Statement para consultar la base de datos
+//            conexion = DriverManager.getConnection( url, nombreusuario, contrasenia );
+            conexion = c.getCon();
+        
+//         crea objeto Statement para consultar la base de datos
         instruccion = conexion.createStatement(
         ResultSet.TYPE_SCROLL_INSENSITIVE,
-        ResultSet.CONCUR_READ_ONLY );
+        ResultSet.CONCUR_READ_ONLY );        
 
         // actualiza el estado de la conexión a la base de datos
         conectadoABaseDatos = true;

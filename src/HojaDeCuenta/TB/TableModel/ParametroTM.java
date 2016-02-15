@@ -7,9 +7,9 @@ import javax.swing.table.AbstractTableModel;
 public class ParametroTM extends AbstractTableModel{
     private List<ParametroC> objParametroTC = new ArrayList<>() ;
 //    private String[] columnas = { "Id_Parametro",   "Codigo",    "Descripcion", "Id_Parametro_Origen"};
-    private String[] columnas = {"Id_Par","Codigo","Descripcion","Id_ParOrigen","Tipo","FlagActivo"};
-    private boolean [] editables = { true       ,   true     ,   true     , true       , true       , true};
-    private Class [] tipoColumna = {Object.class,Object.class,Object.class,Object.class,Object.class,Object.class};
+    private String[] columnas = {"Id_Par"       ,"Codigo"    ,"Descripcion","Id_ParOrigen","FlagActivo"};
+    private boolean [] editables = { true       ,   true     ,   true      , true         , true};
+    private Class [] tipoColumna = {Object.class,Object.class,Object.class ,Object.class  ,Object.class};
     
     public ParametroTM() throws SQLException {
         objParametroTC = ParametroC.getParametroTC();
@@ -54,9 +54,8 @@ public class ParametroTM extends AbstractTableModel{
             case 0:return objParametroTC.get(rowIndex).getId_Parametro();
             case 1:return objParametroTC.get(rowIndex).getCodigo();
             case 2:return objParametroTC.get(rowIndex).getDescripcion();
-            case 3:return objParametroTC.get(rowIndex).getId_Parametro_Origen();            
-            case 4:return objParametroTC.get(rowIndex).getTipo();            
-            case 5:return objParametroTC.get(rowIndex).getFlagActivo();            
+            case 3:return objParametroTC.get(rowIndex).getId_Parametro_Origen();                        
+            case 4:return objParametroTC.get(rowIndex).getFlagActivo();            
             default:return null;
         }
     }
@@ -68,9 +67,8 @@ public class ParametroTM extends AbstractTableModel{
                 case 0: objParametroTC.get(rowIndex).setId_Parametro(Integer.valueOf(String.valueOf(object)));break;
                 case 1: objParametroTC.get(rowIndex).setCodigo(String.valueOf(object));break;
                 case 2: objParametroTC.get(rowIndex).setDescripcion(String.valueOf(object));break;
-                case 3: objParametroTC.get(rowIndex).setId_Parametro_Origen(Integer.valueOf(String.valueOf(object)));break;
-                case 4: objParametroTC.get(rowIndex).setTipo(Integer.valueOf(String.valueOf(object)));break;
-                case 5: objParametroTC.get(rowIndex).setFlagActivo(String.valueOf(object));break;
+                case 3: objParametroTC.get(rowIndex).setId_Parametro_Origen(Integer.valueOf(String.valueOf(object)));break;                
+                case 4: objParametroTC.get(rowIndex).setFlagActivo(String.valueOf(object));break;
             }
         } catch (Exception e) {
            System.out.println(e);
