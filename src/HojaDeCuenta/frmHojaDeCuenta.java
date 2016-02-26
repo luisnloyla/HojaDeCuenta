@@ -568,7 +568,7 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
@@ -1397,8 +1397,8 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Parametro", jPanel13);
@@ -1981,9 +1981,9 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTotalLargoPlazoKeyTyped
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-        MostrarResultadosConsulta consulta = new MostrarResultadosConsulta();
-        consulta.show();
-        consulta.setVisible(true);
+//        MostrarResultadosConsulta consulta = new MostrarResultadosConsulta();
+//        consulta.show();
+//        consulta.setVisible(true);
         //SELECT id_mensual,fecha,estableser,flagactivo FROM MENSUAL
     }//GEN-LAST:event_btnImprimirActionPerformed
 
@@ -2298,6 +2298,9 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmHojaDeCuenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (codigo.equals("K_N_Nombre")) {
+            this.setTitle("HOJA DE CUENTA  CONGREGACION: "+descripcion);
         }
     }//GEN-LAST:event_jmpGuardarParametroActionPerformed
 
@@ -2765,22 +2768,25 @@ public final class frmHojaDeCuenta extends javax.swing.JFrame {
         jtParametro.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtParametro.getSelectionModel().setSelectionInterval(0,0);
         
-        jtParametro.getColumnModel().getColumn(0).setMaxWidth(52);
-        jtParametro.getColumnModel().getColumn(0).setMinWidth(52);
-        jtParametro.getColumnModel().getColumn(0).setPreferredWidth(52);
+        jtParametro.getColumnModel().getColumn(0).setMaxWidth(42);
+        jtParametro.getColumnModel().getColumn(0).setMinWidth(42);
+        jtParametro.getColumnModel().getColumn(0).setPreferredWidth(42);
         
-        jtParametro.getColumnModel().getColumn(1).setMaxWidth(55);
-        jtParametro.getColumnModel().getColumn(1).setMinWidth(55);
-        jtParametro.getColumnModel().getColumn(1).setPreferredWidth(55);
+        jtParametro.getColumnModel().getColumn(1).setMaxWidth(70);
+        jtParametro.getColumnModel().getColumn(1).setMinWidth(70);
+        jtParametro.getColumnModel().getColumn(1).setPreferredWidth(70);
         /************************************************************/
-        jtParametro.getColumnModel().getColumn(2).setMaxWidth(260);
-        jtParametro.getColumnModel().getColumn(2).setMinWidth(260);
-        jtParametro.getColumnModel().getColumn(2).setPreferredWidth(260);
+        jtParametro.getColumnModel().getColumn(2).setMaxWidth(230);
+        jtParametro.getColumnModel().getColumn(2).setMinWidth(230);
+        jtParametro.getColumnModel().getColumn(2).setPreferredWidth(230);
         /************************************************************/
         jtParametro.getColumnModel().getColumn(3).setMaxWidth(80);
         jtParametro.getColumnModel().getColumn(3).setMinWidth(80);
         jtParametro.getColumnModel().getColumn(3).setPreferredWidth(80);        
         
+        jtParametro.getColumnModel().getColumn(4).setMaxWidth(0);
+        jtParametro.getColumnModel().getColumn(4).setMinWidth(0);
+        jtParametro.getColumnModel().getColumn(4).setPreferredWidth(0);
     }
     public void cargarTablasOblifinmes(){
         //*****************************************************************

@@ -149,8 +149,21 @@ public class conex {
                         st.executeUpdate("CREATE VIEW PARAMETRO_V(ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,HORA) "
                                                      + "AS SELECT ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,CAST(HORA AS VARCHAR(100)) AS HORA FROM PARAMETRO");
                         st.executeUpdate("CREATE VIEW PARAMETRO_MV(ID_PARAMETRO_M,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,HORA,ID_PARAMETRO) AS SELECT ID_PARAMETRO_M,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,CAST(HORA AS VARCHAR(100)) AS HORA,ID_PARAMETRO FROM PARAMETRO_M");
+                        /*************************************************************************************************************************************/
+                        st.executeUpdate("CREATE VIEW PARAMETRO_VU(ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,HORA) "
+                        + "AS "
+                        + "SELECT ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,HORA FROM PARAMETRO WHERE FLAGACTIVO = '1' "
+                        + "UNION "
+                        + "SELECT ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,HORA FROM PARAMETRO_M  ");
                         
-                        st.executeUpdate("INSERT INTO PARAMETRO (CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO)VALUES('K_E','ESTATICO',0,'1'),('K_D','DINAMICO',0,'1'),('K_E_001','ENTRADA_RECIBIDO',1,'1'),('K_E_002','ENTRADA_CUENTACORRIENTE',1,'1'),('K_E_003','ENTRADA_OTRO',1,'1'),('K_E_004','OTROS',1,'1'),('K_E_005','SALIDA',1,'1'),('ALP','ACTUAL_LARGOPLAZO',2,'1'),('O','Contribuciones para la OM',3,'1'),('S','Contribuciones para el FSR',3,'1'),('C','Contribuciones de la Congregación',3,'1'),('T','Boletos de autobus',3,'1'),('D','Depositado en la cuenta corriente',4,'1'),('I','Intereses',4,'1'),('B','Fondos Depositados',5,'1'),('','Boleto de autobús',8,'1'),('','Saldo restante del préstamo',8,'1')");
+                        st.executeUpdate("CREATE VIEW PARAMETRO_VU2(ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,HORA) "
+                        + "AS "
+                        + "SELECT ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,CAST(HORA AS VARCHAR(100)) AS HORA FROM PARAMETRO WHERE FLAGACTIVO = '1' "
+                        + "UNION "
+                        + "SELECT ID_PARAMETRO,CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO,FECHA,CAST(HORA AS VARCHAR(100)) AS HORA FROM PARAMETRO_M  ");
+                        /*************************************************************************************************************************************/
+//                        st.executeUpdate("INSERT INTO PARAMETRO (CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO)VALUES('K_E','ESTATICO',0,'1'),('K_D','DINAMICO',0,'1'),('K_E_001','ENTRADA_RECIBIDO',1,'1'),('K_E_002','ENTRADA_CUENTACORRIENTE',1,'1'),('K_E_003','ENTRADA_OTRO',1,'1'),('K_E_004','OTROS',1,'1'),('K_E_005','SALIDA',1,'1'),('ALP','ACTUAL_LARGOPLAZO',2,'1'),('O','Contribuciones para la OM',3,'1'),('S','Contribuciones para el FSR',3,'1'),('C','Contribuciones de la Congregación',3,'1'),('T','Boletos de autobus',3,'1'),('D','Depositado en la cuenta corriente',4,'1'),('I','Intereses',4,'1'),('B','Fondos Depositados',5,'1'),('','Boleto de autobús',8,'1'),('','Saldo restante del préstamo',8,'1')");
+                        st.executeUpdate("INSERT INTO PARAMETRO (CODIGO,DESCRIPCION,ID_PARAMETRO_ORIGEN,FLAGACTIVO)VALUES('K_E','ESTATICO',0,'1'),('K_D','DINAMICO',0,'1'),('K_N','ESTATICOS/DINAMICOS',0,'1'),('K_E_001','ENTRADA_RECIBIDO',1,'1'),('K_E_002','ENTRADA_CUENTACORRIENTE',1,'1'),('K_E_003','ENTRADA_OTRO',1,'1'),('K_E_004','OTROS',1,'1'),('K_E_005','SALIDA',1,'1'),('K_D_ACTUAL','ACTUAL',2,'1'),('K_D_PLAZO','LARGO_PLAZO',2,'1'),('K_E_006','CONGREGACION',1,'1'),('K_N_Nombre','San Juan',11,'1'),('K_N_Direccion','Gamaniel Blanco',11,'1'),('K_N_Ciudad','Cerro De Pasco',11,'1'),('K_N_Provincia','Pasco',11,'1'),('O','Contribuciones para la OM',3,'1'),('S','Contribuciones para el FSR',3,'1'),('C','Contribuciones de la Congregación',3,'1'),('T','Boletos de autobus',3,'1'),('D','Depositado en la cuenta corriente',4,'1'),('I','Intereses',4,'1'),('B','Fondos Depositados',5,'1'),('','Boleto de autobús',10,'1'),('','Saldo restante del préstamo',11,'1')");
                         st.executeUpdate("CREATE TABLE Oblifinmes("
                                 + " Id_Oblifinmes INT NOT NULL PRIMARY KEY  GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)"
                                 + ", Id_Mensual INT NOT NULL"
@@ -196,7 +209,7 @@ public class conex {
     if (Dir_trabajo == null) {
         try {
             URL url = conex.class.getResource(Recurso);
-            if (url.getProtocol().equals("file")) 
+            if (url.getProtocol().equals("file"))
             {
                 File f = new File(url.toURI());
                 do {
@@ -226,4 +239,7 @@ public class conex {
     return Dir_trabajo;
     }
 }
-
+//SELECT*FROM PARAMETRO_VU2 WHERE ID_PARAMETRO = 15 AND  '15:35:13' >= HORA
+//-------------------------------------------------------------------------
+//SELECT*FROM PARAMETRO_VU WHERE ID_PARAMETRO = 15 AND HORA = (
+//SELECT MAX (HORA) FROM PARAMETRO_VU WHERE ID_PARAMETRO = 15  AND  HORA  <= '15:37:50')

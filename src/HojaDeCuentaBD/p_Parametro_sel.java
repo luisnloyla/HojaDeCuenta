@@ -47,7 +47,8 @@ public class p_Parametro_sel {
               this.ReturnVal=0;
             }
             if (this.Accion == 2){
-                rs=st.executeQuery("SELECT * FROM PARAMETRO WHERE Id_Parametro_Origen = (SELECT Id_Parametro FROM Parametro WHERE CODIGO = '"+this.Codigo+"' AND Id_Parametro_Origen = 0)");
+//                rs=st.executeQuery("SELECT * FROM PARAMETRO WHERE Id_Parametro_Origen = (SELECT Id_Parametro FROM Parametro WHERE CODIGO = '"+this.Codigo+"' AND Id_Parametro_Origen = 0)");
+                rs=st.executeQuery("SELECT * FROM PARAMETRO WHERE Id_Parametro_Origen = (SELECT Id_Parametro FROM Parametro WHERE CODIGO = '"+this.Codigo+"')");
                 while (rs.next()) {
                     System.out.println(""+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3)+" -- "+rs.getTime(7));
                     ParametroBE = new ParametroBE(0, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5));

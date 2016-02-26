@@ -26,7 +26,7 @@ public class TextAutoCompleter {
     private static void setAdjusting(JComboBox cbInput, boolean adjusting) {
         cbInput.putClientProperty("is_adjusting", adjusting);
     }
-
+    
     public  void setupAutoComplete(final JTextField txtInput) {
         final DefaultComboBoxModel model = new DefaultComboBoxModel();
         final JComboBox cbInput = new JComboBox(model) {

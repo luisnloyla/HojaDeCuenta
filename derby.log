@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sat Feb 13 14:50:48 COT 2016:
- Iniciando instancia a816c00e-0152-dc2f-8828-000003fd0168 de Derby, versión The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): 
-en el directorio de base de datos C:\Users\SRVSIGA\OneDrive\Congregacion02\build\classes\conexion\BD_HojaDeCuenta con el cargador de clases sun.misc.Launcher$AppClassLoader@6fd33eef
+Wed Feb 24 15:20:28 COT 2016:
+ Iniciando instancia a816c00e-0153-14f0-a5a9-00000404f990 de Derby, versión The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): 
+en el directorio de base de datos C:\Users\SRVSIGA\OneDrive\Congregacion02\build\classes\conexion\BD_HojaDeCuenta con el cargador de clases sun.misc.Launcher$AppClassLoader@62618565
 Cargado desde file:/C:/Users/SRVSIGA/OneDrive/Congregacion02/dist_Libreria/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_80-b15
